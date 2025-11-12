@@ -98,6 +98,7 @@ class ModernTheme extends ProfessionalTheme {
   static const double radiusMd = 12.0;
   static const double radiusMedium = 12.0;  // Alias for radiusMd
   static const double radiusLg = 16.0;
+  static const double radiusLarge = 16.0;  // Alias for radiusLg
   static const double radiusXl = 20.0;
   static const double radiusXLarge = 24.0;
 

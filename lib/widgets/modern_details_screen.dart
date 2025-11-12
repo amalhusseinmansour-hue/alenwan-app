@@ -510,14 +510,15 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
   }
 
   Widget _buildDefaultRelatedCard(dynamic item) {
-    return ModernTheme.modernCard(
-      padding: EdgeInsets.zero,
+    return InkWell(
       onTap: () {
         // Navigate to related content
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+      child: Container(
+        decoration: ModernTheme.modernCard(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
           Expanded(
             child: Container(
               decoration: BoxDecoration(
