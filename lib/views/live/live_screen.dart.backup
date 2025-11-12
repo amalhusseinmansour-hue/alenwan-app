@@ -1,0 +1,809 @@
+import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:ui' as ui;
+import 'dart:ui';
+import 'dart:math' as math;
+import '../../core/theme/professional_theme.dart';
+
+class LiveScreen extends StatefulWidget {
+  const LiveScreen({super.key});
+
+  @override
+  State<LiveScreen> createState() => _LiveScreenState();
+}
+
+class _LiveScreenState extends State<LiveScreen> with TickerProviderStateMixin {
+  late AnimationController _fadeController;
+  late AnimationController _scaleController;
+  late AnimationController _pulseController;
+  late AnimationController _backgroundController;
+  late AnimationController _particleController;
+  late Animation<double> _fadeAnimation;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _pulseAnimation;
+
+  final List<LiveChannel> _liveChannels = [
+    LiveChannel(
+      name: 'الرياضة المباشرة',
+      category: 'رياضة',
+      thumbnail: 'https://image.tmdb.org/t/p/w500/rCzpDGLbOoPwLjy3OAm5NUhbxtC.jpg',
+      viewers: 15420,
+      isLive: true,
+    ),
+    LiveChannel(
+      name: 'أخبار 24/7',
+      category: 'أخبار',
+      thumbnail: 'https://image.tmdb.org/t/p/w500/xJWPZIYOEFIjZpBL7SVBGnzRYXp.jpg',
+      viewers: 8932,
+      isLive: true,
+    ),
+    LiveChannel(
+      name: 'كرة القدم العالمية',
+      category: 'رياضة',
+      thumbnail: 'https://image.tmdb.org/t/p/w500/qjfE7SkPXpqFs8FX8rR8KEYPzA5.jpg',
+      viewers: 22150,
+      isLive: true,
+    ),
+    LiveChannel(
+      name: 'مسلسلات وترفيه',
+      category: 'ترفيه',
+      thumbnail: 'https://image.tmdb.org/t/p/w500/uKvVjHNqB5VmOrdxqAt2F7J78ED.jpg',
+      viewers: 12340,
+      isLive: true,
+    ),
+    LiveChannel(
+      name: 'برامج الأطفال',
+      category: 'أطفال',
+      thumbnail: 'https://image.tmdb.org/t/p/w500/gh4cZbhZxyTbgxQPxD0dOudNPTn.jpg',
+      viewers: 8650,
+      isLive: true,
+    ),
+    LiveChannel(
+      name: 'وثائقيات',
+      category: 'وثائقي',
+      thumbnail: 'https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg',
+      viewers: 5420,
+      isLive: true,
+    ),
+  ];
+
+  String _selectedCategory = 'الكل';
+  final List<String> _categories = [
+    'الكل',
+    'رياضة',
+    'أخبار',
+    'ترفيه',
+    'أطفال',
+    'وثائقي',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    _fadeController = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
+    );
+    _scaleController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+    _pulseController = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+    _backgroundController = AnimationController(
+      duration: const Duration(seconds: 15),
+      vsync: this,
+    )..repeat();
+    _particleController = AnimationController(
+      duration: const Duration(seconds: 10),
+      vsync: this,
+    )..repeat();
+
+    _fadeAnimation = CurvedAnimation(
+      parent: _fadeController,
+      curve: Curves.easeInOut,
+    );
+    _scaleAnimation = CurvedAnimation(
+      parent: _scaleController,
+      curve: Curves.elasticOut,
+    );
+    _pulseAnimation = CurvedAnimation(
+      parent: _pulseController,
+      curve: Curves.easeInOut,
+    );
+
+    _fadeController.forward();
+    _scaleController.forward();
+    _pulseController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _fadeController.dispose();
+    _scaleController.dispose();
+    _pulseController.dispose();
+    _backgroundController.dispose();
+    _particleController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: ui.TextDirection.ltr,
+      child: Scaffold(
+        backgroundColor: ProfessionalTheme.backgroundPrimary,
+        body: Stack(
+          children: [
+            // Animated background
+            _buildAnimatedBackground(),
+
+            // Main content
+            SafeArea(
+              child: FadeTransition(
+                opacity: _fadeAnimation,
+                child: CustomScrollView(
+                  slivers: [
+                    // Modern header
+                    _buildSliverAppBar(context),
+
+                    // Category filter
+                    SliverToBoxAdapter(
+                      child: _buildCategoryFilter(),
+                    ),
+
+                    // Live indicator
+                    SliverToBoxAdapter(
+                      child: _buildLiveIndicator(),
+                    ),
+
+                    // Live channels grid
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      sliver: _buildLiveChannelsGrid(),
+                    ),
+
+                    // Bottom spacing
+                    const SliverToBoxAdapter(
+                      child: SizedBox(height: 100),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAnimatedBackground() {
+    return AnimatedBuilder(
+      animation: _backgroundController,
+      builder: (context, child) {
+        return Container(
+          decoration: BoxDecoration(
+            gradient: RadialGradient(
+              center: Alignment(
+                math.cos(_backgroundController.value * 2 * math.pi) * 0.5,
+                math.sin(_backgroundController.value * 2 * math.pi) * 0.5,
+              ),
+              radius: 2,
+              colors: [
+                ProfessionalTheme.primaryBrand.withOpacity(0.05),
+                ProfessionalTheme.backgroundPrimary,
+                ProfessionalTheme.backgroundPrimary,
+              ],
+            ),
+          ),
+          child: CustomPaint(
+            painter: LiveStreamPainter(
+              _particleController.value,
+              color: ProfessionalTheme.primaryBrand.withOpacity(0.1),
+            ),
+            size: Size.infinite,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildSliverAppBar(BuildContext context) {
+    return SliverAppBar(
+      expandedHeight: 180,
+      floating: false,
+      pinned: true,
+      backgroundColor: ProfessionalTheme.backgroundPrimary.withOpacity(0.9),
+      flexibleSpace: FlexibleSpaceBar(
+        title: Text(
+          'البث المباشر',
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: ProfessionalTheme.textPrimary,
+          ),
+        ),
+        background: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                ProfessionalTheme.primaryBrand.withOpacity(0.8),
+                ProfessionalTheme.secondaryBrand.withOpacity(0.6),
+                ProfessionalTheme.backgroundPrimary.withOpacity(0.9),
+              ],
+            ),
+          ),
+          child: Center(
+            child: ScaleTransition(
+              scale: _scaleAnimation,
+              child: AnimatedBuilder(
+                animation: _pulseController,
+                builder: (context, child) {
+                  return Container(
+                    width: 80 + _pulseAnimation.value * 10,
+                    height: 80 + _pulseAnimation.value * 10,
+                    decoration: BoxDecoration(
+                      gradient: ProfessionalTheme.glassMorphism.gradient,
+                      borderRadius: BorderRadius.circular(40),
+                      border: Border.all(
+                        color: ProfessionalTheme.textPrimary.withOpacity(0.3),
+                        width: 2,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: ProfessionalTheme.primaryBrand
+                              .withOpacity(_pulseAnimation.value * 0.5),
+                          blurRadius: 20,
+                          spreadRadius: _pulseAnimation.value * 5,
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.live_tv,
+                      size: 40,
+                      color: ProfessionalTheme.textPrimary,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+      actions: [
+        Container(
+          margin: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            gradient: ProfessionalTheme.premiumGradient,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: IconButton(
+            icon:
+                const Icon(Icons.refresh, color: ProfessionalTheme.textPrimary),
+            onPressed: _refreshChannels,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLiveIndicator() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            ProfessionalTheme.surfaceCard.withOpacity(0.8),
+            ProfessionalTheme.surfaceCard.withOpacity(0.6),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: ProfessionalTheme.primaryBrand.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: Row(
+            children: [
+              AnimatedBuilder(
+                animation: _pulseController,
+                builder: (context, child) {
+                  return Container(
+                    width: 12,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: ProfessionalTheme.accentRed,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: ProfessionalTheme.accentRed
+                              .withOpacity(_pulseAnimation.value * 0.8),
+                          blurRadius: 10,
+                          spreadRadius: _pulseAnimation.value * 3,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(width: 12),
+              Text(
+                'مباشر الآن',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: ProfessionalTheme.textPrimary,
+                ),
+              ),
+              const Spacer(),
+              Text(
+                '${_liveChannels.where((c) => c.isLive).length} قناة',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: ProfessionalTheme.textSecondary,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryFilter() {
+    return Container(
+      height: 60,
+      margin: const EdgeInsets.symmetric(vertical: 16),
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        itemCount: _categories.length,
+        itemBuilder: (context, index) {
+          final category = _categories[index];
+          final isSelected = category == _selectedCategory;
+
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                _selectedCategory = category;
+              });
+            },
+            child: Container(
+              margin: const EdgeInsets.only(left: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              decoration: BoxDecoration(
+                gradient: isSelected ? ProfessionalTheme.premiumGradient : null,
+                color: isSelected
+                    ? null
+                    : ProfessionalTheme.surfaceCard.withOpacity(0.6),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: isSelected
+                      ? Colors.transparent
+                      : ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                  width: 1,
+                ),
+                boxShadow: isSelected
+                    ? [
+                        BoxShadow(
+                          color:
+                              ProfessionalTheme.primaryBrand.withOpacity(0.4),
+                          blurRadius: 15,
+                          spreadRadius: 2,
+                        ),
+                      ]
+                    : null,
+              ),
+              child: Center(
+                child: Text(
+                  category,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                    color: isSelected
+                        ? ProfessionalTheme.textPrimary
+                        : ProfessionalTheme.textSecondary,
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildLiveChannelsGrid() {
+    final filteredChannels = _selectedCategory == 'الكل'
+        ? _liveChannels
+        : _liveChannels.where((c) => c.category == _selectedCategory).toList();
+
+    return SliverGrid(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 1.2,
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 16,
+      ),
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          return ScaleTransition(
+            scale: Tween<double>(begin: 0.8, end: 1.0).animate(
+              CurvedAnimation(
+                parent: _scaleController,
+                curve: Interval(
+                  index * 0.1,
+                  1.0,
+                  curve: Curves.elasticOut,
+                ),
+              ),
+            ),
+            child: _buildLiveChannelCard(filteredChannels[index]),
+          );
+        },
+        childCount: filteredChannels.length,
+      ),
+    );
+  }
+
+  Widget _buildLiveChannelCard(LiveChannel channel) {
+    return GestureDetector(
+      onTap: () => _openLiveChannel(channel),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              ProfessionalTheme.surfaceCard.withOpacity(0.8),
+              ProfessionalTheme.surfaceCard.withOpacity(0.6),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: ProfessionalTheme.primaryBrand.withOpacity(0.2),
+              blurRadius: 15,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Stack(
+              children: [
+                // Background gradient
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        ProfessionalTheme.backgroundPrimary,
+                        ProfessionalTheme.primaryBrand.withOpacity(0.1),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Thumbnail
+                Positioned(
+                  top: 12,
+                  left: 12,
+                  right: 12,
+                  height: 80,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            gradient: ProfessionalTheme.premiumGradient,
+                          ),
+                          child: const Icon(
+                            Icons.live_tv,
+                            size: 32,
+                            color: ProfessionalTheme.textPrimary,
+                          ),
+                        ),
+                        CachedNetworkImage(
+                          imageUrl: channel.thumbnail,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => Container(
+                            decoration: BoxDecoration(
+                              gradient: ProfessionalTheme.premiumGradient,
+                            ),
+                            child: const Center(
+                              child: CircularProgressIndicator(
+                                color: ProfessionalTheme.textPrimary,
+                                strokeWidth: 2,
+                              ),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => Container(
+                            decoration: BoxDecoration(
+                              gradient: ProfessionalTheme.premiumGradient,
+                            ),
+                            child: const Icon(
+                              Icons.live_tv,
+                              size: 32,
+                              color: ProfessionalTheme.textPrimary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Live badge
+                if (channel.isLive)
+                  Positioned(
+                    top: 20,
+                    right: 20,
+                    child: AnimatedBuilder(
+                      animation: _pulseController,
+                      builder: (context, child) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: ProfessionalTheme.accentRed,
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: [
+                              BoxShadow(
+                                color: ProfessionalTheme.accentRed
+                                    .withOpacity(_pulseAnimation.value * 0.8),
+                                blurRadius: 8,
+                                spreadRadius: _pulseAnimation.value * 2,
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 6,
+                                height: 6,
+                                decoration: const BoxDecoration(
+                                  color: ProfessionalTheme.textPrimary,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                'مباشر',
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: ProfessionalTheme.textPrimary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+
+                // Channel info
+                Positioned(
+                  bottom: 12,
+                  left: 12,
+                  right: 12,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        channel.name,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: ProfessionalTheme.textPrimary,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: ProfessionalTheme.primaryBrand
+                                  .withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              channel.category,
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: ProfessionalTheme.textPrimary
+                                    .withOpacity(0.9),
+                              ),
+                            ),
+                          ),
+                          const Spacer(),
+                          if (channel.viewers > 0) ...[
+                            Icon(
+                              Icons.visibility,
+                              color: ProfessionalTheme.textSecondary,
+                              size: 12,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              _formatViewers(channel.viewers),
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: ProfessionalTheme.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Play icon overlay
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      gradient: ProfessionalTheme.glassMorphism.gradient,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: ProfessionalTheme.textPrimary.withOpacity(0.4),
+                        width: 2,
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.play_arrow,
+                      color: ProfessionalTheme.textPrimary,
+                      size: 24,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  String _formatViewers(int viewers) {
+    if (viewers >= 1000000) {
+      return '${(viewers / 1000000).toStringAsFixed(1)}M';
+    } else if (viewers >= 1000) {
+      return '${(viewers / 1000).toStringAsFixed(1)}K';
+    }
+    return viewers.toString();
+  }
+
+  void _openLiveChannel(LiveChannel channel) {
+    Navigator.pushNamed(
+      context,
+      '/live-player',
+      arguments: channel,
+    );
+  }
+
+  void _refreshChannels() {
+    // Refresh live channels
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'تم تحديث القنوات المباشرة',
+          style: TextStyle(color: ProfessionalTheme.textPrimary),
+        ),
+        backgroundColor: ProfessionalTheme.surfaceCard,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        margin: const EdgeInsets.all(16),
+      ),
+    );
+  }
+}
+
+class LiveChannel {
+  final String name;
+  final String category;
+  final String thumbnail;
+  final int viewers;
+  final bool isLive;
+
+  LiveChannel({
+    required this.name,
+    required this.category,
+    required this.thumbnail,
+    required this.viewers,
+    required this.isLive,
+  });
+}
+
+class LiveStreamPainter extends CustomPainter {
+  final double animationValue;
+  final Color color;
+
+  LiveStreamPainter(this.animationValue, {required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..style = PaintingStyle.fill;
+
+    // Draw animated particles
+    for (int i = 0; i < 30; i++) {
+      final progress = (animationValue + i * 0.033) % 1.0;
+      final opacity = math.sin(progress * math.pi) * 0.5;
+
+      paint.color = color.withOpacity(opacity);
+
+      final x = size.width * (0.1 + (i * 0.27) % 0.8);
+      final y = size.height * progress;
+      final radius = 2 + math.sin(progress * math.pi) * 3;
+
+      canvas.drawCircle(Offset(x, y), radius, paint);
+    }
+
+    // Draw subtle signal waves for live streaming effect
+    final wavePaint = Paint()
+      ..color = color.withOpacity(0.05)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+
+    for (int wave = 0; wave < 2; wave++) {
+      final path = Path();
+      for (double x = 0; x < size.width; x += 10) {
+        final y = size.height * 0.5 +
+            math.sin((x / 100) + animationValue * math.pi * 2 + wave) * 15;
+        if (x == 0) {
+          path.moveTo(x, y);
+        } else {
+          path.lineTo(x, y);
+        }
+      }
+      canvas.drawPath(path, wavePaint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+}
