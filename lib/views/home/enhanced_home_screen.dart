@@ -83,13 +83,13 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
       ]);
 
       setState(() {
-        _featuredContent = results[0].data['data'] ?? [];
-        _continueWatching = results[1];
-        _trending = results[2].data['data'] ?? [];
-        _newReleases = results[3].data['data'] ?? [];
-        _forYou = results[4].data['data'] ?? [];
+        _featuredContent = (results[0] as dynamic).data['data'] ?? [];
+        _continueWatching = results[1] as List<dynamic>;
+        _trending = (results[2] as dynamic).data['data'] ?? [];
+        _newReleases = (results[3] as dynamic).data['data'] ?? [];
+        _forYou = (results[4] as dynamic).data['data'] ?? [];
         _categorizedContent =
-            Map<String, List<dynamic>>.from(results[5].data['data'] ?? {});
+            Map<String, List<dynamic>>.from((results[5] as dynamic).data['data'] ?? {});
         _isLoading = false;
       });
     } catch (e) {

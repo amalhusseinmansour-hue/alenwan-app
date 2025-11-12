@@ -23,6 +23,9 @@ class ModernTheme extends ProfessionalTheme {
   static TextStyle body1({BuildContext? context, Color? color, FontWeight? fontWeight, double? fontSize, double? height, double? letterSpacing}) =>
       ProfessionalTheme.body1(context: context, color: color, fontWeight: fontWeight, fontSize: fontSize, height: height, letterSpacing: letterSpacing);
 
+  static TextStyle body2({BuildContext? context, Color? color, FontWeight? fontWeight, double? fontSize, double? height, double? letterSpacing}) =>
+      ProfessionalTheme.body2(context: context, color: color, fontWeight: fontWeight, fontSize: fontSize, height: height, letterSpacing: letterSpacing);
+
   static TextStyle getTextStyle({BuildContext? context, Color? color, FontWeight? fontWeight, double? fontSize, double? height, double? letterSpacing, TextStyle? baseStyle}) =>
       ProfessionalTheme.getTextStyle(context: context, color: color, fontWeight: fontWeight, fontSize: fontSize, height: height, letterSpacing: letterSpacing);
 
@@ -84,6 +87,7 @@ class ModernTheme extends ProfessionalTheme {
 
   // Spacing
   static const double spacingXs = 4.0;
+  static const double spacingS = 8.0;  // Alias for spacingSm
   static const double spacingSm = 8.0;
   static const double spacingMd = 16.0;
   static const double spacingLg = 24.0;
@@ -99,4 +103,29 @@ class ModernTheme extends ProfessionalTheme {
   static const double elevationLow = 2.0;
   static const double elevationMedium = 4.0;
   static const double elevationHigh = 8.0;
+
+  // Widget methods
+  static Widget animatedBackground({Widget? child}) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: darkGradient,
+      ),
+      child: child,
+    );
+  }
+
+  static Widget particleOverlay() {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.transparent,
+            Colors.black.withOpacity(0.3),
+          ],
+        ),
+      ),
+    );
+  }
 }
