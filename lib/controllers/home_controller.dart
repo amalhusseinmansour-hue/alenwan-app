@@ -38,14 +38,14 @@ class HomeController extends ChangeNotifier {
     // loadData will be called from main.dart
   }
 
-  Future<void> loadData() async {
+  Future<void> loadData({bool isGuest = false}) async {
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
       // Fetch all home content in one request
-      final homeData = await _homeService.fetchHomeContent();
+      final homeData = await _homeService.fetchHomeContent(isGuest: isGuest);
 
       // Parse different sections
       _sliders = _homeService.getSliders(homeData);
@@ -65,7 +65,7 @@ class HomeController extends ChangeNotifier {
     }
   }
 
-  Future<void> refreshData() async => loadData();
+  Future<void> refreshData({bool isGuest = false}) async => loadData(isGuest: isGuest);
 
   void resetError() {
     _error = null;

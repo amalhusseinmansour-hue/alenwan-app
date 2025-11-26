@@ -55,17 +55,17 @@ class _PremiumBannerState extends State<PremiumBanner>
     return Container(
       height: widget.height,
       width: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            const Color(0xFF000000),
-            const Color(0xFF1a0a0f),
-            const Color(0xFF2d0a1a),
-            const Color(0xFF000000),
+            Color(0xFF000000),
+            Color(0xFF1a0a0f),
+            Color(0xFF2d0a1a),
+            Color(0xFF000000),
           ],
-          stops: const [0.0, 0.3, 0.7, 1.0],
+          stops: [0.0, 0.3, 0.7, 1.0],
         ),
       ),
       child: Stack(
@@ -158,10 +158,10 @@ class _PremiumBannerState extends State<PremiumBanner>
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       colors: [
-                        const Color(0xFFE50914),
-                        const Color(0xFFB20710),
+                        Color(0xFFE50914),
+                        Color(0xFFB20710),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(8),
@@ -173,7 +173,7 @@ class _PremiumBannerState extends State<PremiumBanner>
                       ),
                     ],
                   ),
-                  child: Row(
+                  child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
@@ -181,7 +181,7 @@ class _PremiumBannerState extends State<PremiumBanner>
                         color: Colors.white,
                         size: 20,
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8),
                       Text(
                         'PREMIUM',
                         style: TextStyle(
@@ -225,7 +225,7 @@ class _PremiumBannerState extends State<PremiumBanner>
                 color: Colors.white.withValues(alpha: 0.1),
               ),
             ),
-            child: Text(
+            child: const Text(
               'عالم لا محدود من الترفيه\nبجودة 4K وترجمة فورية',
               textAlign: TextAlign.right,
               style: TextStyle(
@@ -296,7 +296,7 @@ class _PremiumBannerState extends State<PremiumBanner>
                   color: const Color(0xFFE50914).withValues(alpha: 0.5),
                   blurRadius: 30,
                 ),
-                Shadow(
+                const Shadow(
                   color: Colors.black,
                   blurRadius: 10,
                   offset: Offset(0, 4),
@@ -330,10 +330,10 @@ class _PremiumBannerState extends State<PremiumBanner>
               ),
               decoration: BoxDecoration(
                 gradient: isPrimary
-                    ? LinearGradient(
+                    ? const LinearGradient(
                         colors: [
-                          const Color(0xFFE50914),
-                          const Color(0xFFB20710),
+                          Color(0xFFE50914),
+                          Color(0xFFB20710),
                         ],
                       )
                     : null,
@@ -366,7 +366,7 @@ class _PremiumBannerState extends State<PremiumBanner>
                   const SizedBox(width: 12),
                   Text(
                     label,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -392,25 +392,25 @@ class _PremiumBannerState extends State<PremiumBanner>
           _buildBadge(
             icon: Icons.trending_up_rounded,
             label: 'الأكثر مشاهدة',
-            colors: [Color(0xFFE50914), Color(0xFFB20710)],
+            colors: [const Color(0xFFE50914), const Color(0xFFB20710)],
           ),
           const SizedBox(height: 14),
           _buildBadge(
             icon: Icons.stars_rounded,
             label: 'محتوى حصري',
-            colors: [Color(0xFFFFB900), Color(0xFFFF8C00)],
+            colors: [const Color(0xFFFFB900), const Color(0xFFFF8C00)],
           ),
           const SizedBox(height: 14),
           _buildBadge(
             icon: Icons.high_quality_rounded,
             label: 'جودة فائقة',
-            colors: [Color(0xFF00C853), Color(0xFF00A843)],
+            colors: [const Color(0xFF00C853), const Color(0xFF00A843)],
           ),
           const SizedBox(height: 14),
           _buildBadge(
             icon: Icons.translate_rounded,
             label: 'ترجمة فورية',
-            colors: [Color(0xFF2196F3), Color(0xFF1976D2)],
+            colors: [const Color(0xFF2196F3), const Color(0xFF1976D2)],
           ),
         ],
       ),
@@ -442,7 +442,7 @@ class _PremiumBannerState extends State<PremiumBanner>
           const SizedBox(width: 8),
           Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 14,
@@ -462,14 +462,14 @@ class _PremiumBannerState extends State<PremiumBanner>
       child: Container(
         height: 3,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             colors: [
               Colors.transparent,
-              const Color(0xFFE50914),
-              const Color(0xFFE50914),
+              Color(0xFFE50914),
+              Color(0xFFE50914),
               Colors.transparent,
             ],
-            stops: const [0.0, 0.3, 0.7, 1.0],
+            stops: [0.0, 0.3, 0.7, 1.0],
           ),
           boxShadow: [
             BoxShadow(

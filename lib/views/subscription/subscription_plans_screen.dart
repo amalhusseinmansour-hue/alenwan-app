@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../services/paymob_service.dart';
 import '../../config/app_colors.dart';
 import '../../config/themes.dart';
+
 
 class SubscriptionPlansScreen extends StatefulWidget {
   const SubscriptionPlansScreen({super.key});
@@ -84,7 +86,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.error_outline,
             color: AppColors.error,
             size: 64,
@@ -201,8 +203,8 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
         gradient: isPopular
             ? LinearGradient(
                 colors: [
-                  AppColors.primary.withOpacity(0.2),
-                  AppColors.accent.withOpacity(0.1),
+                  AppColors.primary.withValues(alpha: 0.2),
+                  AppColors.accent.withValues(alpha: 0.1),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -307,7 +309,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.check_circle,
                             color: AppColors.success,
                             size: 20,
@@ -378,9 +380,9 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
   Future<void> _onSubscribePressed(SubscriptionPlan plan) async {
     // Open Paymob payment page directly
     const String paymobUrl = 'https://paymob.xyz/mjbvuyh7/';
-    final Uri url = Uri.parse(paymobUrl);
 
     try {
+      final Uri url = Uri.parse(paymobUrl);
       if (await canLaunchUrl(url)) {
         await launchUrl(
           url,
@@ -388,17 +390,61 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
         );
 
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                context.locale.languageCode == 'ar'
-                    ? 'سيتم فتح صفحة الدفع في المتصفح...'
-                    : 'Payment page will open in browser...',
+          if (kIsWeb) {
+             showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                backgroundColor: const Color(0xFF1A1A1A),
+                title: Text(
+                  context.locale.languageCode == 'ar'
+                      ? 'إتمام عملية الدفع'
+                      : 'Complete Payment',
+                  style: AppThemes.getTextStyle(
+                    context,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                content: Text(
+                  context.locale.languageCode == 'ar'
+                      ? 'تم فتح صفحة الدفع في نافذة جديدة.\n\nالرجاء إكمال عملية الدفع في النافذة الجديدة.\n\nبعد إتمام الدفع، ستتمكن من الوصول لجميع المحتويات.'
+                      : 'The payment page has been opened in a new window.\n\nPlease complete the payment process in the new window.\n\nAfter completing the payment, you will have access to all content.',
+                  style: AppThemes.getTextStyle(
+                    context,
+                    fontSize: 14,
+                    color: Colors.white70,
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      context.locale.languageCode == 'ar' ? 'فهمت' : 'Got it',
+                      style: AppThemes.getTextStyle(
+                        context,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              backgroundColor: AppColors.primary,
-              duration: const Duration(seconds: 3),
-            ),
-          );
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  context.locale.languageCode == 'ar'
+                      ? 'سيتم فتح صفحة الدفع في المتصفح...'
+                      : 'Payment page will open in browser...',
+                ),
+                backgroundColor: AppColors.primary,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
         }
       } else {
         throw 'Could not launch $paymobUrl';

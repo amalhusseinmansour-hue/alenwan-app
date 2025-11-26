@@ -10,7 +10,7 @@ class SportMoreInfoTab extends StatelessWidget {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Text(
-        description.isNotEmpty ? description : "لا توجد معلومات إضافية",
+        description.isNotEmpty ? description : 'لا توجد معلومات إضافية',
         style: const TextStyle(fontSize: 16),
       ),
     );

@@ -349,7 +349,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
         color: const Color(0xFF1E1E2E),
         border: Border(
           bottom: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -369,7 +369,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
             'إجمالي المستخدمين: $_totalUsers',
             style: TextStyle(
               fontSize: 14,
-              color: Colors.white.withOpacity(0.6),
+              color: Colors.white.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -384,7 +384,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
         color: const Color(0xFF1E1E2E),
         border: Border(
           bottom: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -398,10 +398,10 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 hintText: 'البحث عن مستخدم...',
-                hintStyle: TextStyle(color: Colors.white.withOpacity(0.4)),
+                hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.4)),
                 prefixIcon: const Icon(Icons.search, color: Colors.white60),
                 filled: true,
-                fillColor: Colors.white.withOpacity(0.05),
+                fillColor: Colors.white.withValues(alpha: 0.05),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide.none,
@@ -426,9 +426,9 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelText: 'الحالة',
-                labelStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
+                labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
                 filled: true,
-                fillColor: Colors.white.withOpacity(0.05),
+                fillColor: Colors.white.withValues(alpha: 0.05),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide.none,
@@ -455,9 +455,9 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelText: 'الاشتراك',
-                labelStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
+                labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
                 filled: true,
-                fillColor: Colors.white.withOpacity(0.05),
+                fillColor: Colors.white.withValues(alpha: 0.05),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide.none,
@@ -498,7 +498,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
           color: const Color(0xFF1E1E2E),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -506,7 +506,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
           columnSpacing: 24,
           horizontalMargin: 24,
           headingRowColor: WidgetStateProperty.all(
-            Colors.white.withOpacity(0.05),
+            Colors.white.withValues(alpha: 0.05),
           ),
           columns: const [
             DataColumn(
@@ -642,7 +642,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
@@ -677,7 +677,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
@@ -698,7 +698,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
         color: const Color(0xFF1E1E2E),
         border: Border(
           top: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),

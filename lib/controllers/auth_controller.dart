@@ -39,33 +39,78 @@ class AuthController with ChangeNotifier {
   Future<void> _bootstrap() async {
     final prefs = await SharedPreferences.getInstance();
 
-    // Check if user was in guest mode
-    _isGuestMode = prefs.getBool('guest_mode') ?? false;
+    // 1️⃣ First, restore guest mode state from persistent storage
+    final wasInGuestMode = prefs.getBool('guest_mode') ?? false;
+    _isGuestMode = wasInGuestMode;
+    print('🔵 [AuthController] Restoring guest mode state: $_isGuestMode');
 
+    // 2️⃣ Try to restore token
     _token ??= prefs.getString('token') ?? prefs.getString('auth_token');
+    print('🔵 [AuthController] Restored token: ${_token != null ? "✓" : "✗"}');
 
-    if (_token?.isNotEmpty == true) {
-      await ApiClient().refreshAuthHeader();
+    // 3️⃣ If user was in guest mode, keep them in guest mode
+    if (wasInGuestMode) {
+      print('✅ [AuthController] Maintaining guest mode session');
+      _bootstrapped = true;
+      notifyListeners();
+      return;
     }
 
+    // 4️⃣ Only auto-enable guest mode if it's truly the first visit
+    // (no token AND no previous guest mode flag)
+    if (_token == null && !wasInGuestMode) {
+      _isGuestMode = true;
+      await prefs.setBool('guest_mode', true);
+      print('✅ [AuthController] Guest mode auto-enabled on first visit');
+      _bootstrapped = true;
+      notifyListeners();
+      return;
+    }
+
+    // 5️⃣ If we have a token, try to refresh and fetch user profile
+    if (_token?.isNotEmpty == true) {
+      try {
+        await ApiClient().refreshAuthHeader();
+        print('✅ [AuthController] Token refreshed');
+      } catch (e) {
+        print('⚠️ [AuthController] Token refresh failed: $e');
+      }
+    }
+
+    // 6️⃣ Restore cached user data
     final cached = prefs.getString('user_cache');
-    if (cached != null) _user = jsonDecode(cached);
+    if (cached != null) {
+      try {
+        _user = jsonDecode(cached);
+        print('✅ [AuthController] Restored cached user data');
+      } catch (e) {
+        print('❌ [AuthController] Failed to restore cached user: $e');
+      }
+    }
 
+    // 7️⃣ For authenticated users, fetch fresh profile data
     if (_token != null && !_isGuestMode) {
-      final data = await _authService.fetchUserProfile();
-      if (data != null) {
-        _user = data;
-        await _saveUser(data);
+      try {
+        final data = await _authService.fetchUserProfile();
+        if (data != null) {
+          _user = data;
+          await _saveUser(data);
 
-        // Check subscription status
-        _hasActiveSubscription = data['subscription']?['is_active'] ?? false;
+          // Check subscription status
+          _hasActiveSubscription = data['subscription']?['is_active'] ?? false;
 
-        // Save subscription status
-        await prefs.setBool('has_subscription', _hasActiveSubscription);
+          // Save subscription status
+          await prefs.setBool('has_subscription', _hasActiveSubscription);
+          print('✅ [AuthController] Fetched and cached user profile');
+        }
+      } catch (e) {
+        print('⚠️ [AuthController] Failed to fetch user profile: $e');
       }
     }
 
     _bootstrapped = true;
+    print(
+        '✅ [AuthController] Bootstrap complete - isGuestMode: $_isGuestMode, hasToken: ${_token != null}');
     notifyListeners();
   }
 
@@ -97,11 +142,11 @@ class AuthController with ChangeNotifier {
   }
 
   Future<void> register(
-      String name,
-      String email,
-      String password,
-      String phone,
-      ) async {
+    String name,
+    String email,
+    String password,
+    String phone,
+  ) async {
     _setLoading(true);
     clearError();
 
@@ -109,8 +154,14 @@ class AuthController with ChangeNotifier {
     if (res['success'] == true) {
       _token = res['token'];
       _user = res['user'];
+      _isGuestMode = false;
+
       if (_token != null) await _saveToken(_token!);
       if (_user != null) await _saveUser(_user!);
+
+      // Disable guest mode when registering
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('guest_mode', false);
     } else {
       _error = res['error'];
     }
@@ -126,8 +177,15 @@ class AuthController with ChangeNotifier {
     if (res['success'] == true) {
       _token = res['token'];
       _user = res['user'];
+      _isGuestMode = false;
+
       if (_token != null) await _saveToken(_token!);
       if (_user != null) await _saveUser(_user!);
+
+      // Disable guest mode when logging in
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('guest_mode', false);
+
       _setLoading(false);
       return true;
     } else {
@@ -153,15 +211,52 @@ class AuthController with ChangeNotifier {
 
   // Guest Mode Methods
   Future<void> loginAsGuest() async {
-    _isGuestMode = true;
-    _token = null;
-    _user = null;
-    _hasActiveSubscription = false;
+    try {
+      debugPrint('🔵 [AuthController] Starting guest login...');
 
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('guest_mode', true);
+      // Clear any existing auth data first
+      _token = null;
+      _user = null;
+      _hasActiveSubscription = false;
+      _error = null;
 
-    notifyListeners();
+      debugPrint('🔵 [AuthController] Cleared auth data');
+
+      // Enable guest mode
+      _isGuestMode = true;
+      _bootstrapped = true;
+
+      debugPrint('🔵 [AuthController] Set guest mode flags');
+
+      // Persist guest mode state
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('guest_mode', true);
+      await prefs.remove('token');
+      await prefs.remove('auth_token');
+      await prefs.remove('user_cache');
+
+      debugPrint('🔵 [AuthController] Persisted guest mode state');
+
+      // Notify all listeners about the state change
+      notifyListeners();
+
+      debugPrint('🔵 [AuthController] Notified listeners');
+
+      // Small delay to ensure state is propagated
+      await Future.delayed(const Duration(milliseconds: 50));
+
+      debugPrint('✅ [AuthController] Guest mode enabled successfully');
+      debugPrint('   isGuestMode: $_isGuestMode');
+      debugPrint('   bootstrapped: $_bootstrapped');
+      debugPrint('   token: ${_token == null ? "null" : "present"}');
+    } catch (e) {
+      debugPrint('❌ [AuthController] Error enabling guest mode: $e');
+      _error = 'فشل تفعيل وضع الضيف: $e';
+      _isGuestMode = false;
+      _bootstrapped = false;
+      notifyListeners();
+      rethrow;
+    }
   }
 
   Future<void> exitGuestMode() async {
@@ -198,7 +293,7 @@ class AuthController with ChangeNotifier {
     if (res['success'] == true) {
       return true;
     } else {
-      _error = res['message'] ?? "خطأ غير معروف";
+      _error = res['message'] ?? 'خطأ غير معروف';
       notifyListeners();
       return false;
     }
@@ -211,11 +306,11 @@ class AuthController with ChangeNotifier {
     scopes: ['email', 'profile'],
     // Web Client ID for web platform
     clientId: kIsWeb
-        ? "106732785676-lkplddjjjl2g8gq53sc5kv3l3ghivphs.apps.googleusercontent.com"
+        ? '73476107727-tqvvpfn4hnkr6goe99sh3db1drnpp2nh.apps.googleusercontent.com'
         : null,
     // Server Client ID (Web client ID) for Android/iOS to get ID tokens
     serverClientId: !kIsWeb
-        ? "106732785676-lkplddjjjl2g8gq53sc5kv3l3ghivphs.apps.googleusercontent.com"
+        ? '73476107727-tqvvpfn4hnkr6goe99sh3db1drnpp2nh.apps.googleusercontent.com'
         : null,
   );
 
@@ -230,7 +325,7 @@ class AuthController with ChangeNotifier {
 
       if (account == null) {
         print('❌ [GoogleSignIn] User canceled sign-in');
-        _error = "تم إلغاء تسجيل الدخول";
+        _error = 'تم إلغاء تسجيل الدخول';
         notifyListeners();
         return false;
       }
@@ -242,12 +337,15 @@ class AuthController with ChangeNotifier {
       final idToken = auth.idToken;
       final accessToken = auth.accessToken;
 
-      print('🔵 [GoogleSignIn] idToken: ${idToken != null ? "Present (${idToken.substring(0, 20)}...)" : "NULL"}');
-      print('🔵 [GoogleSignIn] accessToken: ${accessToken != null ? "Present" : "NULL"}');
+      print(
+          '🔵 [GoogleSignIn] idToken: ${idToken != null ? "Present (${idToken.substring(0, 20)}...)" : "NULL"}');
+      print(
+          '🔵 [GoogleSignIn] accessToken: ${accessToken != null ? "Present" : "NULL"}');
 
       if (idToken == null && accessToken == null) {
         print('❌ [GoogleSignIn] No tokens received from Google');
-        _error = "لم يتم الحصول على بيانات التحقق من Google. يرجى المحاولة مرة أخرى.";
+        _error =
+            'لم يتم الحصول على بيانات التحقق من Google. يرجى المحاولة مرة أخرى.';
         notifyListeners();
         return false;
       }
@@ -294,7 +392,8 @@ class AuthController with ChangeNotifier {
         return true;
       } else {
         // Get detailed error message
-        final errorMsg = res['error'] ?? res['message'] ?? 'فشل تسجيل الدخول عبر Google';
+        final errorMsg =
+            res['error'] ?? res['message'] ?? 'فشل تسجيل الدخول عبر Google';
         _error = errorMsg;
         print('❌ [GoogleSignIn] Login failed: $_error');
 
@@ -313,8 +412,10 @@ class AuthController with ChangeNotifier {
       print('❌ [GoogleSignIn] StackTrace: $stackTrace');
 
       // Provide user-friendly error messages
-      if (e.toString().contains('network') || e.toString().contains('connection')) {
-        _error = 'خطأ في الاتصال بالإنترنت. يرجى التحقق من الاتصال والمحاولة مرة أخرى.';
+      if (e.toString().contains('network') ||
+          e.toString().contains('connection')) {
+        _error =
+            'خطأ في الاتصال بالإنترنت. يرجى التحقق من الاتصال والمحاولة مرة أخرى.';
       } else if (e.toString().contains('PlatformException')) {
         _error = 'حدث خطأ في Google Sign-In. يرجى المحاولة مرة أخرى.';
       } else {
@@ -356,7 +457,8 @@ class AuthController with ChangeNotifier {
       String? name;
 
       if (credential.givenName != null || credential.familyName != null) {
-        name = '${credential.givenName ?? ''} ${credential.familyName ?? ''}'.trim();
+        name = '${credential.givenName ?? ''} ${credential.familyName ?? ''}'
+            .trim();
       }
 
       // Call backend with Apple credentials
@@ -381,11 +483,11 @@ class AuthController with ChangeNotifier {
       }
     } on SignInWithAppleAuthorizationException catch (e) {
       if (e.code == AuthorizationErrorCode.canceled) {
-        _error = "تم إلغاء تسجيل الدخول";
+        _error = 'تم إلغاء تسجيل الدخول';
       } else if (e.code == AuthorizationErrorCode.failed) {
-        _error = "فشل التحقق من Apple";
+        _error = 'فشل التحقق من Apple';
       } else {
-        _error = "خطأ في تسجيل الدخول عبر Apple";
+        _error = 'خطأ في تسجيل الدخول عبر Apple';
       }
       return false;
     } catch (e) {
@@ -400,12 +502,12 @@ class AuthController with ChangeNotifier {
   // ---------------------------
   // 📱 Phone / WhatsApp OTP
   // ---------------------------
-  Future<bool> requestOtp({required String phone, String channel = 'sms'}) async {
+  Future<bool> requestOtp(
+      {required String phone, String channel = 'sms'}) async {
     try {
       _setLoading(true);
       clearError();
-      final ok =
-      await _authService.requestOtp(phone: phone, channel: channel);
+      final ok = await _authService.requestOtp(phone: phone, channel: channel);
       return ok;
     } catch (e) {
       _error = e.toString();

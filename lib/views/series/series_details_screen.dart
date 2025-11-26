@@ -28,7 +28,6 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen>
   static const double _kTabSafeGap = 92.0;
   static const Color primaryColor = Color(0xFFA20136);
   static const Color secondaryColor = Color(0xFF6B0024);
-  static const Color surfaceColor = Color(0xFF1A1A1A);
 
   late final SeriesService _service;
   late final String _origin;

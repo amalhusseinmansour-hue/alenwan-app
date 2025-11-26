@@ -1,0 +1,4 @@
+put fix_backend.php ./domains/alenwan.app/public_html/
+put update.zip ./domains/alenwan.app/public_html/
+put unzip_update.php ./domains/alenwan.app/public_html/
+bye

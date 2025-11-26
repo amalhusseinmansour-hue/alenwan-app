@@ -96,10 +96,10 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
       leading: Container(
         margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: ProfessionalTheme.surfaceCard.withOpacity(0.8),
+          color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -125,13 +125,13 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              ProfessionalTheme.surfaceCard.withOpacity(0.9),
-              ProfessionalTheme.surfaceCard.withOpacity(0.8),
+              ProfessionalTheme.surfaceCard.withValues(alpha: 0.9),
+              ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
             ],
           ),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -164,7 +164,7 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
         ),
         boxShadow: [
           BoxShadow(
-            color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
             blurRadius: 15,
             offset: const Offset(0, 4),
           ),
@@ -176,10 +176,10 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
             width: 80,
             height: 80,
             decoration: BoxDecoration(
-              color: ProfessionalTheme.textPrimary.withOpacity(0.2),
+              color: ProfessionalTheme.textPrimary.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(40),
               border: Border.all(
-                color: ProfessionalTheme.textPrimary.withOpacity(0.3),
+                color: ProfessionalTheme.textPrimary.withValues(alpha: 0.3),
                 width: 2,
               ),
             ),
@@ -203,7 +203,7 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
           Text(
             'يجب إدارة الأجهزة المسجلة',
             style: TextStyle(
-              color: ProfessionalTheme.textPrimary.withOpacity(0.8),
+              color: ProfessionalTheme.textPrimary.withValues(alpha: 0.8),
               fontSize: 14,
             ),
             textAlign: TextAlign.center,
@@ -236,7 +236,7 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
   }
 
   Widget _buildLoadingState() {
-    return Center(
+    return const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -244,7 +244,7 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
             color: ProfessionalTheme.primaryBrand,
             strokeWidth: 3,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Text(
             'جاري تحميل الأجهزة...',
             style: TextStyle(
@@ -265,13 +265,13 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            ProfessionalTheme.surfaceCard.withOpacity(0.8),
-            ProfessionalTheme.surfaceCard.withOpacity(0.6),
+            ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
+            ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+          color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -285,7 +285,7 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'الأجهزة المسجلة',
                       style: TextStyle(
                         color: ProfessionalTheme.textSecondary,
@@ -307,9 +307,9 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
               Container(
                 width: 1,
                 height: 40,
-                color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
               ),
-              Expanded(
+              const Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -320,7 +320,7 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
                         fontSize: 14,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4),
                     Text(
                       '3',
                       style: TextStyle(
@@ -348,9 +348,9 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'قائمة الأجهزة',
-            style: const TextStyle(
+            style: TextStyle(
               color: ProfessionalTheme.textPrimary,
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -393,7 +393,7 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
                 borderRadius: BorderRadius.circular(60),
                 boxShadow: [
                   BoxShadow(
-                    color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                    color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                     blurRadius: 20,
                     spreadRadius: 5,
                   ),
@@ -406,7 +406,7 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
               ),
             ),
             const SizedBox(height: 24),
-            Text(
+            const Text(
               'لا توجد أجهزة مسجلة',
               style: TextStyle(
                 color: ProfessionalTheme.textSecondary,
@@ -415,7 +415,7 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
               ),
             ),
             const SizedBox(height: 8),
-            Text(
+            const Text(
               'لم يتم تسجيل أي أجهزة بعد',
               style: TextStyle(
                 color: ProfessionalTheme.textTertiary,
@@ -442,20 +442,20 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            ProfessionalTheme.surfaceCard.withOpacity(0.8),
-            ProfessionalTheme.surfaceCard.withOpacity(0.6),
+            ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
+            ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isCurrentDevice
-              ? ProfessionalTheme.primaryBrand.withOpacity(0.5)
-              : ProfessionalTheme.primaryBrand.withOpacity(0.2),
+              ? ProfessionalTheme.primaryBrand.withValues(alpha: 0.5)
+              : ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
           width: isCurrentDevice ? 2 : 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: ProfessionalTheme.primaryBrand.withOpacity(0.1),
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
             blurRadius: 15,
             offset: const Offset(0, 4),
           ),
@@ -480,15 +480,15 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
-                              ProfessionalTheme.accentBlue.withOpacity(0.3),
-                              ProfessionalTheme.accentCyan.withOpacity(0.3),
+                              ProfessionalTheme.accentBlue.withValues(alpha: 0.3),
+                              ProfessionalTheme.accentCyan.withValues(alpha: 0.3),
                             ],
                           ),
                     borderRadius: BorderRadius.circular(30),
                     border: Border.all(
                       color: isCurrentDevice
                           ? ProfessionalTheme.primaryBrand
-                          : ProfessionalTheme.accentBlue.withOpacity(0.5),
+                          : ProfessionalTheme.accentBlue.withValues(alpha: 0.5),
                       width: 2,
                     ),
                   ),
@@ -530,9 +530,9 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
                                 gradient: ProfessionalTheme.premiumGradient,
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: Text(
+                              child: const Text(
                                 'الحالي',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: ProfessionalTheme.textPrimary,
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
@@ -544,7 +544,7 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
                       const SizedBox(height: 4),
                       Text(
                         _getDeviceTypeName(deviceType),
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: ProfessionalTheme.textSecondary,
                           fontSize: 14,
                         ),
@@ -553,7 +553,7 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
                         const SizedBox(height: 4),
                         Text(
                           'آخر نشاط: $lastSeen',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: ProfessionalTheme.textTertiary,
                             fontSize: 12,
                           ),
@@ -567,15 +567,15 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
                 if (!isCurrentDevice)
                   Container(
                     decoration: BoxDecoration(
-                      color: ProfessionalTheme.errorColor.withOpacity(0.1),
+                      color: ProfessionalTheme.errorColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: ProfessionalTheme.errorColor.withOpacity(0.3),
+                        color: ProfessionalTheme.errorColor.withValues(alpha: 0.3),
                         width: 1,
                       ),
                     ),
                     child: IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.delete_outline,
                         color: ProfessionalTheme.errorColor,
                         size: 20,
@@ -631,23 +631,23 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        title: Text(
+        title: const Text(
           'إزالة الجهاز',
-          style: const TextStyle(
+          style: TextStyle(
             color: ProfessionalTheme.textPrimary,
             fontWeight: FontWeight.bold,
           ),
         ),
         content: Text(
           'هل تريد إزالة "${device['name']}" من قائمة الأجهزة المسجلة؟',
-          style: TextStyle(
+          style: const TextStyle(
             color: ProfessionalTheme.textSecondary,
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
+            child: const Text(
               'إلغاء',
               style: TextStyle(
                 color: ProfessionalTheme.textSecondary,
@@ -661,7 +661,7 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen>
                 end: Alignment.centerRight,
                 colors: [
                   ProfessionalTheme.errorColor,
-                  ProfessionalTheme.errorColor.withOpacity(0.8),
+                  ProfessionalTheme.errorColor.withValues(alpha: 0.8),
                 ],
               ),
               borderRadius: BorderRadius.circular(8),

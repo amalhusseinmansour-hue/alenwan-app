@@ -47,14 +47,14 @@ class SportClipModel {
 
   Map<String, dynamic> toJson() {
     return {
-      "id": id,
-      "sport_id": sportId,
-      "title": title,
-      "video_path": videoPath,
-      "poster_path": posterPath,
-      "duration_seconds": durationSeconds,
-      "created_at": createdAt?.toIso8601String(),
-      "updated_at": updatedAt?.toIso8601String(),
+      'id': id,
+      'sport_id': sportId,
+      'title': title,
+      'video_path': videoPath,
+      'poster_path': posterPath,
+      'duration_seconds': durationSeconds,
+      'created_at': createdAt?.toIso8601String(),
+      'updated_at': updatedAt?.toIso8601String(),
     };
   }
 }

@@ -143,9 +143,9 @@ class _CustomBottomNavState extends State<CustomBottomNav>
       child: Container(
         height: 75,
         padding: const EdgeInsets.symmetric(vertical: 4),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: ProfessionalTheme.surfaceCard,
-          borderRadius: const BorderRadius.only(
+          borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
           ),

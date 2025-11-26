@@ -163,7 +163,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen>
               ),
               radius: 1.5,
               colors: [
-                ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                 ProfessionalTheme.backgroundPrimary,
                 ProfessionalTheme.backgroundSecondary,
               ],
@@ -185,7 +185,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen>
       child: BackdropFilter(
         filter: ui.ImageFilter.blur(sigmaX: 1, sigmaY: 1),
         child: Container(
-          color: ProfessionalTheme.backgroundPrimary.withOpacity(0.2),
+          color: ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.2),
         ),
       ),
     );
@@ -226,8 +226,8 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen>
         shape: BoxShape.circle,
         gradient: RadialGradient(
           colors: [
-            ProfessionalTheme.primaryBrand.withOpacity(opacity),
-            ProfessionalTheme.primaryBrand.withOpacity(0),
+            ProfessionalTheme.primaryBrand.withValues(alpha: opacity),
+            ProfessionalTheme.primaryBrand.withValues(alpha: 0),
           ],
         ),
       ),
@@ -274,7 +274,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen>
                                   icon: '🇸🇦',
                                   gradient: [
                                     ProfessionalTheme.primaryBrand,
-                                    ProfessionalTheme.primaryBrand.withOpacity(0.8),
+                                    ProfessionalTheme.primaryBrand.withValues(alpha: 0.8),
                                   ],
                                   delay: 0,
                                 ),
@@ -284,7 +284,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen>
                                   languageCode: 'en',
                                   icon: '🇬🇧',
                                   gradient: [
-                                    ProfessionalTheme.primaryBrand.withOpacity(0.8),
+                                    ProfessionalTheme.primaryBrand.withValues(alpha: 0.8),
                                     ProfessionalTheme.primaryBrand,
                                   ],
                                   delay: 100,
@@ -323,7 +323,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen>
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: ProfessionalTheme.primaryBrand.withOpacity(0.5),
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.5),
             blurRadius: 30,
             spreadRadius: 10,
           ),
@@ -336,12 +336,12 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen>
             decoration: BoxDecoration(
               gradient: ProfessionalTheme.premiumGradient,
               border: Border.all(
-                color: ProfessionalTheme.textPrimary.withOpacity(0.2),
+                color: ProfessionalTheme.textPrimary.withValues(alpha: 0.2),
                 width: 2,
               ),
               shape: BoxShape.circle,
             ),
-            child: Icon(
+            child: const Icon(
               Icons.language,
               size: 45,
               color: ProfessionalTheme.textPrimary,
@@ -365,7 +365,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen>
               colors: [
                 ProfessionalTheme.accentColor,
                 ProfessionalTheme.primaryBrand,
-                ProfessionalTheme.primaryBrand.withOpacity(0.8),
+                ProfessionalTheme.primaryBrand.withValues(alpha: 0.8),
               ],
             ).createShader(bounds);
           },
@@ -428,20 +428,20 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen>
                   colors: isSelected
                       ? gradient
                       : [
-                          ProfessionalTheme.surfaceCard.withOpacity(0.3),
-                          ProfessionalTheme.surfaceCard.withOpacity(0.1),
+                          ProfessionalTheme.surfaceCard.withValues(alpha: 0.3),
+                          ProfessionalTheme.surfaceCard.withValues(alpha: 0.1),
                         ],
                 ),
                 border: Border.all(
                   color: isSelected
-                      ? ProfessionalTheme.primaryBrand.withOpacity(0.5)
-                      : ProfessionalTheme.textSecondary.withOpacity(0.2),
+                      ? ProfessionalTheme.primaryBrand.withValues(alpha: 0.5)
+                      : ProfessionalTheme.textSecondary.withValues(alpha: 0.2),
                   width: isSelected ? 2 : 1,
                 ),
                 boxShadow: isSelected
                     ? [
                         BoxShadow(
-                          color: gradient[0].withOpacity(0.4),
+                          color: gradient[0].withValues(alpha: 0.4),
                           blurRadius: 20,
                           spreadRadius: 5,
                         ),
@@ -467,10 +467,10 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen>
                               width: 50,
                               height: 50,
                               decoration: BoxDecoration(
-                                color: ProfessionalTheme.surfaceCard.withOpacity(0.3),
+                                color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.3),
                                 borderRadius: BorderRadius.circular(15),
                                 border: Border.all(
-                                  color: ProfessionalTheme.primaryBrand.withOpacity(0.2),
+                                  color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
                                   width: 1,
                                 ),
                               ),
@@ -554,14 +554,14 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen>
             gradient: LinearGradient(
               colors: [
                 Colors.transparent,
-                ProfessionalTheme.textSecondary.withOpacity(0.2),
+                ProfessionalTheme.textSecondary.withValues(alpha: 0.2),
                 Colors.transparent,
               ],
             ),
           ),
         ),
         const SizedBox(height: 16),
-        Text(
+        const Text(
           'You can change this later in settings',
           style: TextStyle(
             color: ProfessionalTheme.textTertiary,
@@ -591,7 +591,7 @@ class GeometricBackgroundPainter extends CustomPainter {
       final progress = (animation + i * 0.2) % 1.0;
       final opacity = (1.0 - progress) * 0.1;
 
-      paint.color = ProfessionalTheme.primaryBrand.withOpacity(opacity);
+      paint.color = ProfessionalTheme.primaryBrand.withValues(alpha: opacity);
 
       final center = Offset(
         size.width * 0.5 + math.cos(animation * 2 * math.pi + i) * 50,

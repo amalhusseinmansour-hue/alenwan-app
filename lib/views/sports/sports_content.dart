@@ -142,7 +142,7 @@ class _HoverMediaCardSportState extends State<HoverMediaCardSport> {
                           errorWidget: (_, __, ___) => Container(
                             color: ProfessionalTheme.surfaceCard,
                             alignment: Alignment.center,
-                            child: Icon(
+                            child: const Icon(
                               Icons.broken_image,
                               color: ProfessionalTheme.textTertiary,
                             ),

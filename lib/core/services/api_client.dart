@@ -21,7 +21,10 @@ class ApiClient {
         baseUrl: AppConfig.apiBaseUrl, // https://alenwan.app/api
         connectTimeout: const Duration(seconds: 60),
         receiveTimeout: const Duration(seconds: 60),
-        headers: const {'Accept': 'application/json'},
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
       ),
     );
 
@@ -53,15 +56,15 @@ class ApiClient {
             final prefs = await SharedPreferences.getInstance();
             await prefs.remove('token');
             await prefs.remove('auth_token');
-            // TODO: Navigate to login screen
+            await prefs.remove('user_cache');
+            print('🔑 Tokens cleared for re-authentication');
           }
 
           // Handle subscription issues
           if (ErrorHandler.requiresSubscription(apiException)) {
-            print('⚠️ Subscription required');
-            // TODO: Navigate to subscription screen
+            print('⚠️ Subscription required for this content');
+            // Re-throw to let controller handle subscription prompt
           }
-
           handler.next(error);
         },
       ),
@@ -104,15 +107,21 @@ class ApiClient {
     int retries = _maxRetries,
   }) async {
     try {
-      return await dio.get(path, queryParameters: queryParameters, options: options);
+      return await dio.get(path,
+          queryParameters: queryParameters, options: options);
     } on DioException catch (e) {
       final apiException = ErrorHandler.handleDioError(e);
 
       // Retry if error is recoverable
       if (retries > 0 && ErrorHandler.isRecoverable(apiException)) {
-        print('🔄 Retrying request... (${_maxRetries - retries + 1}/$_maxRetries)');
-        await Future.delayed(Duration(milliseconds: _retryDelay * (_maxRetries - retries + 1)));
-        return getWithRetry(path, queryParameters: queryParameters, options: options, retries: retries - 1);
+        print(
+            '🔄 Retrying request... (${_maxRetries - retries + 1}/$_maxRetries)');
+        await Future.delayed(
+            Duration(milliseconds: _retryDelay * (_maxRetries - retries + 1)));
+        return getWithRetry(path,
+            queryParameters: queryParameters,
+            options: options,
+            retries: retries - 1);
       }
 
       rethrow;
@@ -120,6 +129,7 @@ class ApiClient {
   }
 
   /// Make a POST request with retry logic and error handling
+  /// Note: Retries only on network errors, not on 5xx errors to prevent duplicate submissions
   Future<Response> postWithRetry(
     String path, {
     dynamic data,
@@ -128,29 +138,30 @@ class ApiClient {
     int retries = _maxRetries,
   }) async {
     try {
-      return await dio.post(path, data: data, queryParameters: queryParameters, options: options);
+      return await dio.post(path,
+          data: data, queryParameters: queryParameters, options: options);
     } on DioException catch (e) {
       final apiException = ErrorHandler.handleDioError(e);
 
-      // Retry if error is recoverable (but not for POST by default to avoid duplication)
-      // Only retry on network/timeout errors for POST requests
-      if (retries > 0 && (apiException is NetworkException || apiException is TimeoutException)) {
-        print('🔄 Retrying POST request... (${_maxRetries - retries + 1}/$_maxRetries)');
-        await Future.delayed(Duration(milliseconds: _retryDelay * (_maxRetries - retries + 1)));
-        return postWithRetry(path, data: data, queryParameters: queryParameters, options: options, retries: retries - 1);
+      // Retry ONLY on network/timeout errors for POST requests to avoid duplicate submissions
+      // Do NOT retry on server errors (5xx) as POST is not idempotent by default
+      if (retries > 0 &&
+          (apiException is NetworkException ||
+              apiException is TimeoutException) &&
+          !((apiException.statusCode ?? 0) >= 500)) {
+        print(
+            '🔄 Retrying POST request... (${_maxRetries - retries + 1}/$_maxRetries)');
+        await Future.delayed(
+            Duration(milliseconds: _retryDelay * (_maxRetries - retries + 1)));
+        return postWithRetry(path,
+            data: data,
+            queryParameters: queryParameters,
+            options: options,
+            retries: retries - 1);
       }
 
       rethrow;
     }
-  }
-
-  /// Check if error should trigger a retry
-  bool _shouldRetry(DioException error) {
-    return error.type == DioExceptionType.connectionTimeout ||
-           error.type == DioExceptionType.receiveTimeout ||
-           error.type == DioExceptionType.connectionError ||
-           (error.type == DioExceptionType.badResponse &&
-            (error.response?.statusCode == 503 || error.response?.statusCode == 504));
   }
 }
 
@@ -163,7 +174,8 @@ class RetryInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     final shouldRetry = err.type == DioExceptionType.connectionError ||
-        err.type == DioExceptionType.unknown;
+        err.type == DioExceptionType.unknown ||
+        err.type == DioExceptionType.receiveTimeout;
 
     if (shouldRetry && err.requestOptions.extra['retryCount'] == null) {
       err.requestOptions.extra['retryCount'] = 0;
@@ -174,13 +186,17 @@ class RetryInterceptor extends Interceptor {
     if (shouldRetry && retryCount < 3) {
       retryCount++;
       err.requestOptions.extra['retryCount'] = retryCount;
+      final delay = Duration(milliseconds: 500 * retryCount);
 
-      await Future.delayed(Duration(seconds: retryCount));
+      print('🔄 Retry attempt $retryCount for ${err.requestOptions.path}');
+      await Future.delayed(delay);
 
       try {
         final response = await dio.fetch(err.requestOptions);
+        print('✅ Retry successful for ${err.requestOptions.path}');
         handler.resolve(response);
       } catch (e) {
+        print('❌ Retry failed for ${err.requestOptions.path}: $e');
         handler.next(err);
       }
     } else {

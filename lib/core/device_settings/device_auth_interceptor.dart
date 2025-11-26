@@ -19,20 +19,21 @@ class DeviceAuthInterceptor extends Interceptor {
       options.headers['X-Device-ID'] = deviceId;
       options.headers['X-Device-Fingerprint'] = fingerprint;
 
-      if (deviceToken != null) {
+      if (deviceToken != null && deviceToken.isNotEmpty) {
         options.headers['X-Device-Token'] = deviceToken;
       }
 
       // Add platform info
       final deviceInfo = await _fingerprintService.getDeviceInfo();
-      options.headers['X-Device-Platform'] = deviceInfo['platform'];
-      options.headers['X-Device-Model'] = deviceInfo['model'];
+      options.headers['X-Device-Platform'] = deviceInfo['platform'] ?? 'unknown';
+      options.headers['X-Device-Model'] = deviceInfo['model'] ?? 'unknown';
 
+      handler.next(options);
     } catch (e) {
       print('Error adding device headers: $e');
+      // Continue with request even if device headers fail
+      handler.next(options);
     }
-
-    handler.next(options);
   }
 
   @override

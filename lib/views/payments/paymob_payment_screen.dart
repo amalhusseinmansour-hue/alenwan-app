@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'dart:async';
 
 class PaymobPaymentScreen extends StatefulWidget {
   final String paymentUrl;
@@ -91,47 +90,15 @@ class _PaymobPaymentScreenState extends State<PaymobPaymentScreen> {
     }
   }
 
-  Future<void> _checkPaymentStatus() async {
-    // This will be called manually by user if needed
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
 
-    try {
-      // TODO: Call API to check payment status
-      // For now, just close dialog
-      Navigator.of(context).pop();
-    } catch (e) {
-      Navigator.of(context).pop();
-      _showError('فشل التحقق من حالة الدفع');
-    }
-  }
-
-  void _showError(String message) {
-    if (!mounted) return;
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('خطأ'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('حسناً'),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, dynamic result) async {
+        if (didPop) return;
+
         // Ask user if they want to cancel payment
         final shouldPop = await showDialog<bool>(
           context: context,
@@ -153,7 +120,10 @@ class _PaymobPaymentScreenState extends State<PaymobPaymentScreen> {
             ],
           ),
         );
-        return shouldPop ?? false;
+
+        if (shouldPop == true && context.mounted) {
+          Navigator.of(context).pop();
+        }
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -259,7 +229,7 @@ class _PaymobPaymentScreenState extends State<PaymobPaymentScreen> {
             color: Colors.white,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: 4,
                 offset: const Offset(0, -2),
               ),

@@ -84,7 +84,7 @@ class VimeoService extends ChangeNotifier {
   // Fallback method: Direct Vimeo API (only works for public videos)
   Future<VimeoVideoConfig?> _getVideoConfigDirect(String vimeoId) async {
     try {
-      final url = "https://player.vimeo.com/video/$vimeoId/config";
+      final url = 'https://player.vimeo.com/video/$vimeoId/config';
       final response = await _dio.get(url);
 
       if (response.statusCode == 200) {

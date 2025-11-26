@@ -58,7 +58,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         _loading = false;
       });
     } catch (e) {
-      debugPrint("❌ Video init error: $e");
+      debugPrint('❌ Video init error: $e');
       setState(() => _loading = false);
     }
   }
@@ -85,7 +85,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         appBar: AppBar(title: Text(widget.title ?? '')),
         body: const Center(
           child: Text(
-            "فشل تشغيل الفيديو",
+            'فشل تشغيل الفيديو',
             style: TextStyle(color: Colors.white),
           ),
         ),

@@ -194,22 +194,22 @@ class SportModel {
 
   Map<String, dynamic> toJson() {
     return {
-      "id": id,
-      "title": title,
-      "description": description,
-      "poster_url": posterUrl,
-      "banner_url": bannerUrl,
-      "video_url": videoUrl,
-      "status": status,
-      "language_id": languageId,
-      "release_year": releaseYear,
-      "rating": rating,
-      "category_id": categoryId,
-      "created_at": createdAt?.toIso8601String(),
-      "updated_at": updatedAt?.toIso8601String(),
-      "subscription_tier": subscriptionTier,
-      "clips": clips?.map((e) => e.toJson()).toList(),
-      "playback": playback,
+      'id': id,
+      'title': title,
+      'description': description,
+      'poster_url': posterUrl,
+      'banner_url': bannerUrl,
+      'video_url': videoUrl,
+      'status': status,
+      'language_id': languageId,
+      'release_year': releaseYear,
+      'rating': rating,
+      'category_id': categoryId,
+      'created_at': createdAt?.toIso8601String(),
+      'updated_at': updatedAt?.toIso8601String(),
+      'subscription_tier': subscriptionTier,
+      'clips': clips?.map((e) => e.toJson()).toList(),
+      'playback': playback,
     };
   }
 }

@@ -74,10 +74,10 @@ class _FAQScreenState extends State<FAQScreen> with TickerProviderStateMixin {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: ProfessionalTheme.surfaceCard.withOpacity(0.6),
+              color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
               borderRadius: BorderRadius.circular(ProfessionalTheme.radiusL),
               border: Border.all(
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withValues(alpha: 0.1),
                 width: 1,
               ),
             ),
@@ -166,15 +166,15 @@ class _FAQScreenState extends State<FAQScreen> with TickerProviderStateMixin {
     return Container(
       padding: const EdgeInsets.all(ProfessionalTheme.space20),
       decoration: ProfessionalTheme.glassMorphism.copyWith(
-        color: ProfessionalTheme.primaryBrand.withOpacity(0.1),
+        color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
         border: Border.all(
-          color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+          color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
       child: Column(
         children: [
-          Icon(
+          const Icon(
             Icons.quiz_outlined,
             color: ProfessionalTheme.primaryBrand,
             size: 48,
@@ -207,7 +207,7 @@ class _FAQScreenState extends State<FAQScreen> with TickerProviderStateMixin {
       decoration: ProfessionalTheme.glassMorphism.copyWith(
         boxShadow: [
           BoxShadow(
-            color: ProfessionalTheme.primaryBrand.withOpacity(0.05),
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.05),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -216,7 +216,7 @@ class _FAQScreenState extends State<FAQScreen> with TickerProviderStateMixin {
       child: Theme(
         data: Theme.of(context).copyWith(
           dividerColor: Colors.transparent,
-          expansionTileTheme: ExpansionTileThemeData(
+          expansionTileTheme: const ExpansionTileThemeData(
             backgroundColor: Colors.transparent,
             collapsedBackgroundColor: Colors.transparent,
             iconColor: ProfessionalTheme.primaryBrand,
@@ -238,7 +238,7 @@ class _FAQScreenState extends State<FAQScreen> with TickerProviderStateMixin {
           leading: Container(
             padding: const EdgeInsets.all(ProfessionalTheme.space8),
             decoration: BoxDecoration(
-              color: ProfessionalTheme.primaryBrand.withOpacity(0.2),
+              color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -259,10 +259,10 @@ class _FAQScreenState extends State<FAQScreen> with TickerProviderStateMixin {
               width: double.infinity,
               padding: const EdgeInsets.all(ProfessionalTheme.space16),
               decoration: BoxDecoration(
-                color: ProfessionalTheme.surfaceCard.withOpacity(0.3),
+                color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
                 border: Border.all(
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                   width: 1,
                 ),
               ),

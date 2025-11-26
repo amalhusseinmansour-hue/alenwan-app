@@ -29,7 +29,7 @@ class ProfileController extends ChangeNotifier {
         _user = Map<String, dynamic>.from(jsonDecode(cached));
         notifyListeners();
       } catch (e) {
-        debugPrint("Error: $e");
+        debugPrint('Error: $e');
       }
     }
   }

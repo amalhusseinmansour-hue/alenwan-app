@@ -237,12 +237,12 @@ class _ErrorDisplayState extends State<ErrorDisplay>
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          AppColors.primary.withOpacity(0.1),
-                          AppColors.accent.withOpacity(0.2),
+                          AppColors.primary.withValues(alpha: 0.1),
+                          AppColors.accent.withValues(alpha: 0.2),
                         ],
                       ),
                       border: Border.all(
-                        color: AppColors.primary.withOpacity(0.3),
+                        color: AppColors.primary.withValues(alpha: 0.3),
                         width: 2,
                       ),
                     ),
@@ -331,7 +331,7 @@ class _ErrorDisplayState extends State<ErrorDisplay>
                       color: isDark ? Colors.grey[900] : Colors.grey[100],
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: AppColors.primary.withOpacity(0.2),
+                        color: AppColors.primary.withValues(alpha: 0.2),
                       ),
                     ),
                     child: SingleChildScrollView(
@@ -418,7 +418,7 @@ class _AnimatedButtonState extends State<_AnimatedButton>
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               decoration: BoxDecoration(
                 gradient: widget.isPrimary
-                    ? LinearGradient(
+                    ? const LinearGradient(
                         colors: [AppColors.primary, AppColors.accent],
                       )
                     : null,
@@ -431,12 +431,12 @@ class _AnimatedButtonState extends State<_AnimatedButton>
                 border: widget.isPrimary
                     ? null
                     : Border.all(
-                        color: AppColors.primary.withOpacity(0.3),
+                        color: AppColors.primary.withValues(alpha: 0.3),
                       ),
                 boxShadow: widget.isPrimary
                     ? [
                         BoxShadow(
-                          color: AppColors.primary.withOpacity(0.3),
+                          color: AppColors.primary.withValues(alpha: 0.3),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),

@@ -1,0 +1,28 @@
+            $sportsArray = [];
+            foreach ($sports as $sport) {
+                $sportsArray[] = [
+                    'id' => $sport->id,
+                    'title' => $this->decodeJsonField($sport->title, $locale),
+                    'title_ar' => $this->decodeJsonField($sport->title, 'ar'),
+                    'description' => $this->decodeJsonField($sport->description ?? '', $locale),
+                    'description_ar' => $this->decodeJsonField($sport->description ?? '', 'ar'),
+                    'poster' => $sport->poster ?? $sport->thumbnail ?? null,
+                    'poster_url' => $sport->poster ? (str_starts_with($sport->poster, 'http') ? $sport->poster : url('storage/' . $sport->poster)) : null,
+                    'banner_url' => $sport->backdrop ?? $sport->banner ?? null,
+                    'thumbnail' => $sport->thumbnail ?? $sport->poster ?? null,
+                    'video_url' => $sport->video_url ?? $sport->video_path ?? null,
+                    'stream_url' => $sport->stream_url ?? null,
+                    'release_year' => $sport->release_year ?? $sport->year ?? null,
+                    'rating' => $sport->rating ?? 0,
+                    'category_id' => $sport->category_id ?? 0,
+                    'language_id' => $sport->language_id ?? 1,
+                    'subscription_tier' => $sport->subscription_tier ?? 'free',
+                    'status' => $sport->is_published ? 'published' : 'draft',
+                    'sport_type' => $sport->sport_type ?? null,
+                    'league' => $sport->league ?? null,
+                    'teams' => $sport->teams ?? null,
+                    'is_live' => $sport->is_live ?? false,
+                    'is_premium' => $sport->is_premium ?? false,
+                    'is_featured' => $sport->is_featured ?? false,
+                    'created_at' => $sport->created_at,
+                ];

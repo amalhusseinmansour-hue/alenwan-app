@@ -5,6 +5,7 @@ class EpisodeModel {
   final int episodeNumber;
   final String title;
   final String videoUrl;
+  final String? vimeoId;
   final String posterUrl;
   final String? description;
   final int? durationSeconds;
@@ -15,6 +16,7 @@ class EpisodeModel {
     required this.episodeNumber,
     required this.title,
     required this.videoUrl,
+    this.vimeoId,
     required this.posterUrl,
     this.description,
     this.durationSeconds,
@@ -36,6 +38,7 @@ class EpisodeModel {
         episodeNumber: j['episode_number'] ?? j['episodeNumber'] ?? 1,
         title: (j['title'] ?? '').toString(),
         videoUrl: (j['video_url'] ?? j['videoUrl'] ?? '').toString(),
+        vimeoId: j['vimeo_id']?.toString(),
         posterUrl: (j['poster_url'] ?? j['posterUrl'] ?? '').toString(),
         description: j['description']?.toString(),
         durationSeconds: j['duration_seconds'],

@@ -35,7 +35,7 @@ class _LiveChatScreenState extends State<LiveChatScreen>
         setState(() {
           _messages.insert(
             0,
-            ChatMessage(
+            const ChatMessage(
               message: 'مرحباً بك! كيف يمكنني مساعدتك اليوم؟',
               isUser: false,
             ),
@@ -131,10 +131,10 @@ class _LiveChatScreenState extends State<LiveChatScreen>
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: ProfessionalTheme.surfaceCard.withOpacity(0.6),
+              color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
               borderRadius: BorderRadius.circular(ProfessionalTheme.radiusL),
               border: Border.all(
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withValues(alpha: 0.1),
                 width: 1,
               ),
             ),
@@ -152,14 +152,14 @@ class _LiveChatScreenState extends State<LiveChatScreen>
             width: 50,
             height: 50,
             decoration: BoxDecoration(
-              color: ProfessionalTheme.primaryBrand.withOpacity(0.2),
+              color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
               shape: BoxShape.circle,
               border: Border.all(
-                color: ProfessionalTheme.primaryBrand.withOpacity(0.5),
+                color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.5),
                 width: 2,
               ),
             ),
-            child: Icon(
+            child: const Icon(
               Icons.support_agent,
               color: ProfessionalTheme.primaryBrand,
               size: 24,
@@ -189,7 +189,7 @@ class _LiveChatScreenState extends State<LiveChatScreen>
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: ProfessionalTheme.accentGreen.withOpacity(0.5),
+                            color: ProfessionalTheme.accentGreen.withValues(alpha: 0.5),
                             blurRadius: 4,
                             spreadRadius: 1,
                           ),
@@ -237,14 +237,14 @@ class _LiveChatScreenState extends State<LiveChatScreen>
     return Container(
       padding: const EdgeInsets.all(ProfessionalTheme.space16),
       decoration: BoxDecoration(
-        color: ProfessionalTheme.surfaceCard.withOpacity(0.8),
+        color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(ProfessionalTheme.radiusL),
           topRight: Radius.circular(ProfessionalTheme.radiusL),
         ),
         border: Border(
           top: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -286,7 +286,7 @@ class _LiveChatScreenState extends State<LiveChatScreen>
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: ProfessionalTheme.primaryBrand.withOpacity(0.4),
+                  color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.4),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -344,7 +344,7 @@ class ChatMessage extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isUser
                         ? ProfessionalTheme.primaryBrand
-                        : ProfessionalTheme.surfaceCard.withOpacity(0.8),
+                        : ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
                     borderRadius: BorderRadius.circular(ProfessionalTheme.radiusL)
                         .copyWith(
                       bottomLeft: isUser
@@ -357,14 +357,14 @@ class ChatMessage extends StatelessWidget {
                     border: isUser
                         ? null
                         : Border.all(
-                            color: Colors.white.withOpacity(0.1),
+                            color: Colors.white.withValues(alpha: 0.1),
                             width: 1,
                           ),
                     boxShadow: [
                       BoxShadow(
                         color: isUser
-                            ? ProfessionalTheme.primaryBrand.withOpacity(0.3)
-                            : Colors.black.withOpacity(0.1),
+                            ? ProfessionalTheme.primaryBrand.withValues(alpha: 0.3)
+                            : Colors.black.withValues(alpha: 0.1),
                         blurRadius: 8,
                         offset: const Offset(0, 4),
                       ),
@@ -401,14 +401,14 @@ class ChatMessage extends StatelessWidget {
       width: 36,
       height: 36,
       decoration: BoxDecoration(
-        color: ProfessionalTheme.primaryBrand.withOpacity(0.2),
+        color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
         shape: BoxShape.circle,
         border: Border.all(
-          color: ProfessionalTheme.primaryBrand.withOpacity(0.5),
+          color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.5),
           width: 2,
         ),
       ),
-      child: Icon(
+      child: const Icon(
         Icons.support_agent,
         color: ProfessionalTheme.primaryBrand,
         size: 20,
@@ -421,14 +421,14 @@ class ChatMessage extends StatelessWidget {
       width: 36,
       height: 36,
       decoration: BoxDecoration(
-        color: ProfessionalTheme.accentGreen.withOpacity(0.2),
+        color: ProfessionalTheme.accentGreen.withValues(alpha: 0.2),
         shape: BoxShape.circle,
         border: Border.all(
-          color: ProfessionalTheme.accentGreen.withOpacity(0.5),
+          color: ProfessionalTheme.accentGreen.withValues(alpha: 0.5),
           width: 2,
         ),
       ),
-      child: Icon(
+      child: const Icon(
         Icons.person,
         color: ProfessionalTheme.accentGreen,
         size: 20,

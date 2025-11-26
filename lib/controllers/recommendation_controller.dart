@@ -15,7 +15,7 @@ class RecommendationController extends ChangeNotifier {
       recommendations = await _service.getRecommendations(userId);
     } catch (e) {
       error = 'فشل تحميل التوصيات: $e';
-      debugPrint("Recommendation error: $e");
+      debugPrint('Recommendation error: $e');
       recommendations = [];
     }
     isLoading = false;

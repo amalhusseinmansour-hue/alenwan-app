@@ -1,0 +1,5 @@
+android.applicationVariants.all { variant ->
+    variant.packageApplicationProvider.get().doFirst {
+        it.jniLibsFilesExt.setFromSingleNativeLib(false)
+    }
+}

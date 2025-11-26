@@ -166,13 +166,13 @@ class _ChannelDetailsScreenState extends State<ChannelDetailsScreen>
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      ProfessionalTheme.surfaceCard.withOpacity(0.8),
-                      ProfessionalTheme.surfaceCard.withOpacity(0.6),
+                      ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
+                      ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                    color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                     width: 1,
                   ),
                 ),
@@ -193,7 +193,7 @@ class _ChannelDetailsScreenState extends State<ChannelDetailsScreen>
                                 borderRadius: BorderRadius.circular(30),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                                    color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                                     blurRadius: 15,
                                     spreadRadius: 2,
                                   ),
@@ -219,7 +219,7 @@ class _ChannelDetailsScreenState extends State<ChannelDetailsScreen>
                                     ),
                                   ),
                                   const SizedBox(height: 4),
-                                  Text(
+                                  const Text(
                                     'قناة مباشرة',
                                     style: TextStyle(
                                       color: ProfessionalTheme.textSecondary,
@@ -243,10 +243,10 @@ class _ChannelDetailsScreenState extends State<ChannelDetailsScreen>
       leading: Container(
         margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: ProfessionalTheme.surfaceCard.withOpacity(0.8),
+          color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -265,28 +265,28 @@ class _ChannelDetailsScreenState extends State<ChannelDetailsScreen>
           color: ProfessionalTheme.backgroundSecondary,
           border: Border(
             bottom: BorderSide(
-              color: ProfessionalTheme.primaryBrand.withOpacity(0.2),
+              color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
               width: 1,
             ),
           ),
         ),
-        child: TabBar(
+        child: const TabBar(
           indicatorColor: ProfessionalTheme.primaryBrand,
           indicatorWeight: 3,
           labelColor: ProfessionalTheme.primaryBrand,
           unselectedLabelColor: ProfessionalTheme.textSecondary,
-          labelStyle: const TextStyle(
+          labelStyle: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
-          unselectedLabelStyle: const TextStyle(
+          unselectedLabelStyle: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
-          tabs: const [
-            Tab(text: "مباشر"),
-            Tab(text: "يعرض قريباً"),
-            Tab(text: "المنتهية"),
+          tabs: [
+            Tab(text: 'مباشر'),
+            Tab(text: 'يعرض قريباً'),
+            Tab(text: 'المنتهية'),
           ],
         ),
       ),
@@ -341,7 +341,7 @@ class _ChannelDetailsScreenState extends State<ChannelDetailsScreen>
   Widget _buildStreamCard(LiveStreamModel stream, bool showDate) {
     final img = stream.thumbnail.startsWith('http')
         ? stream.thumbnail
-        : "${ApiClient().filesBaseUrl}/${stream.thumbnail}";
+        : '${ApiClient().filesBaseUrl}/${stream.thumbnail}';
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -350,18 +350,18 @@ class _ChannelDetailsScreenState extends State<ChannelDetailsScreen>
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            ProfessionalTheme.surfaceCard.withOpacity(0.8),
-            ProfessionalTheme.surfaceCard.withOpacity(0.6),
+            ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
+            ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: ProfessionalTheme.primaryBrand.withOpacity(0.2),
+          color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: ProfessionalTheme.primaryBrand.withOpacity(0.1),
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -418,7 +418,7 @@ class _ChannelDetailsScreenState extends State<ChannelDetailsScreen>
                                   end: Alignment.bottomCenter,
                                   colors: [
                                     Colors.transparent,
-                                    Colors.black.withOpacity(0.6),
+                                    Colors.black.withValues(alpha: 0.6),
                                   ],
                                 ),
                               ),
@@ -462,12 +462,12 @@ class _ChannelDetailsScreenState extends State<ChannelDetailsScreen>
                                 vertical: 6,
                               ),
                               decoration: BoxDecoration(
-                                color: ProfessionalTheme.primaryBrand.withOpacity(0.2),
+                                color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
                                 _formatDate(stream.startsAt),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: ProfessionalTheme.primaryBrand,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
@@ -486,7 +486,7 @@ class _ChannelDetailsScreenState extends State<ChannelDetailsScreen>
                                   ),
                                 ),
                                 const SizedBox(width: 8),
-                                Text(
+                                const Text(
                                   'مباشر الآن',
                                   style: TextStyle(
                                     color: ProfessionalTheme.accentRed,
@@ -500,14 +500,14 @@ class _ChannelDetailsScreenState extends State<ChannelDetailsScreen>
 
                           const SizedBox(height: 8),
 
-                          Row(
+                          const Row(
                             children: [
                               Icon(
                                 Icons.visibility,
                                 color: ProfessionalTheme.textSecondary,
                                 size: 16,
                               ),
-                              const SizedBox(width: 4),
+                              SizedBox(width: 4),
                               Text(
                                 'مشاهدة',
                                 style: TextStyle(
@@ -525,10 +525,10 @@ class _ChannelDetailsScreenState extends State<ChannelDetailsScreen>
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: ProfessionalTheme.primaryBrand.withOpacity(0.1),
+                        color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.arrow_forward_ios,
                         color: ProfessionalTheme.primaryBrand,
                         size: 16,
@@ -557,7 +557,7 @@ class _ChannelDetailsScreenState extends State<ChannelDetailsScreen>
               borderRadius: BorderRadius.circular(50),
               boxShadow: [
                 BoxShadow(
-                  color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                  color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                   blurRadius: 20,
                   spreadRadius: 5,
                 ),
@@ -570,7 +570,7 @@ class _ChannelDetailsScreenState extends State<ChannelDetailsScreen>
             ),
           ),
           const SizedBox(height: 24),
-          Text(
+          const Text(
             'لا يوجد محتوى',
             style: TextStyle(
               color: ProfessionalTheme.textSecondary,
@@ -579,7 +579,7 @@ class _ChannelDetailsScreenState extends State<ChannelDetailsScreen>
             ),
           ),
           const SizedBox(height: 8),
-          Text(
+          const Text(
             'لا توجد بث مباشر متاح حالياً',
             style: TextStyle(
               color: ProfessionalTheme.textTertiary,
@@ -600,9 +600,9 @@ class _ChannelDetailsScreenState extends State<ChannelDetailsScreen>
           height: height,
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment(-1.0, -0.3),
-              end: Alignment(1.0, 0.3),
-              colors: [
+              begin: const Alignment(-1.0, -0.3),
+              end: const Alignment(1.0, 0.3),
+              colors: const [
                 ProfessionalTheme.surfaceCard,
                 ProfessionalTheme.surfaceHover,
                 ProfessionalTheme.surfaceCard,

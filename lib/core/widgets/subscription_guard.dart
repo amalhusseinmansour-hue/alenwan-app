@@ -40,13 +40,11 @@ class _SubscriptionGuardState extends State<SubscriptionGuard> {
     final authController = context.watch<AuthController>();
     final subController = context.watch<SubscriptionController>();
 
-    // Check if user is logged in
-    if (authController.token == null) {
-      return _buildLoginRequired();
-    }
+    // Allow guests to browse content
+    // Only check subscription for premium content
 
-    // Check subscription status
-    if (subController.isLoading) {
+    // Check subscription status (skip for guests)
+    if (!authController.isGuestMode && subController.isLoading) {
       return _buildLoading();
     }
 
@@ -70,7 +68,7 @@ class _SubscriptionGuardState extends State<SubscriptionGuard> {
       );
     }
 
-    // Show subscription required screen
+    // Show subscription required screen (for both guests and logged-in users without subscription)
     return _buildSubscriptionRequired();
   }
 
@@ -85,6 +83,7 @@ class _SubscriptionGuardState extends State<SubscriptionGuard> {
     );
   }
 
+  // ignore: unused_element
   Widget _buildLoginRequired() {
     return Scaffold(
       backgroundColor: Colors.black,
@@ -97,7 +96,7 @@ class _SubscriptionGuardState extends State<SubscriptionGuard> {
               Icon(
                 Icons.lock_outline,
                 size: 80,
-                color: Colors.white.withOpacity(0.5),
+                color: Colors.white.withValues(alpha: 0.5),
               ),
               const SizedBox(height: 24),
               Text(
@@ -113,7 +112,7 @@ class _SubscriptionGuardState extends State<SubscriptionGuard> {
               Text(
                 'login_to_watch_content'.tr(),
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.7),
+                  color: Colors.white.withValues(alpha: 0.7),
                   fontSize: 16,
                 ),
                 textAlign: TextAlign.center,
@@ -158,7 +157,7 @@ class _SubscriptionGuardState extends State<SubscriptionGuard> {
             end: Alignment.bottomCenter,
             colors: [
               Colors.black,
-              const Color(0xFFE50914).withOpacity(0.1),
+              const Color(0xFFE50914).withValues(alpha: 0.1),
               Colors.black,
             ],
           ),
@@ -175,7 +174,7 @@ class _SubscriptionGuardState extends State<SubscriptionGuard> {
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE50914).withOpacity(0.1),
+                      color: const Color(0xFFE50914).withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: const Color(0xFFE50914),
@@ -205,10 +204,11 @@ class _SubscriptionGuardState extends State<SubscriptionGuard> {
                   // Subtitle
                   Text(
                     widget.contentType != null
-                        ? 'content_requires_subscription'.tr(args: [widget.contentType!])
+                        ? 'content_requires_subscription'
+                            .tr(args: [widget.contentType!])
                         : 'premium_content_subscription_required'.tr(),
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.7),
+                      color: Colors.white.withValues(alpha: 0.7),
                       fontSize: 16,
                     ),
                     textAlign: TextAlign.center,
@@ -287,10 +287,10 @@ class _SubscriptionGuardState extends State<SubscriptionGuard> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
+        color: Colors.white.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
         ),
       ),
       child: Column(
@@ -327,11 +327,11 @@ class _SubscriptionGuardState extends State<SubscriptionGuard> {
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: const Color(0xFFE50914).withOpacity(0.95),
+        color: const Color(0xFFE50914).withValues(alpha: 0.95),
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: 0.3),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),

@@ -100,11 +100,11 @@ class _ProfessionalNavBarState extends State<ProfessionalNavBar>
       height: 72,
       decoration: BoxDecoration(
         color: _isScrolled
-            ? ProfessionalTheme.backgroundPrimary.withOpacity(0.95)
-            : ProfessionalTheme.backgroundPrimary.withOpacity(0.8),
+            ? ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.95)
+            : ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.8),
         border: Border(
           bottom: BorderSide(
-            color: ProfessionalTheme.primaryBrand.withOpacity(0.1),
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -182,12 +182,12 @@ class _ProfessionalNavBarState extends State<ProfessionalNavBar>
           height: 40,
           decoration: BoxDecoration(
             color: _isSearchExpanded
-                ? ProfessionalTheme.surfaceCard.withOpacity(0.8)
+                ? ProfessionalTheme.surfaceCard.withValues(alpha: 0.8)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(ProfessionalTheme.radiusRound),
             border: Border.all(
               color: _isSearchExpanded
-                  ? ProfessionalTheme.primaryBrand.withOpacity(0.3)
+                  ? ProfessionalTheme.primaryBrand.withValues(alpha: 0.3)
                   : Colors.transparent,
               width: 1,
             ),
@@ -272,7 +272,7 @@ class _ProfessionalNavBarState extends State<ProfessionalNavBar>
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: ProfessionalTheme.accentRed.withOpacity(0.5),
+                    color: ProfessionalTheme.accentRed.withValues(alpha: 0.5),
                     blurRadius: 4,
                   ),
                 ],
@@ -299,7 +299,7 @@ class _ProfessionalNavBarState extends State<ProfessionalNavBar>
                 shape: BoxShape.circle,
                 gradient: ProfessionalTheme.premiumGradient,
                 border: Border.all(
-                  color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                  color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                   width: 2,
                 ),
               ),
@@ -407,14 +407,14 @@ class _NavCategoryButtonState extends State<_NavCategoryButton>
           ),
           decoration: BoxDecoration(
             color: widget.isSelected
-                ? ProfessionalTheme.primaryBrand.withOpacity(0.1)
+                ? ProfessionalTheme.primaryBrand.withValues(alpha: 0.1)
                 : (_isHovering
-                    ? ProfessionalTheme.surfaceCard.withOpacity(0.5)
+                    ? ProfessionalTheme.surfaceCard.withValues(alpha: 0.5)
                     : Colors.transparent),
             borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
             border: Border.all(
               color: widget.isSelected
-                  ? ProfessionalTheme.primaryBrand.withOpacity(0.3)
+                  ? ProfessionalTheme.primaryBrand.withValues(alpha: 0.3)
                   : Colors.transparent,
               width: 1,
             ),
@@ -453,7 +453,7 @@ class _NavCategoryButtonState extends State<_NavCategoryButton>
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: ProfessionalTheme.accentRed.withOpacity(0.8),
+                        color: ProfessionalTheme.accentRed.withValues(alpha: 0.8),
                         blurRadius: 8,
                       ),
                     ],
@@ -485,12 +485,12 @@ class _ProfileDropdown extends StatelessWidget {
         color: ProfessionalTheme.surfaceCard,
         borderRadius: BorderRadius.circular(ProfessionalTheme.radiusL),
         border: Border.all(
-          color: ProfessionalTheme.primaryBrand.withOpacity(0.2),
+          color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.5),
+            color: Colors.black.withValues(alpha: 0.5),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -509,7 +509,7 @@ class _ProfileDropdown extends StatelessWidget {
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      color: ProfessionalTheme.textTertiary.withOpacity(0.1),
+                      color: ProfessionalTheme.textTertiary.withValues(alpha: 0.1),
                       width: 1,
                     ),
                   ),
@@ -593,7 +593,7 @@ class _ProfileDropdown extends StatelessWidget {
               ),
               Container(
                 height: 1,
-                color: ProfessionalTheme.textTertiary.withOpacity(0.1),
+                color: ProfessionalTheme.textTertiary.withValues(alpha: 0.1),
               ),
               _DropdownMenuItem(
                 icon: Icons.logout_rounded,

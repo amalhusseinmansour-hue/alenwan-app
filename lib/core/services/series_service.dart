@@ -14,8 +14,10 @@ class SeriesService {
 
       final List raw;
 
-      // Handle Laravel pagination: {"success": true, "data": {"data": [...]}}
-      if (data is Map && data['data'] is Map && data['data']['data'] is List) {
+      // Handle API response: {"success": true, "data": {"series": [...]}}
+      if (data is Map && data['data'] is Map && data['data']['series'] is List) {
+        raw = List.from(data['data']['series']);
+      } else if (data is Map && data['data'] is Map && data['data']['data'] is List) {
         raw = List.from(data['data']['data']);
       } else if (data is Map && data['data'] is List) {
         raw = List.from(data['data']);

@@ -207,7 +207,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.error_outline,
             color: AppColors.error,
             size: 64,
@@ -321,7 +321,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
       label: Text(label),
       selected: isSelected,
       onSelected: (_) => _onFilterChanged(value),
-      backgroundColor: Colors.white.withOpacity(0.05),
+      backgroundColor: Colors.white.withValues(alpha: 0.05),
       selectedColor: AppColors.primary,
       labelStyle: AppThemes.getTextStyle(
         context,
@@ -343,7 +343,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.receipt_long,
             color: Colors.white24,
             size: 64,
@@ -393,7 +393,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
-                    color: statusColor.withOpacity(0.2),
+                    color: statusColor.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
@@ -478,7 +478,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
               style: AppThemes.getTextStyle(
                 context,
                 fontSize: 12,
-                color: Colors.white.withOpacity(0.4),
+                color: Colors.white.withValues(alpha: 0.4),
               ),
             ),
 

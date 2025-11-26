@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import '../../routes/app_routes.dart';
 import '../../core/theme/professional_theme.dart';
+import '../../controllers/auth_controller.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -58,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen>
     _startAnimationSequence();
     _generateParticles();
     // Shorter delay on web for faster loading
-    final delay = kIsWeb ? Duration(milliseconds: 800) : Duration(milliseconds: 2500);
+    final delay = kIsWeb ? const Duration(milliseconds: 800) : const Duration(milliseconds: 2500);
     Future.delayed(delay, _checkAndNavigate);
   }
 
@@ -292,10 +294,36 @@ class _SplashScreenState extends State<SplashScreen>
 
     if (!mounted) return;
 
-    // Skip language selection on web, go directly to login or home
-    final target = (hasToken || isGuestMode) ? AppRoutes.home : AppRoutes.login;
+    // Get AuthController
+    final authController = context.read<AuthController>();
 
-    Navigator.of(context).pushNamedAndRemoveUntil(target, (route) => false);
+    // Wait for AuthController to be fully bootstrapped before navigating
+    if (!authController.bootstrapped) {
+      await Future.delayed(const Duration(milliseconds: 500));
+    }
+
+    if (!mounted) return;
+
+    // Allow users to access the app freely without forcing login
+    // If user has token or is in guest mode, go to home
+    // Otherwise, also go to home but in guest mode (Apple requirement: Guideline 5.1.1)
+    if (!hasToken && !isGuestMode && !authController.isGuestMode) {
+      // Auto-enable guest mode to allow free browsing
+      try {
+        await authController.loginAsGuest();
+        print('✅ [SplashScreen] Guest mode activated automatically');
+
+        // Small delay to ensure state is fully propagated
+        await Future.delayed(const Duration(milliseconds: 100));
+      } catch (e) {
+        print('❌ [SplashScreen] Failed to activate guest mode: $e');
+      }
+    }
+
+    if (!mounted) return;
+
+    // Always go to main screen - users can login from profile if they want
+    Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.main, (route) => false);
   }
 
   @override
@@ -341,7 +369,7 @@ class _SplashScreenState extends State<SplashScreen>
               ),
               radius: 2,
               colors: [
-                ProfessionalTheme.primaryBrand.withOpacity(0.2),
+                ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
                 ProfessionalTheme.backgroundPrimary,
                 ProfessionalTheme.backgroundSecondary,
               ],
@@ -361,7 +389,7 @@ class _SplashScreenState extends State<SplashScreen>
           size: size,
           painter: WavePainter(
             waveAnimation: _waveAnimation.value,
-            waveColor: ProfessionalTheme.primaryBrand.withOpacity(0.1),
+            waveColor: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
           ),
         );
       },
@@ -389,7 +417,7 @@ class _SplashScreenState extends State<SplashScreen>
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 0.5, sigmaY: 0.5),
         child: Container(
-          color: Colors.black.withOpacity(0.1),
+          color: Colors.black.withValues(alpha: 0.1),
         ),
       ),
     );
@@ -431,13 +459,13 @@ class _SplashScreenState extends State<SplashScreen>
                             boxShadow: [
                               BoxShadow(
                                 color: ProfessionalTheme.primaryBrand
-                                    .withOpacity(0.6 * _glowAnimation.value),
+                                    .withValues(alpha: 0.6 * _glowAnimation.value),
                                 blurRadius: 50 + (20 * _glowAnimation.value),
                                 spreadRadius: 20 + (10 * _glowAnimation.value),
                               ),
                               BoxShadow(
                                 color: ProfessionalTheme.secondaryBrand
-                                    .withOpacity(0.3 * _glowAnimation.value),
+                                    .withValues(alpha: 0.3 * _glowAnimation.value),
                                 blurRadius: 80,
                                 spreadRadius: 30,
                               ),
@@ -462,7 +490,7 @@ class _SplashScreenState extends State<SplashScreen>
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
-                                color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                                color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                                 width: 2,
                               ),
                             ),
@@ -472,7 +500,7 @@ class _SplashScreenState extends State<SplashScreen>
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Container(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       gradient: LinearGradient(
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
@@ -515,7 +543,7 @@ class _SplashScreenState extends State<SplashScreen>
                     children: [
                       ShaderMask(
                         shaderCallback: (bounds) {
-                          return LinearGradient(
+                          return const LinearGradient(
                             colors: [
                               ProfessionalTheme.secondaryBrand,
                               ProfessionalTheme.primaryBrand,
@@ -539,7 +567,7 @@ class _SplashScreenState extends State<SplashScreen>
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 6),
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
+                          gradient: const LinearGradient(
                             colors: [
                               ProfessionalTheme.primaryBrand,
                               ProfessionalTheme.primaryBrandLight,
@@ -548,7 +576,7 @@ class _SplashScreenState extends State<SplashScreen>
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
-                              color: ProfessionalTheme.primaryBrand.withOpacity(0.5),
+                              color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.5),
                               blurRadius: 20,
                               offset: const Offset(0, 5),
                             ),
@@ -579,7 +607,7 @@ class _SplashScreenState extends State<SplashScreen>
             child: Text(
               'Premium Entertainment Experience',
               style: TextStyle(
-                color: ProfessionalTheme.textPrimary.withOpacity(0.7),
+                color: ProfessionalTheme.textPrimary.withValues(alpha: 0.7),
                 fontSize: 16,
                 letterSpacing: 2,
                 fontWeight: FontWeight.w300,
@@ -600,7 +628,7 @@ class _SplashScreenState extends State<SplashScreen>
                     height: 3,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(2),
-                      color: ProfessionalTheme.textPrimary.withOpacity(0.1),
+                      color: ProfessionalTheme.textPrimary.withValues(alpha: 0.1),
                     ),
                     child: Stack(
                       children: [
@@ -609,7 +637,7 @@ class _SplashScreenState extends State<SplashScreen>
                           width: 250 * _loadingProgress,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(2),
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                               colors: [
                                 ProfessionalTheme.primaryBrandLight,
                                 ProfessionalTheme.primaryBrand,
@@ -618,7 +646,7 @@ class _SplashScreenState extends State<SplashScreen>
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: ProfessionalTheme.primaryBrand.withOpacity(0.5),
+                                color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.5),
                                 blurRadius: 10,
                               ),
                             ],
@@ -631,7 +659,7 @@ class _SplashScreenState extends State<SplashScreen>
                   Text(
                     'LOADING',
                     style: TextStyle(
-                      color: ProfessionalTheme.textPrimary.withOpacity(0.5),
+                      color: ProfessionalTheme.textPrimary.withValues(alpha: 0.5),
                       fontSize: 11,
                       letterSpacing: 4,
                       fontWeight: FontWeight.w300,
@@ -671,13 +699,13 @@ class _SplashScreenState extends State<SplashScreen>
                       gradient: SweepGradient(
                         transform: GradientRotation(_logoSpin.value),
                         colors: [
-                          ProfessionalTheme.primaryBrand.withOpacity(opacity),
-                          ProfessionalTheme.secondaryBrand.withOpacity(opacity * 0.5),
-                          ProfessionalTheme.primaryBrand.withOpacity(opacity),
+                          ProfessionalTheme.primaryBrand.withValues(alpha: opacity),
+                          ProfessionalTheme.secondaryBrand.withValues(alpha: opacity * 0.5),
+                          ProfessionalTheme.primaryBrand.withValues(alpha: opacity),
                         ],
                       ),
                       border: Border.all(
-                        color: ProfessionalTheme.primaryBrand.withOpacity(opacity),
+                        color: ProfessionalTheme.primaryBrand.withValues(alpha: opacity),
                         width: 1,
                       ),
                     ),
@@ -700,8 +728,8 @@ class _SplashScreenState extends State<SplashScreen>
               radius: 1.2,
               colors: [
                 Colors.transparent,
-                Colors.black.withOpacity(0.3),
-                Colors.black.withOpacity(0.6),
+                Colors.black.withValues(alpha: 0.3),
+                Colors.black.withValues(alpha: 0.6),
               ],
               stops: const [0.5, 0.8, 1.0],
             ),
@@ -763,7 +791,7 @@ class EnhancedParticlePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     for (var particle in particles) {
       final paint = Paint()
-        ..color = color.withOpacity(particle.opacity * (1 - progress))
+        ..color = color.withValues(alpha: particle.opacity * (1 - progress))
         ..style = PaintingStyle.fill;
 
       final y = (particle.position.dy - progress * 200 * particle.speed) %

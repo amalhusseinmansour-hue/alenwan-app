@@ -54,6 +54,10 @@ class SeriesModel {
     if (titleData is Map) {
       titleEn = (titleData['en'] ?? '').toString();
       titleAr = titleData['ar']?.toString();
+    } else if (titleData is String && titleData.isNotEmpty) {
+      // If title is a simple string, use it as both English and Arabic
+      titleEn = titleData;
+      titleAr = titleData;
     } else {
       titleEn = (json['titleEn'] ?? json['title_en'] ?? titleData ?? '').toString();
       titleAr = json['titleAr'] ?? json['title_ar'];

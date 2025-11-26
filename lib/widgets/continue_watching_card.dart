@@ -33,7 +33,7 @@ class ContinueWatchingCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
+                    color: Colors.black.withValues(alpha: 0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),
@@ -64,7 +64,7 @@ class ContinueWatchingCard extends StatelessWidget {
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.transparent,
-                            Colors.black.withOpacity(0.8),
+                            Colors.black.withValues(alpha: 0.8),
                           ],
                         ),
                       ),
@@ -76,7 +76,7 @@ class ContinueWatchingCard extends StatelessWidget {
                         width: 60,
                         height: 60,
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
@@ -109,7 +109,7 @@ class ContinueWatchingCard extends StatelessWidget {
                           Text(
                             remainingTime,
                             style: TextStyle(
-                              color: Colors.white.withOpacity(0.8),
+                              color: Colors.white.withValues(alpha: 0.8),
                               fontSize: 12,
                             ),
                           ),

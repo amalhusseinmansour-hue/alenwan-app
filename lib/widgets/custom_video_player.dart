@@ -43,7 +43,6 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
 
   final Duration _duration = Duration.zero;
   Duration _position = Duration.zero;
-  final Duration _buffered = Duration.zero;
 
   double _volume = 1.0;
   double _playbackSpeed = 1.0;
@@ -212,7 +211,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: AppTheme.primaryColor.withOpacity(0.3),
+                              color: AppTheme.primaryColor.withValues(alpha: 0.3),
                               width: 3,
                             ),
                           ),
@@ -222,7 +221,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
                               gradient: SweepGradient(
                                 colors: [
                                   AppTheme.primaryColor,
-                                  AppTheme.primaryColor.withOpacity(0.0),
+                                  AppTheme.primaryColor.withValues(alpha: 0.0),
                                 ],
                               ),
                             ),
@@ -245,10 +244,10 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            Colors.black.withOpacity(0.7),
+                            Colors.black.withValues(alpha: 0.7),
                             Colors.transparent,
                             Colors.transparent,
-                            Colors.black.withOpacity(0.7),
+                            Colors.black.withValues(alpha: 0.7),
                           ],
                           stops: const [0.0, 0.3, 0.7, 1.0],
                         ),
@@ -318,7 +317,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
                   Text(
                     widget.subtitle!,
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.7),
+                      color: Colors.white.withValues(alpha: 0.7),
                       fontSize: 14,
                       fontFamily: 'Cairo',
                     ),
@@ -350,10 +349,10 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
         height: 80,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: AppTheme.primaryColor.withOpacity(0.9),
+          color: AppTheme.primaryColor.withValues(alpha: 0.9),
           boxShadow: [
             BoxShadow(
-              color: AppTheme.primaryColor.withOpacity(0.5),
+              color: AppTheme.primaryColor.withValues(alpha: 0.5),
               blurRadius: 20,
               spreadRadius: 5,
             ),
@@ -435,9 +434,9 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
           thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
           overlayShape: const RoundSliderOverlayShape(overlayRadius: 16),
           activeTrackColor: AppTheme.primaryColor,
-          inactiveTrackColor: Colors.white.withOpacity(0.2),
+          inactiveTrackColor: Colors.white.withValues(alpha: 0.2),
           thumbColor: AppTheme.primaryColor,
-          overlayColor: AppTheme.primaryColor.withOpacity(0.2),
+          overlayColor: AppTheme.primaryColor.withValues(alpha: 0.2),
         ),
         child: Slider(
           value: _position.inSeconds.toDouble(),
@@ -470,9 +469,9 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
               thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
               overlayShape: const RoundSliderOverlayShape(overlayRadius: 12),
               activeTrackColor: AppTheme.primaryColor,
-              inactiveTrackColor: Colors.white.withOpacity(0.2),
+              inactiveTrackColor: Colors.white.withValues(alpha: 0.2),
               thumbColor: AppTheme.primaryColor,
-              overlayColor: AppTheme.primaryColor.withOpacity(0.2),
+              overlayColor: AppTheme.primaryColor.withValues(alpha: 0.2),
             ),
             child: Slider(
               value: _isMuted ? 0 : _volume,
@@ -499,7 +498,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: Colors.white.withOpacity(0.3),
+            color: Colors.white.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -530,7 +529,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
           height: 48,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: 0.3),
           ),
           child: Icon(
             icon,
@@ -559,7 +558,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.3),
+                  color: Colors.white.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -589,7 +588,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
                     ),
                   ),
                   trailing: isSelected
-                      ? Icon(Icons.check_rounded, color: AppTheme.primaryColor)
+                      ? const Icon(Icons.check_rounded, color: AppTheme.primaryColor)
                       : null,
                   onTap: () {
                     setState(() => _playbackSpeed = speed);
@@ -622,7 +621,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.3),
+                  color: Colors.white.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -638,7 +637,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
               ),
               const SizedBox(height: 16),
               ListTile(
-                leading: Icon(Icons.high_quality_rounded,
+                leading: const Icon(Icons.high_quality_rounded,
                     color: AppTheme.primaryColor),
                 title: const Text(
                   'جودة الفيديو',
@@ -652,7 +651,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
               ),
               ListTile(
                 leading:
-                    Icon(Icons.subtitles_rounded, color: AppTheme.primaryColor),
+                    const Icon(Icons.subtitles_rounded, color: AppTheme.primaryColor),
                 title: const Text(
                   'الترجمة',
                   style: TextStyle(color: Colors.white, fontFamily: 'Cairo'),
@@ -664,7 +663,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
                 onTap: () {},
               ),
               ListTile(
-                leading: Icon(Icons.audiotrack_rounded,
+                leading: const Icon(Icons.audiotrack_rounded,
                     color: AppTheme.primaryColor),
                 title: const Text(
                   'الصوت',

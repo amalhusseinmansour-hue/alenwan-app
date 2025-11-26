@@ -95,7 +95,7 @@ class _HoverMediaCardState extends State<HoverMediaCard> {
                       height: widget.height,
                       color: ProfessionalTheme.surfaceCard,
                       alignment: Alignment.center,
-                      child: Icon(
+                      child: const Icon(
                         Icons.broken_image,
                         color: ProfessionalTheme.textTertiary,
                       ),
@@ -182,9 +182,9 @@ class SeriesContent extends StatelessWidget {
     }
     if (path.startsWith('http')) return path;
     if (path.startsWith('/storage') || path.startsWith('storage/')) {
-      return "${AppConfig.domain}/$path";
+      return '${AppConfig.domain}/$path';
     }
-    return "${AppConfig.storageBaseUrl}/$path";
+    return '${AppConfig.storageBaseUrl}/$path';
   }
 
   @override

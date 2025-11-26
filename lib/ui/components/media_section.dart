@@ -141,7 +141,7 @@ class _MediaSectionState extends State<MediaSection>
                           colors: [
                             widget.accentColor ?? ProfessionalTheme.primaryBrand,
                             (widget.accentColor ?? ProfessionalTheme.primaryBrand)
-                                .withOpacity(0.3),
+                                .withValues(alpha: 0.3),
                           ],
                         ),
                         borderRadius: BorderRadius.circular(2),
@@ -195,7 +195,7 @@ class _MediaSectionState extends State<MediaSection>
                 ),
               ),
               const SizedBox(width: ProfessionalTheme.space8),
-              Icon(
+              const Icon(
                 Icons.arrow_forward_rounded,
                 size: 18,
                 color: ProfessionalTheme.textSecondary,
@@ -280,7 +280,7 @@ class _MediaSectionState extends State<MediaSection>
                       end: Alignment.centerRight,
                       colors: [
                         ProfessionalTheme.backgroundPrimary,
-                        ProfessionalTheme.backgroundPrimary.withOpacity(0),
+                        ProfessionalTheme.backgroundPrimary.withValues(alpha: 0),
                       ],
                     ),
                   ),
@@ -302,7 +302,7 @@ class _MediaSectionState extends State<MediaSection>
                     end: Alignment.centerLeft,
                     colors: [
                       ProfessionalTheme.backgroundPrimary,
-                      ProfessionalTheme.backgroundPrimary.withOpacity(0),
+                      ProfessionalTheme.backgroundPrimary.withValues(alpha: 0),
                     ],
                   ),
                 ),
@@ -341,10 +341,10 @@ class _MediaSectionState extends State<MediaSection>
       height: 200,
       margin: const EdgeInsets.symmetric(horizontal: ProfessionalTheme.space24),
       decoration: BoxDecoration(
-        color: ProfessionalTheme.surfaceCard.withOpacity(0.3),
+        color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(ProfessionalTheme.radiusL),
         border: Border.all(
-          color: ProfessionalTheme.textTertiary.withOpacity(0.1),
+          color: ProfessionalTheme.textTertiary.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -352,7 +352,7 @@ class _MediaSectionState extends State<MediaSection>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.movie_filter_outlined,
               size: 48,
               color: ProfessionalTheme.textTertiary,

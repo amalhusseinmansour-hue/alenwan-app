@@ -660,7 +660,7 @@ class _SettingsScreenState extends State<SettingsScreen>
         ),
         title: Row(
           children: [
-            Icon(
+            const Icon(
               Icons.warning_amber_rounded,
               color: Colors.red,
               size: 28,
@@ -811,11 +811,11 @@ class SettingsPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     // Background gradient
-    paint.shader = LinearGradient(
+    paint.shader = const LinearGradient(
       colors: [
-        const Color(0xFF0A0A0A),
-        const Color(0xFF1A1A1A),
-        const Color(0xFF0A0A0A),
+        Color(0xFF0A0A0A),
+        Color(0xFF1A1A1A),
+        Color(0xFF0A0A0A),
       ],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,

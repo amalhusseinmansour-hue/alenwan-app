@@ -1,5 +1,7 @@
 // lib/views/auth/login_screen.dart
 import 'dart:ui' as ui;
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +9,9 @@ import 'package:provider/provider.dart';
 import '../../routes/app_routes.dart';
 import '../../controllers/auth_controller.dart';
 import '../../core/theme/professional_theme.dart';
+import '../../models/auth_settings_model.dart';
+import '../../core/services/app_settings_service.dart';
+import 'social_login_buttons.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,6 +28,8 @@ class _LoginScreenState extends State<LoginScreen>
 
   bool _obscurePassword = true;
   bool _isLoading = false;
+  AuthSettingsModel? _authSettings;
+  bool _isLoadingSettings = true;
 
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -42,6 +49,27 @@ class _LoginScreenState extends State<LoginScreen>
       ),
     );
     _initAnimations();
+    _loadAuthSettings();
+  }
+
+  Future<void> _loadAuthSettings() async {
+    try {
+      final settings = await AppSettingsService().getAuthSettings();
+      if (mounted) {
+        setState(() {
+          _authSettings = settings;
+          _isLoadingSettings = false;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error loading auth settings: $e');
+      if (mounted) {
+        setState(() {
+          _authSettings = AuthSettingsModel.defaultSettings();
+          _isLoadingSettings = false;
+        });
+      }
+    }
   }
 
   void _initAnimations() {
@@ -130,7 +158,8 @@ class _LoginScreenState extends State<LoginScreen>
           });
         } else {
           // Get the error message from the controller
-          final errorMessage = authController.error ?? 'بيانات الدخول غير صحيحة';
+          final errorMessage =
+              authController.error ?? 'بيانات الدخول غير صحيحة';
 
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -229,6 +258,7 @@ class _LoginScreenState extends State<LoginScreen>
     }
   }
 
+  // ignore: unused_element
   Future<void> _signInWithGoogle() async {
     setState(() => _isLoading = true);
 
@@ -267,7 +297,8 @@ class _LoginScreenState extends State<LoginScreen>
           });
         } else {
           // Get the error message from the controller
-          final errorMessage = authController.error ?? 'فشل تسجيل الدخول بحساب Google';
+          final errorMessage =
+              authController.error ?? 'فشل تسجيل الدخول بحساب Google';
 
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -416,7 +447,7 @@ class _LoginScreenState extends State<LoginScreen>
             colors: [
               ProfessionalTheme.backgroundPrimary,
               ProfessionalTheme.backgroundSecondary,
-              ProfessionalTheme.primaryBrand.withOpacity(0.1),
+              ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
             ],
           ),
         ),
@@ -436,13 +467,13 @@ class _LoginScreenState extends State<LoginScreen>
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            ProfessionalTheme.surfaceCard.withOpacity(0.9),
-            ProfessionalTheme.surfaceCard.withOpacity(0.7),
+            ProfessionalTheme.surfaceCard.withValues(alpha: 0.9),
+            ProfessionalTheme.surfaceCard.withValues(alpha: 0.7),
           ],
         ),
         borderRadius: BorderRadius.circular(ProfessionalTheme.radiusXL),
         border: Border.all(
-          color: ProfessionalTheme.primaryBrand.withOpacity(0.2),
+          color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
           width: 1,
         ),
         boxShadow: ProfessionalTheme.cardShadow,
@@ -477,11 +508,6 @@ class _LoginScreenState extends State<LoginScreen>
 
             const SizedBox(height: 24),
 
-            // Social Login
-            _buildSocialLogin(),
-
-            const SizedBox(height: 24),
-
             // Sign Up Link
             _buildSignUpLink(),
 
@@ -489,6 +515,11 @@ class _LoginScreenState extends State<LoginScreen>
 
             // Guest Login Button
             _buildGuestLoginButton(),
+
+            const SizedBox(height: 24),
+
+            // Social Login Buttons
+            _buildSocialLogins(),
           ],
         ),
       ),
@@ -551,7 +582,7 @@ class _LoginScreenState extends State<LoginScreen>
         labelStyle: ProfessionalTheme.bodyMedium(
           color: ProfessionalTheme.textSecondary,
         ),
-        prefixIcon: Icon(
+        prefixIcon: const Icon(
           Icons.email_outlined,
           color: ProfessionalTheme.primaryBrand,
         ),
@@ -563,14 +594,14 @@ class _LoginScreenState extends State<LoginScreen>
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: ProfessionalTheme.primaryBrand,
             width: 2,
           ),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: ProfessionalTheme.errorColor,
             width: 1,
           ),
@@ -601,7 +632,7 @@ class _LoginScreenState extends State<LoginScreen>
         labelStyle: ProfessionalTheme.bodyMedium(
           color: ProfessionalTheme.textSecondary,
         ),
-        prefixIcon: Icon(
+        prefixIcon: const Icon(
           Icons.lock_outlined,
           color: ProfessionalTheme.primaryBrand,
         ),
@@ -622,14 +653,14 @@ class _LoginScreenState extends State<LoginScreen>
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: ProfessionalTheme.primaryBrand,
             width: 2,
           ),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: ProfessionalTheme.errorColor,
             width: 1,
           ),
@@ -671,7 +702,7 @@ class _LoginScreenState extends State<LoginScreen>
           shadowColor: Colors.transparent,
         ).copyWith(
           overlayColor: WidgetStateProperty.all(
-            Colors.white.withOpacity(0.1),
+            Colors.white.withValues(alpha: 0.1),
           ),
         ),
         child: _isLoading
@@ -693,60 +724,6 @@ class _LoginScreenState extends State<LoginScreen>
       ),
     );
   }
-
-  Widget _buildSocialLogin() {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Expanded(child: Divider(color: ProfessionalTheme.textTertiary)),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                'أو',
-                style: ProfessionalTheme.bodySmall(
-                  color: ProfessionalTheme.textTertiary,
-                ),
-              ),
-            ),
-            Expanded(child: Divider(color: ProfessionalTheme.textTertiary)),
-          ],
-        ),
-        const SizedBox(height: 16),
-
-        // Google Sign-In Button
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: _isLoading ? null : _signInWithGoogle,
-            icon: Image.asset(
-              'assets/images/google_logo.png',
-              height: 22,
-              width: 22,
-              errorBuilder: (context, error, stackTrace) {
-                return const Icon(Icons.g_mobiledata, size: 30);
-              },
-            ),
-            label: const Text('تسجيل الدخول بحساب Google'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black87,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
-                side: BorderSide(
-                  color: Colors.grey.shade300,
-                  width: 1.5,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
 
   Widget _buildSignUpLink() {
     return Row(
@@ -775,55 +752,192 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   Widget _buildGuestLoginButton() {
-    return OutlinedButton(
-      onPressed: _handleGuestLogin,
-      style: OutlinedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        side: BorderSide(
-          color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
-          width: 1.5,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.person_outline,
-            color: ProfessionalTheme.primaryBrand,
-            size: 20,
+    // Check if guest mode is enabled (default to true if settings not loaded yet)
+    final bool isGuestEnabled = _authSettings?.enableGuestMode ?? true;
+
+    if (!isGuestEnabled) {
+      return const SizedBox.shrink();
+    }
+
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton(
+        onPressed: _isLoading ? null : _handleGuestLogin,
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          side: BorderSide(
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.5),
+            width: 2,
           ),
-          const SizedBox(width: 8),
-          Text(
-            'الدخول كضيف',
-            style: ProfessionalTheme.bodyLarge(
-              color: ProfessionalTheme.primaryBrand,
-              weight: FontWeight.w600,
-            ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
           ),
-        ],
+        ).copyWith(
+          overlayColor: WidgetStateProperty.all(
+            ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
+          ),
+        ),
+        child: _isLoading
+            ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    ProfessionalTheme.primaryBrand,
+                  ),
+                ),
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.person_outline,
+                    color: ProfessionalTheme.primaryBrand,
+                    size: 22,
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    'الدخول كضيف',
+                    style: ProfessionalTheme.titleMedium(
+                      color: ProfessionalTheme.primaryBrand,
+                      weight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
       ),
     );
   }
 
-  Future<void> _handleGuestLogin() async {
-    // Enable guest mode immediately without loading state
-    try {
-      final authController = context.read<AuthController>();
-      await authController.loginAsGuest();
+  Widget _buildSocialLogins() {
+    // Check if any social login is enabled
+    final bool googleEnabled = _authSettings?.enableGoogleLogin ?? true;
+    final bool appleEnabled = _authSettings?.enableAppleLogin ?? true;
 
-      // Navigate to home as guest without authentication
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, AppRoutes.main);
+    // If both are disabled, don't show the widget
+    if (!googleEnabled && !appleEnabled) {
+      return const SizedBox.shrink();
+    }
+
+    return SocialLoginRow(
+      onGoogle: googleEnabled ? _handleGoogleSignIn : null,
+      onApple: appleEnabled && (!kIsWeb && Platform.isIOS || kIsWeb)
+          ? _handleAppleSignIn
+          : null,
+      onPhoneOrWhatsApp: null, // يمكن إضافة OTP لاحقاً
+    );
+  }
+
+  void _handleGoogleSignIn() async {
+    final authController = context.read<AuthController>();
+    final messenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
+
+    try {
+      final success = await authController.signInWithGoogle();
+
+      if (!mounted) return;
+
+      if (success) {
+        navigator.pushReplacementNamed(AppRoutes.home);
+      } else if (authController.error != null) {
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(authController.error!),
+            backgroundColor: ProfessionalTheme.errorColor,
+          ),
+        );
       }
     } catch (e) {
+      if (!mounted) return;
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text('فشل تسجيل الدخول عبر Google: $e'),
+          backgroundColor: ProfessionalTheme.errorColor,
+        ),
+      );
+    }
+  }
+
+  void _handleAppleSignIn() async {
+    final authController = context.read<AuthController>();
+    final messenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
+
+    try {
+      final success = await authController.signInWithApple();
+
+      if (!mounted) return;
+
+      if (success) {
+        navigator.pushReplacementNamed(AppRoutes.home);
+      } else if (authController.error != null) {
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(authController.error!),
+            backgroundColor: ProfessionalTheme.errorColor,
+          ),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text('فشل تسجيل الدخول عبر Apple: $e'),
+          backgroundColor: ProfessionalTheme.errorColor,
+        ),
+      );
+    }
+  }
+
+  Future<void> _handleGuestLogin() async {
+    if (_isLoading) return; // منع النقرات المتعددة
+
+    setState(() => _isLoading = true);
+
+    try {
+      final authController = context.read<AuthController>();
+
+      debugPrint('🔵 [LoginScreen] Starting guest login...');
+
+      // تفعيل وضع الضيف
+      await authController.loginAsGuest();
+
+      if (!mounted) return;
+
+      // التحقق من تفعيل وضع الضيف مباشرة من الذاكرة
+      if (authController.isGuestMode) {
+        debugPrint('✅ [LoginScreen] Guest mode enabled successfully');
+        
+        // عرض رسالة نجاح سريعة
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('مرحباً بك! جاري الدخول...'),
+            backgroundColor: Colors.green,
+            duration: Duration(milliseconds: 1000),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+
+        // التوجيه فوراً إلى الشاشة الرئيسية
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          AppRoutes.main,
+          (route) => false,
+        );
+      } else {
+        throw Exception('فشل تفعيل وضع الضيف');
+      }
+    } catch (e) {
+      debugPrint('❌ [LoginScreen] Guest login error: $e');
       if (mounted) {
+        setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('حدث خطأ: $e'),
             backgroundColor: ProfessionalTheme.errorColor,
+            behavior: SnackBarBehavior.floating,
           ),
         );
       }
@@ -836,7 +950,7 @@ class _LoginBackgroundPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..style = PaintingStyle.fill
-      ..color = ProfessionalTheme.primaryBrand.withOpacity(0.05);
+      ..color = ProfessionalTheme.primaryBrand.withValues(alpha: 0.05);
 
     // Draw floating circles
     for (int i = 0; i < 5; i++) {
@@ -853,9 +967,9 @@ class _LoginBackgroundPainter extends CustomPainter {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [
-        ProfessionalTheme.primaryBrand.withOpacity(0.1),
+        ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
         Colors.transparent,
-        ProfessionalTheme.primaryBrand.withOpacity(0.05),
+        ProfessionalTheme.primaryBrand.withValues(alpha: 0.05),
       ],
     );
 

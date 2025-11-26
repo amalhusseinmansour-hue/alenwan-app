@@ -176,8 +176,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>
           ),
         ),
         backgroundColor: isError
-            ? ProfessionalTheme.errorColor.withOpacity(0.9)
-            : ProfessionalTheme.successColor.withOpacity(0.9),
+            ? ProfessionalTheme.errorColor.withValues(alpha: 0.9)
+            : ProfessionalTheme.successColor.withValues(alpha: 0.9),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
@@ -201,7 +201,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>
             statusBarIconBrightness: Brightness.light,
           ),
           leading: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back,
               color: ProfessionalTheme.textPrimary,
             ),
@@ -254,7 +254,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>
                                   shape: BoxShape.circle,
                                   boxShadow: ProfessionalTheme.glowShadow,
                                 ),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.lock_reset,
                                   color: ProfessionalTheme.textPrimary,
                                   size: 28,
@@ -416,8 +416,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>
             ),
             filled: true,
             fillColor: focusNode.hasFocus
-                ? ProfessionalTheme.surfaceActive.withOpacity(0.8)
-                : ProfessionalTheme.surfaceCard.withOpacity(0.6),
+                ? ProfessionalTheme.surfaceActive.withValues(alpha: 0.8)
+                : ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: ProfessionalTheme.space16,
               vertical: ProfessionalTheme.space16,
@@ -429,27 +429,27 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
               borderSide: BorderSide(
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withValues(alpha: 0.1),
                 width: 1,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: ProfessionalTheme.primaryBrand,
                 width: 2,
               ),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: ProfessionalTheme.errorColor,
                 width: 1,
               ),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: ProfessionalTheme.errorColor,
                 width: 2,
               ),
@@ -498,8 +498,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>
             ? ProfessionalTheme.premiumGradient
             : LinearGradient(
                 colors: [
-                  ProfessionalTheme.primaryBrand.withOpacity(0.5),
-                  ProfessionalTheme.accentBrand.withOpacity(0.5),
+                  ProfessionalTheme.primaryBrand.withValues(alpha: 0.5),
+                  ProfessionalTheme.accentBrand.withValues(alpha: 0.5),
                 ],
               ),
         boxShadow: onPressed != null ? ProfessionalTheme.buttonShadow : null,
@@ -519,7 +519,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>
           ),
         ),
         child: isLoading
-            ? SizedBox(
+            ? const SizedBox(
                 width: 24,
                 height: 24,
                 child: CircularProgressIndicator(

@@ -119,7 +119,7 @@ class _AppDrawerState extends State<AppDrawer>
                                 'assets/images/logo-alenwan.jpeg',
                                 height: 50,
                                 errorBuilder: (context, error, stackTrace) {
-                                  return Icon(
+                                  return const Icon(
                                     Icons.movie,
                                     size: 50,
                                     color: ProfessionalTheme.primaryBrand,
@@ -319,22 +319,30 @@ class _AppDrawerState extends State<AppDrawer>
                           13,
                           onTap: () => _go(context, AppRoutes.devices),
                         ),
-                        _buildAnimatedDrawerItem(
-                          Icons.logout_rounded,
-                          'خروج',
-                          14,
-                          isLogout: true,
-                          onTap: () async {
-                            Navigator.pop(context);
-                            final authController =
-                                context.read<AuthController>();
-                            await authController.logout();
-                            if (context.mounted) {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                AppRoutes.login,
-                                (route) => false,
-                              );
+                        // Only show logout button if not in guest mode
+                        Consumer<AuthController>(
+                          builder: (context, authController, _) {
+                            if (authController.isGuestMode) {
+                              return const SizedBox.shrink();
                             }
+                            return _buildAnimatedDrawerItem(
+                              Icons.logout_rounded,
+                              'خروج',
+                              14,
+                              isLogout: true,
+                              onTap: () async {
+                                Navigator.pop(context);
+                                final authController =
+                                    context.read<AuthController>();
+                                await authController.logout();
+                                if (context.mounted) {
+                                  Navigator.of(context).pushNamedAndRemoveUntil(
+                                    AppRoutes.login,
+                                    (route) => false,
+                                  );
+                                }
+                              },
+                            );
                           },
                         ),
                       ],
@@ -381,7 +389,7 @@ class _AppDrawerState extends State<AppDrawer>
                               'assets/images/logo-alenwan.jpeg',
                               height: 24,
                               errorBuilder: (context, error, stackTrace) {
-                                return Text(
+                                return const Text(
                                   'العنوان',
                                   style: TextStyle(
                                     color: ProfessionalTheme.primaryBrand,

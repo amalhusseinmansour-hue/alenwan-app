@@ -225,7 +225,7 @@ class _RegisterScreenState extends State<RegisterScreen>
               ),
               radius: 1.8,
               colors: [
-                ProfessionalTheme.primaryBrand.withOpacity(0.2),
+                ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
                 ProfessionalTheme.backgroundPrimary,
                 ProfessionalTheme.backgroundPrimary,
               ],
@@ -264,7 +264,7 @@ class _RegisterScreenState extends State<RegisterScreen>
       child: BackdropFilter(
         filter: ui.ImageFilter.blur(sigmaX: 3, sigmaY: 3),
         child: Container(
-          color: ProfessionalTheme.backgroundPrimary.withOpacity(0.2),
+          color: ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.2),
         ),
       ),
     );
@@ -305,13 +305,13 @@ class _RegisterScreenState extends State<RegisterScreen>
         shape: BoxShape.circle,
         gradient: RadialGradient(
           colors: [
-            ProfessionalTheme.primaryBrand.withOpacity(opacity),
-            ProfessionalTheme.primaryBrand.withOpacity(0),
+            ProfessionalTheme.primaryBrand.withValues(alpha: opacity),
+            ProfessionalTheme.primaryBrand.withValues(alpha: 0),
           ],
         ),
         boxShadow: [
           BoxShadow(
-            color: ProfessionalTheme.primaryBrand.withOpacity(opacity * 0.7),
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: opacity * 0.7),
             blurRadius: 25,
             spreadRadius: 8,
           ),
@@ -388,7 +388,7 @@ class _RegisterScreenState extends State<RegisterScreen>
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: ProfessionalTheme.primaryBrand.withOpacity(0.4 * value),
+                  color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.4 * value),
                   blurRadius: 35,
                   spreadRadius: 8,
                 ),
@@ -404,12 +404,12 @@ class _RegisterScreenState extends State<RegisterScreen>
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        ProfessionalTheme.primaryBrand.withOpacity(0.2),
-                        ProfessionalTheme.secondaryBrand.withOpacity(0.2),
+                        ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
+                        ProfessionalTheme.secondaryBrand.withValues(alpha: 0.2),
                       ],
                     ),
                     border: Border.all(
-                      color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                      color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                       width: 2,
                     ),
                   ),
@@ -433,7 +433,7 @@ class _RegisterScreenState extends State<RegisterScreen>
     return Column(
       children: [
         ShaderMask(
-          shaderCallback: (bounds) => LinearGradient(
+          shaderCallback: (bounds) => const LinearGradient(
             colors: [
               ProfessionalTheme.accentBrand,
               ProfessionalTheme.primaryBrand,
@@ -471,13 +471,13 @@ class _RegisterScreenState extends State<RegisterScreen>
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                ProfessionalTheme.surfaceCard.withOpacity(0.6),
-                ProfessionalTheme.surfaceCard.withOpacity(0.3),
+                ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
+                ProfessionalTheme.surfaceCard.withValues(alpha: 0.3),
               ],
             ),
             borderRadius: BorderRadius.circular(ProfessionalTheme.radiusL),
             border: Border.all(
-              color: ProfessionalTheme.textTertiary.withOpacity(0.1),
+              color: ProfessionalTheme.textTertiary.withValues(alpha: 0.1),
               width: 1,
             ),
           ),
@@ -577,7 +577,7 @@ class _RegisterScreenState extends State<RegisterScreen>
             border: Border.all(
               color: isFocused
                   ? ProfessionalTheme.primaryBrand
-                  : ProfessionalTheme.textTertiary.withOpacity(0.1),
+                  : ProfessionalTheme.textTertiary.withValues(alpha: 0.1),
               width: isFocused ? 2 : 1,
             ),
             color: isFocused
@@ -633,7 +633,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                 border: Border.all(
                   color: isFocused
                       ? ProfessionalTheme.primaryBrand
-                      : ProfessionalTheme.textTertiary.withOpacity(0.1),
+                      : ProfessionalTheme.textTertiary.withValues(alpha: 0.1),
                   width: isFocused ? 2 : 1,
                 ),
                 color: isFocused
@@ -660,7 +660,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                   border: Border.all(
                     color: isFocused
                         ? ProfessionalTheme.primaryBrand
-                        : ProfessionalTheme.textTertiary.withOpacity(0.1),
+                        : ProfessionalTheme.textTertiary.withValues(alpha: 0.1),
                     width: isFocused ? 2 : 1,
                   ),
                   color: isFocused
@@ -718,7 +718,7 @@ class _RegisterScreenState extends State<RegisterScreen>
             border: Border.all(
               color: isFocused
                   ? ProfessionalTheme.primaryBrand
-                  : ProfessionalTheme.textTertiary.withOpacity(0.1),
+                  : ProfessionalTheme.textTertiary.withValues(alpha: 0.1),
               width: isFocused ? 2 : 1,
             ),
             color: isFocused
@@ -794,11 +794,11 @@ class _RegisterScreenState extends State<RegisterScreen>
                   width: 2,
                 ),
                 color: _agreeToTerms
-                    ? ProfessionalTheme.primaryBrand.withOpacity(0.1)
+                    ? ProfessionalTheme.primaryBrand.withValues(alpha: 0.1)
                     : Colors.transparent,
               ),
               child: _agreeToTerms
-                  ? Icon(
+                  ? const Icon(
                       Icons.check,
                       size: 16,
                       color: ProfessionalTheme.primaryBrand,
@@ -847,7 +847,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                       },
                 child: Center(
                   child: authController.isLoading
-                      ? SizedBox(
+                      ? const SizedBox(
                           width: 22,
                           height: 22,
                           child: CircularProgressIndicator(
@@ -919,7 +919,7 @@ class RegisterBackgroundPainter extends CustomPainter {
       final progress = (animation + i * 0.1) % 1.0;
       final opacity = (1.0 - progress) * 0.12;
 
-      paint.color = primaryColor.withOpacity(opacity);
+      paint.color = primaryColor.withValues(alpha: opacity);
 
       final center = Offset(
         size.width * 0.5 + math.cos(animation * 2 * math.pi + i * 0.5) * 80,
@@ -978,7 +978,7 @@ class StarParticlesPainter extends CustomPainter {
       final progress = (animation + i * 0.04) % 1.0;
       final opacity = math.sin(progress * math.pi) * 0.25;
 
-      paint.color = color.withOpacity(opacity);
+      paint.color = color.withValues(alpha: opacity);
 
       final x = size.width * (0.05 + (i * 0.13) % 0.9);
       final y = size.height * (1.0 - progress);
@@ -1010,7 +1010,7 @@ class StarParticlesPainter extends CustomPainter {
         ..style = PaintingStyle.fill
         ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
 
-      glowPaint.color = color.withOpacity(opacity * 0.2);
+      glowPaint.color = color.withValues(alpha: opacity * 0.2);
       canvas.drawCircle(Offset(x, y), 8, glowPaint);
     }
   }

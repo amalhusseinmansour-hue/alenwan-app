@@ -23,9 +23,9 @@ class DownloadModel {
   }
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "title": title,
-    "path": path,
-    "fileSize": fileSize,
+    'id': id,
+    'title': title,
+    'path': path,
+    'fileSize': fileSize,
   };
 }

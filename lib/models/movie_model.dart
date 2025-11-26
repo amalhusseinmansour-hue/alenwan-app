@@ -8,6 +8,7 @@ class MovieModel {
   final String? posterPath;
   final String? bannerPath;
   final String? videoPath;
+  final String? vimeoId;
   final String status;
   final int? releaseYear;
   final double? rating;
@@ -30,6 +31,7 @@ class MovieModel {
     this.posterPath,
     this.bannerPath,
     this.videoPath,
+    this.vimeoId,
     this.status = 'draft',
     this.releaseYear,
     this.rating,
@@ -160,6 +162,7 @@ class MovieModel {
       posterPath: asStr(src['poster_url'] ?? src['poster_path'] ?? src['poster'] ?? src['thumbnail']),
       bannerPath: asStr(src['banner_url'] ?? src['banner_path'] ?? src['poster']),
       videoPath: asStr(src['video_url'] ?? src['video_path']),
+      vimeoId: asStr(src['vimeo_id']),
       status: asStr(src['status']) ?? 'draft',
       releaseYear: asInt(src['release_year']),
       rating: asDouble(src['rating']),
@@ -182,26 +185,27 @@ class MovieModel {
   }
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "title": title,
-        "description": description,
-        "poster_path": posterPath,
-        "banner_path": bannerPath,
-        "video_path": videoPath,
-        "status": status,
-        "release_year": releaseYear,
-        "rating": rating,
-        "subscription_tier": subscriptionTier,
-        "language": {
-          "id": languageId,
-          "name": languageName,
+        'id': id,
+        'title': title,
+        'description': description,
+        'poster_path': posterPath,
+        'banner_path': bannerPath,
+        'video_path': videoPath,
+        'vimeo_id': vimeoId,
+        'status': status,
+        'release_year': releaseYear,
+        'rating': rating,
+        'subscription_tier': subscriptionTier,
+        'language': {
+          'id': languageId,
+          'name': languageName,
         },
-        "category": {
-          "id": categoryId,
-          "name": categoryName,
+        'category': {
+          'id': categoryId,
+          'name': categoryName,
         },
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "playback": playback,
+        'created_at': createdAt?.toIso8601String(),
+        'updated_at': updatedAt?.toIso8601String(),
+        'playback': playback,
       };
 }

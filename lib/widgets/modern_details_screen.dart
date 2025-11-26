@@ -201,7 +201,7 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
                       child: Icon(
                         _getIconForContentType(),
                         size: 100,
-                        color: Colors.white.withOpacity(0.3),
+                        color: Colors.white.withValues(alpha: 0.3),
                       ),
                     )
                   : null,
@@ -216,7 +216,7 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.transparent,
-                  ModernTheme.backgroundColor.withOpacity(0.7),
+                  ModernTheme.backgroundColor.withValues(alpha: 0.7),
                   ModernTheme.backgroundColor,
                 ],
                 stops: const [0.3, 0.7, 1.0],
@@ -306,16 +306,18 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
     bool isPrimary = false,
   }) {
     return Container(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: ModernTheme.spacingM,
         vertical: ModernTheme.spacingXS,
       ),
       decoration: BoxDecoration(
         gradient: isPrimary ? ModernTheme.primaryGradient : null,
-        color: isPrimary ? null : Colors.white.withOpacity(0.1),
+        color: isPrimary ? null : Colors.white.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(ModernTheme.radiusLarge),
         border: Border.all(
-          color: isPrimary ? Colors.transparent : Colors.white.withOpacity(0.2),
+          color: isPrimary
+              ? Colors.transparent
+              : Colors.white.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -328,7 +330,7 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
               size: 14,
               color: color ?? Colors.white,
             ),
-            SizedBox(width: ModernTheme.spacingXS),
+            const SizedBox(width: ModernTheme.spacingXS),
           ],
           Text(
             text,
@@ -349,7 +351,7 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
             onPressed: widget.onPlay!,
             isPrimary: true,
           ),
-        SizedBox(width: ModernTheme.spacingM),
+        const SizedBox(width: ModernTheme.spacingM),
         if (widget.onAddToList != null)
           ModernTheme.gradientButton(
             label: 'قائمتي',
@@ -357,7 +359,7 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
             onPressed: widget.onAddToList!,
             isPrimary: false,
           ),
-        SizedBox(width: ModernTheme.spacingM),
+        const SizedBox(width: ModernTheme.spacingM),
         if (widget.onShare != null)
           _buildCircularButton(
             icon: Icons.share,
@@ -374,9 +376,9 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white.withOpacity(0.1),
+        color: Colors.white.withValues(alpha: 0.1),
         border: Border.all(
-          color: Colors.white.withOpacity(0.2),
+          color: Colors.white.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -386,7 +388,7 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
           onTap: onPressed,
           customBorder: const CircleBorder(),
           child: Padding(
-            padding: EdgeInsets.all(ModernTheme.spacingM),
+            padding: const EdgeInsets.all(ModernTheme.spacingM),
             child: Icon(
               icon,
               color: Colors.white,
@@ -400,7 +402,7 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
 
   Widget _buildContentDetails() {
     return Padding(
-      padding: EdgeInsets.all(ModernTheme.spacingL),
+      padding: const EdgeInsets.all(ModernTheme.spacingL),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -410,12 +412,12 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
               'القصة',
               style: ModernTheme.headline3(),
             ),
-            SizedBox(height: ModernTheme.spacingM),
+            const SizedBox(height: ModernTheme.spacingM),
             Text(
               widget.description!,
               style: ModernTheme.body1(color: ModernTheme.textSecondary),
             ),
-            SizedBox(height: ModernTheme.spacingXL),
+            const SizedBox(height: ModernTheme.spacingXL),
           ],
 
           // Cast
@@ -424,7 +426,7 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
               'طاقم العمل',
               style: ModernTheme.headline3(),
             ),
-            SizedBox(height: ModernTheme.spacingM),
+            const SizedBox(height: ModernTheme.spacingM),
             SizedBox(
               height: 120,
               child: ListView.builder(
@@ -435,7 +437,7 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
                 },
               ),
             ),
-            SizedBox(height: ModernTheme.spacingXL),
+            const SizedBox(height: ModernTheme.spacingXL),
           ],
         ],
       ),
@@ -445,7 +447,7 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
   Widget _buildCastCard(String name) {
     return Container(
       width: 100,
-      margin: EdgeInsets.only(right: ModernTheme.spacingM),
+      margin: const EdgeInsets.only(right: ModernTheme.spacingM),
       child: Column(
         children: [
           Container(
@@ -462,7 +464,7 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
               size: 40,
             ),
           ),
-          SizedBox(height: ModernTheme.spacingS),
+          const SizedBox(height: ModernTheme.spacingS),
           Text(
             name,
             textAlign: TextAlign.center,
@@ -480,24 +482,25 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: ModernTheme.spacingL),
+          padding: const EdgeInsets.symmetric(horizontal: ModernTheme.spacingL),
           child: Text(
             'محتوى مشابه',
             style: ModernTheme.headline3(),
           ),
         ),
-        SizedBox(height: ModernTheme.spacingM),
+        const SizedBox(height: ModernTheme.spacingM),
         SizedBox(
           height: 200,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.symmetric(horizontal: ModernTheme.spacingL),
+            padding:
+                const EdgeInsets.symmetric(horizontal: ModernTheme.spacingL),
             itemCount: widget.relatedContent!.length,
             itemBuilder: (context, index) {
               final item = widget.relatedContent![index];
               return Container(
                 width: 140,
-                margin: EdgeInsets.only(right: ModernTheme.spacingM),
+                margin: const EdgeInsets.only(right: ModernTheme.spacingM),
                 child: widget.relatedItemBuilder != null
                     ? widget.relatedItemBuilder!(item)
                     : _buildDefaultRelatedCard(item),
@@ -519,35 +522,35 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(ModernTheme.radiusLarge),
+            Expanded(
+              child: Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(ModernTheme.radiusLarge),
+                  ),
+                  gradient: ModernTheme.primaryGradient,
                 ),
-                gradient: ModernTheme.primaryGradient,
-              ),
-              child: const Center(
-                child: Icon(
-                  Icons.play_circle_outline,
-                  color: Colors.white,
-                  size: 40,
+                child: const Center(
+                  child: Icon(
+                    Icons.play_circle_outline,
+                    color: Colors.white,
+                    size: 40,
+                  ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(ModernTheme.spacingS),
-            child: Text(
-              item.toString(),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: ModernTheme.body2(),
+            Padding(
+              padding: const EdgeInsets.all(ModernTheme.spacingS),
+              child: Text(
+                item.toString(),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: ModernTheme.body2(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
     );
   }
 
@@ -565,8 +568,8 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              ModernTheme.backgroundColor.withOpacity(0.9 * opacity),
-              ModernTheme.backgroundColor.withOpacity(0.7 * opacity),
+              ModernTheme.backgroundColor.withValues(alpha: 0.9 * opacity),
+              ModernTheme.backgroundColor.withValues(alpha: 0.7 * opacity),
               Colors.transparent,
             ],
           ),
@@ -579,7 +582,7 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
             ),
             child: SafeArea(
               child: Padding(
-                padding: EdgeInsets.all(ModernTheme.spacingM),
+                padding: const EdgeInsets.all(ModernTheme.spacingM),
                 child: Row(
                   children: [
                     _buildCircularButton(
@@ -631,7 +634,7 @@ class _ModernDetailsScreenState extends State<ModernDetailsScreen>
                 gradient: ModernTheme.primaryGradient,
                 boxShadow: [
                   BoxShadow(
-                    color: ModernTheme.primaryColor.withOpacity(0.4),
+                    color: ModernTheme.primaryColor.withValues(alpha: 0.4),
                     blurRadius: 20 + (_heroController.value * 10),
                     spreadRadius: 2,
                   ),

@@ -116,7 +116,7 @@ class FavoritesController extends ChangeNotifier {
         ..addAll(list);
       notifyListeners();
     } catch (e) {
-      debugPrint("Favorites _hydrateFromCache error: $e");
+      debugPrint('Favorites _hydrateFromCache error: $e');
     }
   }
 
@@ -183,7 +183,7 @@ class FavoritesController extends ChangeNotifier {
           );
         }
       } catch (e) {
-        debugPrint("Favorites syncPending failed: $e");
+        debugPrint('Favorites syncPending failed: $e');
         remaining.add(op);
       }
     }
@@ -225,7 +225,7 @@ class FavoritesController extends ChangeNotifier {
       await syncPending();
     } catch (e) {
       error = 'فشل تحميل المفضلات (يُستخدم الكاش الخاص بك)';
-      debugPrint("Favorites loadFavorites error: $e");
+      debugPrint('Favorites loadFavorites error: $e');
       // نُبقي ما في الكاش
     } finally {
       isLoading = false;
@@ -270,7 +270,7 @@ class FavoritesController extends ChangeNotifier {
         options: _auth,
       );
     } catch (e) {
-      debugPrint("Favorites toggle failed: $e");
+      debugPrint('Favorites toggle failed: $e');
       // لو فشل الاتصال: خزّن العملية مؤجلة للمزامنة لاحقًا
       await _enqueuePending(
         exists

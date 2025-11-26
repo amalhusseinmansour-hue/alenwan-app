@@ -90,7 +90,7 @@ class _HoverMediaCardState extends State<HoverMediaCard> {
                   ),
                   errorWidget: (_, __, ___) => Container(
                     color: ProfessionalTheme.surfaceCard,
-                    child: Icon(
+                    child: const Icon(
                       Icons.broken_image,
                       color: ProfessionalTheme.textTertiary,
                     ),
@@ -133,7 +133,7 @@ class _HoverMediaCardState extends State<HoverMediaCard> {
                   opacity: _hover ? 1 : 0.9,
                   child: Container(
                     padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.bottomCenter,
                         end: Alignment.topCenter,
@@ -443,7 +443,7 @@ class MoviesContent extends StatelessWidget {
                     imageUrl: image,
                     title: m.title,
                     subtitle: m.description, // 👈 لو عندك
-                    badge: "فيلم",
+                    badge: 'فيلم',
                     width: cardW,
                     height: cardH,
                     onTap: () => Navigator.pushNamed(

@@ -206,7 +206,7 @@ class _SliderBannerState extends State<SliderBanner> {
                       vertical: 12,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.5),
+                      color: Colors.black.withValues(alpha: 0.5),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
@@ -273,8 +273,8 @@ class _SliderBannerState extends State<SliderBanner> {
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.transparent,
-                  Colors.black.withOpacity(0.7),
-                  Colors.black.withOpacity(0.9),
+                  Colors.black.withValues(alpha: 0.7),
+                  Colors.black.withValues(alpha: 0.9),
                 ],
                 stops: const [0.0, 0.6, 1.0],
               ),
@@ -287,7 +287,7 @@ class _SliderBannerState extends State<SliderBanner> {
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE50914).withOpacity(0.9),
+                  color: const Color(0xFFE50914).withValues(alpha: 0.9),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -343,7 +343,7 @@ class _SliderBannerState extends State<SliderBanner> {
                         color: Colors.white,
                       ),
                       label: Text(
-                        isVideo ? "شاهد الآن" : "المزيد",
+                        isVideo ? 'شاهد الآن' : 'المزيد',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -392,8 +392,8 @@ class _SliderBannerState extends State<SliderBanner> {
       print('✅ Got video URL: ${videoUrl.substring(0, 50)}...');
 
       // Create video controller
-      final videoController = VideoPlayerController.network(
-        videoUrl,
+      final videoController = VideoPlayerController.networkUrl(
+        Uri.parse(videoUrl),
         httpHeaders: {
           'Referer': 'https://alenwan.app',
           'User-Agent': 'Alenwan Mobile App',
@@ -414,8 +414,8 @@ class _SliderBannerState extends State<SliderBanner> {
         materialProgressColors: ChewieProgressColors(
           playedColor: const Color(0xFFE50914),
           handleColor: const Color(0xFFE50914),
-          bufferedColor: Colors.white.withOpacity(0.3),
-          backgroundColor: Colors.white.withOpacity(0.2),
+          bufferedColor: Colors.white.withValues(alpha: 0.3),
+          backgroundColor: Colors.white.withValues(alpha: 0.2),
         ),
       );
 
@@ -444,7 +444,7 @@ class _SliderBannerState extends State<SliderBanner> {
           decoration: BoxDecoration(
             color: _currentIndex == index
                 ? const Color(0xFFE50914)
-                : Colors.white.withOpacity(0.5),
+                : Colors.white.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(4),
           ),
         ),
@@ -471,14 +471,14 @@ class _SliderBannerState extends State<SliderBanner> {
         children: [
           Icon(
             Icons.movie_creation_outlined,
-            color: Colors.white.withOpacity(0.3),
+            color: Colors.white.withValues(alpha: 0.3),
             size: 80,
           ),
           const SizedBox(height: 16),
           Text(
             'لا توجد عروض حالياً',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.5),
+              color: Colors.white.withValues(alpha: 0.5),
               fontSize: 18,
             ),
           ),

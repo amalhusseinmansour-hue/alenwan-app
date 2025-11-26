@@ -42,13 +42,16 @@ class _SecureVideoPlayerState extends State<SecureVideoPlayer>
   bool _hasError = false;
   String? _errorMessage;
   Timer? _progressTimer;
-  bool _isInBackground = false;
+  // ignore: unused_field
   DateTime? _sessionStartTime;
-  int _watchedSeconds = 0;
 
   // Security flags
   bool _securityViolation = false;
   int _bufferingAttempts = 0;
+  // ignore: unused_field
+  int _watchedSeconds = 0;
+  // ignore: unused_field
+  bool _isInBackground = false;
 
   @override
   void initState() {
@@ -122,8 +125,8 @@ class _SecureVideoPlayerState extends State<SecureVideoPlayer>
       final streamUrl = _streamingService.getStreamUrl(secureUrl, quality);
 
       // Initialize video controller with secure URL
-      _videoController = VideoPlayerController.network(
-        streamUrl,
+      _videoController = VideoPlayerController.networkUrl(
+        Uri.parse(streamUrl),
         httpHeaders: {
           'User-Agent': 'AlenWanPlayer/1.0',
           'Referer': 'https://alenwan.app',
@@ -224,9 +227,9 @@ class _SecureVideoPlayerState extends State<SecureVideoPlayer>
             color: Colors.black54,
             borderRadius: BorderRadius.circular(4),
           ),
-          child: Text(
+          child: const Text(
             'ALENWAN', // You can add user ID here
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
               fontSize: 10,
               fontWeight: FontWeight.bold,

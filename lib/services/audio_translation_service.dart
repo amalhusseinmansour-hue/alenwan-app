@@ -100,9 +100,11 @@ class AudioTranslationService {
     await _speechToText.listen(
       onResult: (result) => _handleSpeechResult(result),
       localeId: _getLocaleId(sourceLanguage),
-      cancelOnError: false,
-      partialResults: true,
-      listenMode: stt.ListenMode.dictation,
+      listenOptions: stt.SpeechListenOptions(
+        cancelOnError: false,
+        partialResults: true,
+        listenMode: stt.ListenMode.dictation,
+      ),
     );
   }
 
@@ -153,9 +155,11 @@ class AudioTranslationService {
       await _speechToText.listen(
         onResult: (result) => _handleSpeechResult(result),
         localeId: _getLocaleId(_currentLanguageCode),
-        cancelOnError: false,
-        partialResults: true,
-        listenMode: stt.ListenMode.dictation,
+        listenOptions: stt.SpeechListenOptions(
+          cancelOnError: false,
+          partialResults: true,
+          listenMode: stt.ListenMode.dictation,
+        ),
       );
     }
   }

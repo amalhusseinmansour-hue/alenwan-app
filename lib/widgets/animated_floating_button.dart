@@ -106,21 +106,21 @@ class _AnimatedFloatingButtonState extends State<AnimatedFloatingButton>
                   colors: [
                     widget.backgroundColor ?? ProfessionalTheme.primaryBrand,
                     (widget.backgroundColor ?? ProfessionalTheme.primaryBrand)
-                        .withOpacity(0.8),
+                        .withValues(alpha: 0.8),
                   ],
                 ),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
                     color: (widget.backgroundColor ?? ProfessionalTheme.primaryBrand)
-                        .withOpacity(0.4),
+                        .withValues(alpha: 0.4),
                     blurRadius: 15,
                     offset: const Offset(0, 8),
                   ),
                   if (widget.pulse)
                     BoxShadow(
                       color: (widget.backgroundColor ?? ProfessionalTheme.primaryBrand)
-                          .withOpacity(0.2),
+                          .withValues(alpha: 0.2),
                       blurRadius: 25,
                       offset: const Offset(0, 12),
                     ),
@@ -212,7 +212,7 @@ class _PulsingDotState extends State<PulsingDot>
           width: widget.size,
           height: widget.size,
           decoration: BoxDecoration(
-            color: widget.color.withOpacity(_animation.value),
+            color: widget.color.withValues(alpha: _animation.value),
             shape: BoxShape.circle,
           ),
         );

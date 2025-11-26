@@ -66,7 +66,7 @@ class PodcastDetailsScreen extends StatelessWidget {
               fit: BoxFit.cover,
               errorWidget: (_, __, ___) => Container(
                 color: ProfessionalTheme.surfaceCard,
-                child: Icon(
+                child: const Icon(
                   Icons.podcasts,
                   size: 80,
                   color: ProfessionalTheme.textSecondary,
@@ -80,7 +80,7 @@ class PodcastDetailsScreen extends StatelessWidget {
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    ProfessionalTheme.backgroundColor.withOpacity(0.7),
+                    ProfessionalTheme.backgroundColor.withValues(alpha: 0.7),
                     ProfessionalTheme.backgroundColor,
                   ],
                 ),
@@ -154,7 +154,7 @@ class PodcastDetailsScreen extends StatelessWidget {
                   const SnackBar(content: Text('تشغيل البودكاست قريباً')),
                 );
               },
-              icon: Icon(Icons.play_arrow, size: 28),
+              icon: const Icon(Icons.play_arrow, size: 28),
               label: const Text(
                 'تشغيل',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -175,7 +175,7 @@ class PodcastDetailsScreen extends StatelessWidget {
           Row(
             children: [
               if (podcast.rating != null) ...[
-                Icon(
+                const Icon(
                   Icons.star,
                   color: Colors.amber,
                   size: 20,
@@ -192,7 +192,7 @@ class PodcastDetailsScreen extends StatelessWidget {
                 const SizedBox(width: 16),
               ],
               if (podcast.duration != null) ...[
-                Icon(
+                const Icon(
                   Icons.access_time,
                   color: ProfessionalTheme.textSecondary,
                   size: 20,
@@ -200,14 +200,14 @@ class PodcastDetailsScreen extends StatelessWidget {
                 const SizedBox(width: 4),
                 Text(
                   podcast.formattedDuration,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: ProfessionalTheme.textSecondary,
                     fontSize: 14,
                   ),
                 ),
                 const SizedBox(width: 16),
               ],
-              Icon(
+              const Icon(
                 Icons.remove_red_eye,
                 color: ProfessionalTheme.textSecondary,
                 size: 20,
@@ -215,7 +215,7 @@ class PodcastDetailsScreen extends StatelessWidget {
               const SizedBox(width: 4),
               Text(
                 '${podcast.viewsCount} مشاهدة',
-                style: TextStyle(
+                style: const TextStyle(
                   color: ProfessionalTheme.textSecondary,
                   fontSize: 14,
                 ),
@@ -292,7 +292,7 @@ class PodcastDetailsScreen extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               podcast.getLocalizedDescription(isArabic ? 'ar' : 'en') ?? '',
-              style: TextStyle(
+              style: const TextStyle(
                 color: ProfessionalTheme.textSecondary,
                 fontSize: 15,
                 height: 1.6,
@@ -313,7 +313,7 @@ class PodcastDetailsScreen extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   'تاريخ النشر: ${podcast.releaseDate}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: ProfessionalTheme.textSecondary,
                     fontSize: 14,
                   ),

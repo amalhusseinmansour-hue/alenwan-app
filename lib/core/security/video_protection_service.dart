@@ -17,7 +17,6 @@ class VideoProtectionService {
   Timer? _heartbeatTimer;
   String? _currentSessionId;
   String? _currentVideoId;
-  bool _isProtectionEnabled = false;
 
   // Initialize video protection
   Future<void> initialize() async {
@@ -37,7 +36,6 @@ class VideoProtectionService {
     try {
       // Prevent screenshots on both Android and iOS using screen_protector
       await ScreenProtector.preventScreenshotOn();
-      _isProtectionEnabled = true;
       print('✅ Screenshot protection enabled');
     } catch (e) {
       print('❌ Failed to enable screenshot protection: $e');
@@ -302,7 +300,6 @@ class VideoProtectionService {
 
     try {
       await ScreenProtector.preventScreenshotOff();
-      _isProtectionEnabled = false;
       print('✅ Screenshot protection disabled');
     } catch (e) {
       print('❌ Failed to disable protection: $e');

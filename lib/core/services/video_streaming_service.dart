@@ -184,7 +184,7 @@ class VideoStreamingService extends ChangeNotifier {
 
     try {
       // Create a video player controller for preloading
-      final controller = VideoPlayerController.network(url);
+      final controller = VideoPlayerController.networkUrl(Uri.parse(url));
       await controller.initialize();
 
       _videoCache[videoId] = CachedVideo(

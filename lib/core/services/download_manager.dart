@@ -13,7 +13,7 @@ class DownloadManager {
     void Function(int received, int total)? onProgress,
   }) async {
     final dir = await getApplicationDocumentsDirectory();
-    final savePath = p.join(dir.path, "downloads", fileName);
+    final savePath = p.join(dir.path, 'downloads', fileName);
 
     // إنشاء فولدر downloads لو مش موجود
     await Directory(p.dirname(savePath)).create(recursive: true);

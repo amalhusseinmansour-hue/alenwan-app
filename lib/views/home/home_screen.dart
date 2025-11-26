@@ -8,6 +8,7 @@ import '../../core/theme/professional_theme.dart';
 import '../../widgets/common_app_bar.dart';
 
 // Controllers
+import '../../controllers/auth_controller.dart';
 import '../../controllers/home_controller.dart';
 import '../../controllers/documentary_controller.dart';
 import '../../controllers/sport_controller.dart';
@@ -34,7 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => HomeController()..loadData()),
+        ChangeNotifierProvider(create: (context) {
+          final auth = Provider.of<AuthController>(context, listen: false);
+          return HomeController()..loadData(isGuest: auth.isGuestMode);
+        }),
         ChangeNotifierProvider(create: (_) => DocumentaryController()),
         ChangeNotifierProvider(create: (_) => SportController()),
         ChangeNotifierProvider(create: (_) => CartoonController()),

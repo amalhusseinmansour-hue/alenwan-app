@@ -65,13 +65,13 @@ class MoviesScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
           color: selected
-              ? ProfessionalTheme.primaryColor.withOpacity(0.15)
+              ? ProfessionalTheme.primaryColor.withValues(alpha: 0.15)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
           boxShadow: selected
               ? [
                   BoxShadow(
-                    color: ProfessionalTheme.primaryColor.withOpacity(0.28),
+                    color: ProfessionalTheme.primaryColor.withValues(alpha: 0.28),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
@@ -100,7 +100,7 @@ class MoviesScreen extends StatelessWidget {
         child: BackdropFilter(
           filter: ui.ImageFilter.blur(sigmaX: 12, sigmaY: 12),
           child: Container(
-              color: ProfessionalTheme.surfaceColor.withOpacity(0.30)),
+              color: ProfessionalTheme.surfaceColor.withValues(alpha: 0.30)),
         ),
       ),
       leading: !wide

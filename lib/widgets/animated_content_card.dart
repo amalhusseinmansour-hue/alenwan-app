@@ -195,13 +195,13 @@ class _AnimatedContentCardState extends State<AnimatedContentCard>
                     boxShadow: widget.enableShadow
                         ? [
                             BoxShadow(
-                              color: AppColors.primary.withOpacity(0.1),
+                              color: AppColors.primary.withValues(alpha: 0.1),
                               offset: Offset(0, _elevationAnimation.value / 2),
                               blurRadius: _elevationAnimation.value,
                               spreadRadius: 1,
                             ),
                             BoxShadow(
-                              color: AppColors.accent.withOpacity(0.05),
+                              color: AppColors.accent.withValues(alpha: 0.05),
                               offset: Offset(0, _elevationAnimation.value),
                               blurRadius: _elevationAnimation.value * 2,
                               spreadRadius: 0,
@@ -262,12 +262,12 @@ class _AnimatedContentCardState extends State<AnimatedContentCard>
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                     colors: [
-                                      AppColors.primary.withOpacity(_isHovered ? 0.1 : 0.05),
-                                      AppColors.accent.withOpacity(_isHovered ? 0.15 : 0.08),
+                                      AppColors.primary.withValues(alpha: _isHovered ? 0.1 : 0.05),
+                                      AppColors.accent.withValues(alpha: _isHovered ? 0.15 : 0.08),
                                     ],
                                   ),
                                   border: Border.all(
-                                    color: AppColors.primary.withOpacity(_isHovered ? 0.3 : 0.1),
+                                    color: AppColors.primary.withValues(alpha: _isHovered ? 0.3 : 0.1),
                                     width: 1,
                                   ),
                                 ),
@@ -283,10 +283,10 @@ class _AnimatedContentCardState extends State<AnimatedContentCard>
                                 borderRadius: defaultBorderRadius,
                                 color: widget.backgroundColor ??
                                     (isDark
-                                        ? Colors.grey[900]?.withOpacity(0.8)
-                                        : Colors.white.withOpacity(0.9)),
+                                        ? Colors.grey[900]?.withValues(alpha: 0.8)
+                                        : Colors.white.withValues(alpha: 0.9)),
                                 border: Border.all(
-                                  color: AppColors.primary.withOpacity(_isHovered ? 0.3 : 0.1),
+                                  color: AppColors.primary.withValues(alpha: _isHovered ? 0.3 : 0.1),
                                   width: 1,
                                 ),
                               ),
@@ -317,8 +317,8 @@ class _AnimatedContentCardState extends State<AnimatedContentCard>
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                   colors: [
-                                    AppColors.primary.withOpacity(0.05),
-                                    AppColors.accent.withOpacity(0.1),
+                                    AppColors.primary.withValues(alpha: 0.05),
+                                    AppColors.accent.withValues(alpha: 0.1),
                                   ],
                                 ),
                               ),
@@ -331,7 +331,7 @@ class _AnimatedContentCardState extends State<AnimatedContentCard>
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: defaultBorderRadius,
-                                color: AppColors.primary.withOpacity(0.1),
+                                color: AppColors.primary.withValues(alpha: 0.1),
                               ),
                             ),
                           ),
@@ -396,12 +396,12 @@ class PremiumContentCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       colors: [AppColors.primary, AppColors.accent],
                     ),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Text(
+                  child: const Text(
                     'PREMIUM',
                     style: TextStyle(
                       color: Colors.white,
@@ -475,7 +475,7 @@ class MediaCard extends StatelessWidget {
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    Colors.black.withOpacity(0.7),
+                    Colors.black.withValues(alpha: 0.7),
                   ],
                 ),
               ),
@@ -491,11 +491,11 @@ class MediaCard extends StatelessWidget {
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.9),
+                    color: AppColors.primary.withValues(alpha: 0.9),
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: Colors.black.withValues(alpha: 0.3),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -524,7 +524,7 @@ class MediaCard extends StatelessWidget {
                     margin: const EdgeInsets.only(bottom: 8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(1.5),
-                      color: Colors.white.withOpacity(0.3),
+                      color: Colors.white.withValues(alpha: 0.3),
                     ),
                     child: FractionallySizedBox(
                       alignment: Alignment.centerLeft,
@@ -553,20 +553,20 @@ class MediaCard extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.access_time,
-                        color: Colors.white.withOpacity(0.8),
+                        color: Colors.white.withValues(alpha: 0.8),
                         size: 16,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         duration!,
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.8),
+                          color: Colors.white.withValues(alpha: 0.8),
                           fontSize: 14,
                         ),
                       ),
                       const Spacer(),
                       if (isWatched)
-                        Icon(
+                        const Icon(
                           Icons.check_circle,
                           color: AppColors.primary,
                           size: 20,

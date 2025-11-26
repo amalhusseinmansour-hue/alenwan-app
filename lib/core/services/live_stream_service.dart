@@ -12,10 +12,13 @@ class LiveStreamService {
     bool onlyActive = false,
   }) async {
     try {
+      print('🔵 Fetching live streams with only_active=$onlyActive');
       final res = await _dio.get(
         '/live-streams',
         queryParameters: {'only_active': onlyActive ? 1 : 0},
       );
+
+      print('✅ Live streams response: ${res.statusCode}');
 
       if (res.statusCode == 200) {
         final root = res.data;
@@ -30,13 +33,21 @@ class LiveStreamService {
           raw = root;
         }
 
+        print('✅ Found ${raw.length} live streams');
         return raw
             .whereType<Map<String, dynamic>>()
             .map((e) => LiveStreamModel.fromJson(e))
             .toList();
       }
+      print('❌ Bad status code: ${res.statusCode}');
       throw Exception('فشل تحميل البثوث: ${res.statusCode}');
+    } on DioException catch (e) {
+      print('❌ DioException: ${e.message}');
+      print('❌ Response: ${e.response?.data}');
+      print('❌ Status Code: ${e.response?.statusCode}');
+      throw Exception('خطأ في الاتصال: ${e.message} - Status: ${e.response?.statusCode}');
     } catch (e) {
+      print('❌ General error: $e');
       throw Exception('خطأ أثناء تحميل البثوث: $e');
     }
   }
@@ -114,8 +125,18 @@ class LiveStreamService {
             .toList();
       }
       return [];
+    } on DioException catch (e) {
+      // Handle backend errors gracefully
+      if (e.response?.statusCode == 500) {
+        print('⚠️ Backend error loading comments: ${e.response?.data}');
+        // Return empty list instead of throwing
+        return [];
+      }
+      print('❌ Error loading comments: ${e.message}');
+      return [];
     } catch (e) {
-      throw Exception('Failed to load comments: $e');
+      print('❌ Unexpected error loading comments: $e');
+      return [];
     }
   }
 

@@ -191,7 +191,7 @@ class _SportDetailsScreenState extends State<SportDetailsScreen> {
                 ),
               ),
               leading: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_back,
                   color: ProfessionalTheme.textPrimary,
                 ),
@@ -260,7 +260,7 @@ class _HeroSection extends StatelessWidget {
           ),
           errorWidget: (_, __, ___) => Container(
             color: ProfessionalTheme.surfaceCard,
-            child: Icon(
+            child: const Icon(
               Icons.broken_image,
               color: ProfessionalTheme.textTertiary,
               size: 64,
@@ -394,7 +394,7 @@ class _InfoSection extends StatelessWidget {
               width: 160,
               height: 240,
               color: ProfessionalTheme.surfaceCard,
-              child: Icon(
+              child: const Icon(
                 Icons.broken_image,
                 color: ProfessionalTheme.textTertiary,
               ),
@@ -421,7 +421,7 @@ class _InfoSection extends StatelessWidget {
               if (sport.rating != null && sport.rating! > 0) ...[
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.star,
                       color: Colors.amber,
                       size: 20,
@@ -439,7 +439,7 @@ class _InfoSection extends StatelessWidget {
               ],
 
               // Type
-              _InfoRow(
+              const _InfoRow(
                 icon: Icons.sports_soccer,
                 label: 'النوع',
                 value: 'رياضة',
@@ -465,7 +465,7 @@ class _DetailsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _SectionTitle('نبذة عن المحتوى الرياضي'),
+        const _SectionTitle('نبذة عن المحتوى الرياضي'),
         const SizedBox(height: 16),
         Container(
           width: double.infinity,
@@ -511,7 +511,7 @@ class _MetadataSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _SectionTitle('معلومات إضافية'),
+        const _SectionTitle('معلومات إضافية'),
         const SizedBox(height: 16),
         Container(
           width: double.infinity,

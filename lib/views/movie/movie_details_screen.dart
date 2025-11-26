@@ -218,7 +218,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen>
     try {
       apiDubs = await _dubService.list(type: 'movie', id: movie.id);
     } catch (e) {
-      debugPrint("Error: $e");
+      debugPrint('Error: $e');
     }
 
     Map<String, Map<String, dynamic>> merged = {};
@@ -298,7 +298,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.error_outline,
                     color: primaryColor,
                     size: 64,
@@ -330,238 +330,275 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen>
         child: Scaffold(
           backgroundColor: backgroundColor,
           body: Stack(
-          children: [
-            // Animated Background
-            CustomPaint(
-              painter: MovieDetailsPainter(_floatingAnimation.value),
-              size: Size.infinite,
-            ),
-            // Main Content
-            CustomScrollView(
-              slivers: [
-                // Modern App Bar with Hero Image
-                SliverAppBar(
-                  expandedHeight: 500,
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                  pinned: true,
-                  stretch: true,
-                  leading: AnimatedBuilder(
-                    animation: _scaleAnimation,
-                    builder: (context, child) {
-                      return Transform.scale(
-                        scale: _scaleAnimation.value,
-                        child: Container(
-                          margin: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: surfaceColor.withValues(alpha: 0.8),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: IconButton(
-                            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        // Hero Image with Parallax Effect
-                        AnimatedBuilder(
-                          animation: _fadeAnimation,
-                          builder: (context, child) {
-                            return Opacity(
-                              opacity: _fadeAnimation.value,
-                              child: CachedNetworkImage(
-                                imageUrl: _full(movie.bannerPath ?? movie.posterPath),
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) => Container(
-                                  color: surfaceColor,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(color: primaryColor),
-                                  ),
-                                ),
-                                errorWidget: (context, url, error) => Container(
-                                  color: surfaceColor,
-                                  child: const Icon(Icons.movie, color: Colors.white54, size: 64),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        // Gradient Overlay
-                        Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                backgroundColor.withValues(alpha: 0.3),
-                                Colors.transparent,
-                                backgroundColor.withValues(alpha: 0.8),
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              stops: const [0.0, 0.4, 1.0],
+            children: [
+              // Animated Background
+              CustomPaint(
+                painter: MovieDetailsPainter(_floatingAnimation.value),
+                size: Size.infinite,
+              ),
+              // Main Content
+              CustomScrollView(
+                slivers: [
+                  // Modern App Bar with Hero Image
+                  SliverAppBar(
+                    expandedHeight: 500,
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    pinned: true,
+                    stretch: true,
+                    leading: AnimatedBuilder(
+                      animation: _scaleAnimation,
+                      builder: (context, child) {
+                        return Transform.scale(
+                          scale: _scaleAnimation.value,
+                          child: Container(
+                            margin: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: surfaceColor.withValues(alpha: 0.8),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: IconButton(
+                              icon: const Icon(Icons.arrow_back_ios,
+                                  color: Colors.white),
+                              onPressed: () => Navigator.pop(context),
                             ),
                           ),
-                        ),
-                        // Movie Info Overlay
-                        Positioned(
-                          bottom: 60,
-                          left: 20,
-                          right: 20,
-                          child: AnimatedBuilder(
-                            animation: _scaleAnimation,
+                        );
+                      },
+                    ),
+                    flexibleSpace: FlexibleSpaceBar(
+                      background: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          // Hero Image with Parallax Effect
+                          AnimatedBuilder(
+                            animation: _fadeAnimation,
                             builder: (context, child) {
-                              return Transform.scale(
-                                scale: _scaleAnimation.value,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      movie.title,
-                                      style: ProfessionalTheme.headline2(color: Colors.white),
-                                      textAlign: TextAlign.center,
+                              return Opacity(
+                                opacity: _fadeAnimation.value,
+                                child: CachedNetworkImage(
+                                  imageUrl: _full(
+                                      movie.bannerPath ?? movie.posterPath),
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => Container(
+                                    color: surfaceColor,
+                                    child: const Center(
+                                      child: CircularProgressIndicator(
+                                          color: primaryColor),
                                     ),
-                                    const SizedBox(height: 16),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        _buildModernButton(
-                                          onPressed: () => _openFullScreen(movie),
-                                          icon: Icons.play_arrow,
-                                          label: 'شاهد الآن',
-                                          isPrimary: true,
-                                        ),
-                                        const SizedBox(width: 12),
-                                        Consumer<FavoritesController>(
-                                          builder: (context, favoritesController, _) {
-                                            final isFavorite = favoritesController.isFavorite(
-                                              movie.id,
-                                              'movie',
-                                            );
-                                            return _buildModernButton(
-                                              onPressed: () async {
-                                                await favoritesController.toggle(
-                                                  id: movie.id,
-                                                  type: 'movie',
-                                                  title: movie.title ?? '',
-                                                  image: movie.posterPath ?? '',
-                                                );
-                                                ScaffoldMessenger.of(context).showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                      isFavorite
-                                                          ? 'تمت الإزالة من المفضلة'
-                                                          : 'تمت الإضافة إلى المفضلة',
-                                                      style: ProfessionalTheme.body1(color: Colors.white),
-                                                    ),
-                                                    backgroundColor: primaryColor,
-                                                  ),
-                                                );
-                                              },
-                                              icon: isFavorite ? Icons.favorite : Icons.favorite_border,
-                                              label: 'المفضلة',
-                                              isPrimary: false,
-                                            );
-                                          },
-                                        ),
-                                        const SizedBox(width: 12),
-                                        Consumer<WatchlistController>(
-                                          builder: (context, watchlistController, _) {
-                                            final isInWatchlist = watchlistController.isInWatchlist(movie.id.toString());
-                                            return _buildModernButton(
-                                              onPressed: () async {
-                                                await watchlistController.toggleWatchlist(
-                                                  movie.id.toString(),
-                                                  {
-                                                    'id': movie.id.toString(),
-                                                    'title': movie.title ?? '',
-                                                    'thumbnail': movie.posterPath ?? '',
-                                                    'description': movie.description ?? '',
-                                                    'type': 'movie',
-                                                  },
-                                                );
-                                                ScaffoldMessenger.of(context).showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                      isInWatchlist
-                                                          ? 'تمت الإزالة من قائمة المشاهدة'
-                                                          : 'تمت الإضافة إلى قائمة المشاهدة',
-                                                      style: ProfessionalTheme.body1(color: Colors.white),
-                                                    ),
-                                                    backgroundColor: primaryColor,
-                                                  ),
-                                                );
-                                              },
-                                              icon: isInWatchlist ? Icons.bookmark : Icons.bookmark_border,
-                                              label: 'المشاهدة لاحقاً',
-                                              isPrimary: false,
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Container(
+                                    color: surfaceColor,
+                                    child: const Icon(Icons.movie,
+                                        color: Colors.white54, size: 64),
+                                  ),
                                 ),
                               );
                             },
                           ),
-                        ),
-                      ],
+                          // Gradient Overlay
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  backgroundColor.withValues(alpha: 0.3),
+                                  Colors.transparent,
+                                  backgroundColor.withValues(alpha: 0.8),
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                stops: const [0.0, 0.4, 1.0],
+                              ),
+                            ),
+                          ),
+                          // Movie Info Overlay
+                          Positioned(
+                            bottom: 60,
+                            left: 20,
+                            right: 20,
+                            child: AnimatedBuilder(
+                              animation: _scaleAnimation,
+                              builder: (context, child) {
+                                return Transform.scale(
+                                  scale: _scaleAnimation.value,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        movie.title,
+                                        style: ProfessionalTheme.headline2(
+                                            color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          _buildModernButton(
+                                            onPressed: () =>
+                                                _openFullScreen(movie),
+                                            icon: Icons.play_arrow,
+                                            label: 'شاهد الآن',
+                                            isPrimary: true,
+                                          ),
+                                          const SizedBox(width: 12),
+                                          Consumer<FavoritesController>(
+                                            builder: (context,
+                                                favoritesController, _) {
+                                              final isFavorite =
+                                                  favoritesController
+                                                      .isFavorite(
+                                                movie.id,
+                                                'movie',
+                                              );
+                                              return _buildModernButton(
+                                                onPressed: () async {
+                                                  await favoritesController
+                                                      .toggle(
+                                                    id: movie.id,
+                                                    type: 'movie',
+                                                    title: movie.title,
+                                                    image:
+                                                        movie.posterPath ?? '',
+                                                  );
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                        isFavorite
+                                                            ? 'تمت الإزالة من المفضلة'
+                                                            : 'تمت الإضافة إلى المفضلة',
+                                                        style: ProfessionalTheme
+                                                            .body1(
+                                                                color: Colors
+                                                                    .white),
+                                                      ),
+                                                      backgroundColor:
+                                                          primaryColor,
+                                                    ),
+                                                  );
+                                                },
+                                                icon: isFavorite
+                                                    ? Icons.favorite
+                                                    : Icons.favorite_border,
+                                                label: 'المفضلة',
+                                                isPrimary: false,
+                                              );
+                                            },
+                                          ),
+                                          const SizedBox(width: 12),
+                                          Consumer<WatchlistController>(
+                                            builder: (context,
+                                                watchlistController, _) {
+                                              final isInWatchlist =
+                                                  watchlistController
+                                                      .isInWatchlist(
+                                                          movie.id.toString());
+                                              return _buildModernButton(
+                                                onPressed: () async {
+                                                  await watchlistController
+                                                      .toggleWatchlist(
+                                                    movie.id.toString(),
+                                                    {
+                                                      'id': movie.id.toString(),
+                                                      'title': movie.title,
+                                                      'thumbnail':
+                                                          movie.posterPath,
+                                                      'description':
+                                                          movie.description,
+                                                      'type': 'movie',
+                                                    },
+                                                  );
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                        isInWatchlist
+                                                            ? 'تمت الإزالة من قائمة المشاهدة'
+                                                            : 'تمت الإضافة إلى قائمة المشاهدة',
+                                                        style: ProfessionalTheme
+                                                            .body1(
+                                                                color: Colors
+                                                                    .white),
+                                                      ),
+                                                      backgroundColor:
+                                                          primaryColor,
+                                                    ),
+                                                  );
+                                                },
+                                                icon: isInWatchlist
+                                                    ? Icons.bookmark
+                                                    : Icons.bookmark_border,
+                                                label: 'المشاهدة لاحقاً',
+                                                isPrimary: false,
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
 
-                // Content Section
-                SliverToBoxAdapter(
-                  child: AnimatedBuilder(
-                    animation: _fadeAnimation,
-                    builder: (context, child) {
-                      return Opacity(
-                        opacity: _fadeAnimation.value,
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Description Section
-                              if (desc.isNotEmpty) ...[
-                                _buildSectionTitle('القصة'),
-                                const SizedBox(height: 12),
-                                _buildDescriptionCard(desc),
+                  // Content Section
+                  SliverToBoxAdapter(
+                    child: AnimatedBuilder(
+                      animation: _fadeAnimation,
+                      builder: (context, child) {
+                        return Opacity(
+                          opacity: _fadeAnimation.value,
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Description Section
+                                if (desc.isNotEmpty) ...[
+                                  _buildSectionTitle('القصة'),
+                                  const SizedBox(height: 12),
+                                  _buildDescriptionCard(desc),
+                                  const SizedBox(height: 32),
+                                ],
+
+                                // Movie Info Section
+                                _buildSectionTitle('معلومات الفيلم'),
+                                const SizedBox(height: 16),
+                                _buildInfoCards(movie),
+                                const SizedBox(height: 32),
+
+                                // Related Movies Section
+                                _buildSectionTitle('أفلام مشابهة'),
+                                const SizedBox(height: 16),
+                                _ModernRelatedCarousel(
+                                    currentMovieId: movie.id),
                                 const SizedBox(height: 32),
                               ],
-
-                              // Movie Info Section
-                              _buildSectionTitle('معلومات الفيلم'),
-                              const SizedBox(height: 16),
-                              _buildInfoCards(movie),
-                              const SizedBox(height: 32),
-
-                              // Related Movies Section
-                              _buildSectionTitle('أفلام مشابهة'),
-                              const SizedBox(height: 16),
-                              _ModernRelatedCarousel(currentMovieId: movie.id),
-                              const SizedBox(height: 32),
-                            ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
 
+  // ignore: unused_element
   double? _parseRating(dynamic r) {
     if (r == null) return null;
     if (r is num) return r.toDouble();
@@ -577,11 +614,13 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen>
     return Container(
       decoration: BoxDecoration(
         gradient: isPrimary
-            ? LinearGradient(colors: [primaryColor, secondaryColor])
+            ? const LinearGradient(colors: [primaryColor, secondaryColor])
             : null,
         color: isPrimary ? null : surfaceColor.withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(25),
-        border: isPrimary ? null : Border.all(color: primaryColor.withValues(alpha: 0.3)),
+        border: isPrimary
+            ? null
+            : Border.all(color: primaryColor.withValues(alpha: 0.3)),
         boxShadow: isPrimary
             ? [
                 BoxShadow(
@@ -602,7 +641,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen>
               onTap: onPressed,
               borderRadius: BorderRadius.circular(25),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -629,7 +669,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen>
           width: 4,
           height: 24,
           decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [primaryColor, secondaryColor]),
+            gradient: const LinearGradient(colors: [primaryColor, secondaryColor]),
             borderRadius: BorderRadius.circular(2),
           ),
         ),
@@ -663,7 +703,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen>
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Text(
             description,
-            style: ProfessionalTheme.body1(color: Colors.white70).copyWith(height: 1.6),
+            style: ProfessionalTheme.body1(color: Colors.white70)
+                .copyWith(height: 1.6),
           ),
         ),
       ),
@@ -719,7 +760,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen>
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(colors: [primaryColor, secondaryColor]),
+                        gradient: const LinearGradient(
+                            colors: [primaryColor, secondaryColor]),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(icon, color: Colors.white, size: 20),
@@ -732,11 +774,13 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen>
                         children: [
                           Text(
                             key,
-                            style: ProfessionalTheme.caption(color: Colors.white70),
+                            style: ProfessionalTheme.caption(
+                                color: Colors.white70),
                           ),
                           Text(
                             value,
-                            style: ProfessionalTheme.subtitle2(color: Colors.white),
+                            style: ProfessionalTheme.subtitle2(
+                                color: Colors.white),
                           ),
                         ],
                       ),
@@ -901,7 +945,8 @@ class _ModernRelatedCarousel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<MovieController>(
       builder: (_, ctrl, __) {
-        final items = ctrl.movies.where((m) => m.id != currentMovieId).take(10).toList();
+        final items =
+            ctrl.movies.where((m) => m.id != currentMovieId).take(10).toList();
         if (items.isEmpty) {
           return Container(
             height: 200,
@@ -915,7 +960,8 @@ class _ModernRelatedCarousel extends StatelessWidget {
                 end: Alignment.bottomRight,
               ),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: const Color(0xFFA20136).withValues(alpha: 0.2)),
+              border: Border.all(
+                  color: const Color(0xFFA20136).withValues(alpha: 0.2)),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
@@ -925,11 +971,13 @@ class _ModernRelatedCarousel extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.movie_outlined, color: Colors.white54, size: 48),
+                      const Icon(Icons.movie_outlined,
+                          color: Colors.white54, size: 48),
                       const SizedBox(height: 16),
                       Text(
                         'لا يوجد محتوى متعلق الآن',
-                        style: ProfessionalTheme.subtitle1(color: Colors.white54),
+                        style:
+                            ProfessionalTheme.subtitle1(color: Colors.white54),
                       ),
                     ],
                   ),
@@ -1029,7 +1077,8 @@ class _ModernMovieCardState extends State<_ModernMovieCard>
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFA20136).withValues(alpha: _hoverAnimation.value * 0.3),
+                    color: const Color(0xFFA20136)
+                        .withValues(alpha: _hoverAnimation.value * 0.3),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   ),
@@ -1046,7 +1095,8 @@ class _ModernMovieCardState extends State<_ModernMovieCard>
                       // Movie Poster
                       Expanded(
                         child: ClipRRect(
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                          borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(16)),
                           child: Stack(
                             children: [
                               CachedNetworkImage(
@@ -1056,13 +1106,15 @@ class _ModernMovieCardState extends State<_ModernMovieCard>
                                 placeholder: (context, url) => Container(
                                   color: const Color(0xFF1A1A1A),
                                   child: const Center(
-                                    child: CircularProgressIndicator(color: Color(0xFFA20136)),
+                                    child: CircularProgressIndicator(
+                                        color: Color(0xFFA20136)),
                                   ),
                                 ),
                                 errorWidget: (context, url, error) => Container(
                                   color: const Color(0xFF1A1A1A),
                                   child: const Center(
-                                    child: Icon(Icons.movie, color: Colors.white54, size: 32),
+                                    child: Icon(Icons.movie,
+                                        color: Colors.white54, size: 32),
                                   ),
                                 ),
                               ),
@@ -1103,9 +1155,11 @@ class _ModernMovieCardState extends State<_ModernMovieCard>
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
-                          borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
+                          borderRadius: const BorderRadius.vertical(
+                              bottom: Radius.circular(16)),
                           border: Border.all(
-                            color: const Color(0xFFA20136).withValues(alpha: 0.2),
+                            color:
+                                const Color(0xFFA20136).withValues(alpha: 0.2),
                           ),
                         ),
                         child: Column(
@@ -1115,25 +1169,29 @@ class _ModernMovieCardState extends State<_ModernMovieCard>
                               widget.movie.title,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style: ProfessionalTheme.subtitle2(color: Colors.white),
+                              style: ProfessionalTheme.subtitle2(
+                                  color: Colors.white),
                             ),
                             const SizedBox(height: 4),
                             Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.star,
                                   color: Colors.amber,
                                   size: 12,
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  widget.movie.rating?.toStringAsFixed(1) ?? '-',
-                                  style: ProfessionalTheme.caption(color: Colors.white70),
+                                  widget.movie.rating?.toStringAsFixed(1) ??
+                                      '-',
+                                  style: ProfessionalTheme.caption(
+                                      color: Colors.white70),
                                 ),
                                 const Spacer(),
                                 Text(
                                   '${widget.movie.releaseYear}',
-                                  style: ProfessionalTheme.caption(color: Colors.white70),
+                                  style: ProfessionalTheme.caption(
+                                      color: Colors.white70),
                                 ),
                               ],
                             ),
@@ -1160,15 +1218,14 @@ class MovieDetailsPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..style = PaintingStyle.fill;
+    final paint = Paint()..style = PaintingStyle.fill;
 
     // Background gradient
-    paint.shader = LinearGradient(
+    paint.shader = const LinearGradient(
       colors: [
-        const Color(0xFF0A0A0A),
-        const Color(0xFF1A1A1A),
-        const Color(0xFF0A0A0A),
+        Color(0xFF0A0A0A),
+        Color(0xFF1A1A1A),
+        Color(0xFF0A0A0A),
       ],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
@@ -1204,7 +1261,8 @@ class MovieDetailsPainter extends CustomPainter {
     }
   }
 
-  void _drawFilmReel(Canvas canvas, Offset center, double radius, double rotation, Color color) {
+  void _drawFilmReel(Canvas canvas, Offset center, double radius,
+      double rotation, Color color) {
     final paint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
@@ -1241,12 +1299,20 @@ class MovieDetailsPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     // Draw camera body
-    final rect = Rect.fromCenter(center: center, width: size * 1.5, height: size);
-    canvas.drawRRect(RRect.fromRectAndRadius(rect, Radius.circular(size * 0.1)), paint);
+    final rect =
+        Rect.fromCenter(center: center, width: size * 1.5, height: size);
+    canvas.drawRRect(
+        RRect.fromRectAndRadius(rect, Radius.circular(size * 0.1)), paint);
 
     // Draw lens
     canvas.drawCircle(center, size * 0.4, paint);
-    canvas.drawCircle(center, size * 0.25, Paint()..color = color..style = PaintingStyle.stroke..strokeWidth = 1);
+    canvas.drawCircle(
+        center,
+        size * 0.25,
+        Paint()
+          ..color = color
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1);
   }
 
   @override

@@ -82,7 +82,7 @@ class _AdminRevenueScreenState extends State<AdminRevenueScreen> {
         color: const Color(0xFF1E1E2E),
         border: Border(
           bottom: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -220,7 +220,7 @@ class _AdminRevenueScreenState extends State<AdminRevenueScreen> {
         color: const Color(0xFF1E1E2E),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -235,8 +235,8 @@ class _AdminRevenueScreenState extends State<AdminRevenueScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: isPositive
-                      ? Colors.green.withOpacity(0.2)
-                      : Colors.red.withOpacity(0.2),
+                      ? Colors.green.withValues(alpha: 0.2)
+                      : Colors.red.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
@@ -274,7 +274,7 @@ class _AdminRevenueScreenState extends State<AdminRevenueScreen> {
             title,
             style: TextStyle(
               fontSize: 14,
-              color: Colors.white.withOpacity(0.6),
+              color: Colors.white.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -289,7 +289,7 @@ class _AdminRevenueScreenState extends State<AdminRevenueScreen> {
         color: const Color(0xFF1E1E2E),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -315,7 +315,7 @@ class _AdminRevenueScreenState extends State<AdminRevenueScreen> {
                   horizontalInterval: 1000,
                   getDrawingHorizontalLine: (value) {
                     return FlLine(
-                      color: Colors.white.withOpacity(0.1),
+                      color: Colors.white.withValues(alpha: 0.1),
                       strokeWidth: 1,
                     );
                   },
@@ -407,7 +407,7 @@ class _AdminRevenueScreenState extends State<AdminRevenueScreen> {
                     ),
                     belowBarData: BarAreaData(
                       show: true,
-                      color: Colors.blue.withOpacity(0.2),
+                      color: Colors.blue.withValues(alpha: 0.2),
                     ),
                   ),
                 ],
@@ -439,7 +439,7 @@ class _AdminRevenueScreenState extends State<AdminRevenueScreen> {
         color: const Color(0xFF1E1E2E),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -558,7 +558,7 @@ class _AdminRevenueScreenState extends State<AdminRevenueScreen> {
         color: const Color(0xFF1E1E2E),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -625,7 +625,7 @@ class _AdminRevenueScreenState extends State<AdminRevenueScreen> {
             width: 30,
             height: 30,
             decoration: BoxDecoration(
-              color: rankColor.withOpacity(0.2),
+              color: rankColor.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Center(

@@ -104,8 +104,9 @@ class LiveController extends ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      _error = 'Error fetching comments: $e';
-      notifyListeners();
+      // Silently handle comment loading errors
+      // The service already logs the error
+      print('⚠️ Comments not available: $e');
     }
   }
 

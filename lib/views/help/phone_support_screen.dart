@@ -77,10 +77,10 @@ class _PhoneSupportScreenState extends State<PhoneSupportScreen>
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: ProfessionalTheme.surfaceCard.withOpacity(0.6),
+              color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
               borderRadius: BorderRadius.circular(ProfessionalTheme.radiusL),
               border: Border.all(
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withValues(alpha: 0.1),
                 width: 1,
               ),
             ),
@@ -161,15 +161,15 @@ class _PhoneSupportScreenState extends State<PhoneSupportScreen>
     return Container(
       padding: const EdgeInsets.all(ProfessionalTheme.space20),
       decoration: ProfessionalTheme.glassMorphism.copyWith(
-        color: ProfessionalTheme.primaryBrand.withOpacity(0.1),
+        color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
         border: Border.all(
-          color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+          color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
       child: Column(
         children: [
-          Icon(
+          const Icon(
             Icons.phone_outlined,
             color: ProfessionalTheme.primaryBrand,
             size: 48,
@@ -215,7 +215,7 @@ class _PhoneSupportScreenState extends State<PhoneSupportScreen>
             decoration: ProfessionalTheme.glassMorphism.copyWith(
               boxShadow: [
                 BoxShadow(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   blurRadius: 20,
                   offset: const Offset(0, 8),
                 ),
@@ -229,11 +229,11 @@ class _PhoneSupportScreenState extends State<PhoneSupportScreen>
                     Container(
                       padding: const EdgeInsets.all(ProfessionalTheme.space12),
                       decoration: BoxDecoration(
-                        color: color.withOpacity(0.2),
+                        color: color.withValues(alpha: 0.2),
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: color.withOpacity(0.3),
+                            color: color.withValues(alpha: 0.3),
                             blurRadius: 10,
                             spreadRadius: 2,
                           ),
@@ -255,7 +255,7 @@ class _PhoneSupportScreenState extends State<PhoneSupportScreen>
                         ),
                       ),
                     ),
-                    Icon(
+                    const Icon(
                       Icons.phone,
                       color: ProfessionalTheme.textTertiary,
                       size: 18,
@@ -266,10 +266,10 @@ class _PhoneSupportScreenState extends State<PhoneSupportScreen>
                 Container(
                   padding: const EdgeInsets.all(ProfessionalTheme.space12),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.1),
+                    color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
                     border: Border.all(
-                      color: color.withOpacity(0.3),
+                      color: color.withValues(alpha: 0.3),
                       width: 1,
                     ),
                   ),
@@ -315,7 +315,7 @@ class _PhoneSupportScreenState extends State<PhoneSupportScreen>
                 const SizedBox(height: ProfessionalTheme.space12),
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.access_time,
                       color: ProfessionalTheme.textTertiary,
                       size: 16,
@@ -342,10 +342,10 @@ class _PhoneSupportScreenState extends State<PhoneSupportScreen>
     return Container(
       padding: const EdgeInsets.all(ProfessionalTheme.space20),
       decoration: BoxDecoration(
-        color: ProfessionalTheme.surfaceCard.withOpacity(0.3),
+        color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -354,7 +354,7 @@ class _PhoneSupportScreenState extends State<PhoneSupportScreen>
         children: [
           Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.info_outline,
                 color: ProfessionalTheme.primaryBrand,
                 size: 20,
@@ -386,7 +386,7 @@ class _PhoneSupportScreenState extends State<PhoneSupportScreen>
           Container(
             width: 6,
             height: 6,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: ProfessionalTheme.primaryBrand,
               shape: BoxShape.circle,
             ),

@@ -38,7 +38,7 @@ class SportClipsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     if (clips.isEmpty) {
       return const Center(
-        child: Text("لا توجد حلقات متاحة حالياً",
+        child: Text('لا توجد حلقات متاحة حالياً',
             style: TextStyle(color: Colors.white70)),
       );
     }

@@ -9,9 +9,9 @@ class SportTabs extends StatelessWidget {
     return TabBar(
       indicatorColor: Colors.red,
       tabs: [
-        Tab(text: "episodes_tab".tr()),
-        Tab(text: "similar_tab".tr()),
-        Tab(text: "more_info_tab".tr()),
+        Tab(text: 'episodes_tab'.tr()),
+        Tab(text: 'similar_tab'.tr()),
+        Tab(text: 'more_info_tab'.tr()),
       ],
     );
   }

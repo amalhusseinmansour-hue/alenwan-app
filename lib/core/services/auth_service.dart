@@ -7,7 +7,8 @@ import '../exceptions/api_exceptions.dart';
 
 class AuthService {
   final Dio _dio = ApiClient().dio;
-  final DeviceFingerprintService _fingerprintService = DeviceFingerprintService();
+  final DeviceFingerprintService _fingerprintService =
+      DeviceFingerprintService();
 
   static const _tokenKey = 'token';
 
@@ -63,7 +64,7 @@ class AuthService {
       return {
         'success': true,
         'token': token,
-        'user': data['user'],
+        'user': data['user'] ?? data,
       };
     } on DioException catch (e) {
       final apiException = ErrorHandler.handleDioError(e);
@@ -79,6 +80,8 @@ class AuthService {
 
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
+      print('🔵 [AuthService] Logging in user: $email');
+
       // Get device information
       final deviceId = await _fingerprintService.getDeviceId();
       final deviceInfo = await _fingerprintService.getDeviceInfo();
@@ -92,6 +95,8 @@ class AuthService {
         'platform': deviceInfo['platform'] ?? 'android',
       });
 
+      print('🔵 [AuthService] Login response status: ${res.statusCode}');
+
       // API returns: { status: 'success', data: { user: {...}, token: '...' } }
       final data = res.data['data'] ?? res.data;
       final token = data['token'];
@@ -99,6 +104,9 @@ class AuthService {
         await _saveToken(token);
         // Update ApiClient auth header
         await ApiClient().refreshAuthHeader();
+        print('✅ [AuthService] Login successful, token saved');
+      } else {
+        print('⚠️ [AuthService] No token received in login response');
       }
 
       return {
@@ -107,6 +115,7 @@ class AuthService {
         'user': data['user'],
       };
     } on DioException catch (e) {
+      print('❌ [AuthService] Login DioException: ${e.message}');
       final apiException = ErrorHandler.handleDioError(e);
       // Use firstError for ValidationException to show specific field errors
       final errorMessage = apiException is ValidationException
@@ -114,13 +123,15 @@ class AuthService {
           : apiException.message;
       return {'success': false, 'error': errorMessage};
     } catch (e) {
+      print('❌ [AuthService] Login error: $e');
       return {'success': false, 'error': _handleError(e, 'فشل تسجيل الدخول')};
     }
   }
 
   Future<Map<String, dynamic>> forgotPassword(String email) async {
     try {
-      final res = await _dio.post('/auth/forgot-password', data: {'email': email});
+      final res =
+          await _dio.post('/auth/forgot-password', data: {'email': email});
       return res.data;
     } on DioException catch (e) {
       final apiException = ErrorHandler.handleDioError(e);
@@ -179,31 +190,42 @@ class AuthService {
 
   Future<Map<String, dynamic>?> fetchUserProfile() async {
     try {
+      print('🔵 [AuthService] Fetching user profile...');
       final res = await _dio.get('/me');
+
+      print('🔵 [AuthService] Profile response: ${res.data}');
+
       // Handle Laravel response structure
       // الـ response الفعلي: {"success": true, "data": {"user": {...}}}
       if (res.data is Map) {
         final body = res.data as Map;
         // تحقق من success أو status
-        final isSuccess = body['success'] == true || body['status'] == 'success';
+        final isSuccess =
+            body['success'] == true || body['status'] == 'success';
 
         if (isSuccess && body['data'] != null) {
           final data = body['data'] as Map;
           // تحقق إذا كانت البيانات في data.user
           if (data.containsKey('user')) {
-            return Map<String, dynamic>.from(data['user'] as Map);
+            final userMap = Map<String, dynamic>.from(data['user'] as Map);
+            print('✅ [AuthService] Profile fetched successfully');
+            return userMap;
           }
           // إذا كانت البيانات مباشرة في data
-          return Map<String, dynamic>.from(data);
+          final userMap = Map<String, dynamic>.from(data);
+          print('✅ [AuthService] Profile fetched successfully');
+          return userMap;
         }
       }
+      print('⚠️ [AuthService] Invalid profile response format');
       return null;
     } on DioException catch (e) {
+      print('❌ [AuthService] Fetch profile DioException: ${e.message}');
       final apiException = ErrorHandler.handleDioError(e);
       print('❌ Fetch profile error: ${apiException.message}');
       return null;
     } catch (e) {
-      print('❌ Fetch profile error: $e');
+      print('❌ [AuthService] Fetch profile error: $e');
       return null;
     }
   }
@@ -229,16 +251,20 @@ class AuthService {
 
       final requestData = {
         'provider': provider,
+        'email': email,
+        'name': name,
         if (idToken != null) 'id_token': idToken,
         if (accessToken != null) 'access_token': accessToken,
         if (authCode != null) 'auth_code': authCode,
-        if (name != null) 'name': name,
         if (phone != null) 'phone': phone,
         if (avatar != null) 'avatar': avatar,
-        if (email != null) 'email': email,
-        if (appleUserId != null) 'apple_user_id': appleUserId,
+        // Send provider-specific IDs with correct field names
         if (googleId != null) 'google_id': googleId,
-        'device_id': deviceId,
+        if (appleUserId != null) 'apple_user_id': appleUserId,
+        // Some backends use generic provider_id
+        if (googleId != null) 'provider_id': googleId,
+        if (appleUserId != null) 'provider_id': appleUserId,
+        'device_id': deviceId ?? 'unknown_device_id',
         'device_name': deviceInfo['model'] ?? 'Unknown Device',
         'device_type': deviceInfo['platform'] ?? 'mobile',
         'platform': deviceInfo['platform'] ?? 'android',
@@ -254,10 +280,13 @@ class AuthService {
       // Handle Laravel response structure
       // Laravel returns: { status: 'success', data: { user: {...}, token: '...' }, message: '...' }
       final responseBody = res.data;
-      final isSuccess = responseBody['status'] == 'success' || responseBody['success'] == true;
+      final isSuccess = responseBody['status'] == 'success' ||
+          responseBody['success'] == true;
 
       if (!isSuccess) {
-        final errorMsg = responseBody['message'] ?? responseBody['error'] ?? 'فشل تسجيل الدخول';
+        final errorMsg = responseBody['message'] ??
+            responseBody['error'] ??
+            'فشل تسجيل الدخول';
         print('❌ [AuthService] Backend returned error: $errorMsg');
         return {
           'success': false,
@@ -270,7 +299,8 @@ class AuthService {
       final token = data['token'];
       final user = data['user'];
 
-      print('🔵 [AuthService] Token received: ${token != null ? "Yes (${token.substring(0, 20)}...)" : "No"}');
+      print(
+          '🔵 [AuthService] Token received: ${token != null ? "Yes (${token.substring(0, 20)}...)" : "No"}');
       print('🔵 [AuthService] User received: ${user != null ? "Yes" : "No"}');
 
       if (token != null) {
@@ -305,8 +335,8 @@ class AuthService {
         final responseData = e.response!.data;
         if (responseData is Map) {
           errorMessage = responseData['message'] ??
-                        responseData['error'] ??
-                        apiException.message;
+              responseData['error'] ??
+              apiException.message;
         }
       }
 
@@ -314,6 +344,7 @@ class AuthService {
         'success': false,
         'error': errorMessage,
         'message': errorMessage,
+        'details': e.response?.data, // Include full details for debugging
       };
     } catch (e) {
       print('❌ [AuthService] Unexpected error: $e');
@@ -329,7 +360,8 @@ class AuthService {
   // =========================
   // 📱 Phone / WhatsApp OTP
   // =========================
-  Future<bool> requestOtp({required String phone, String channel = 'sms'}) async {
+  Future<bool> requestOtp(
+      {required String phone, String channel = 'sms'}) async {
     try {
       final res = await _dio.post('/login/phone', data: {
         'phone': phone,

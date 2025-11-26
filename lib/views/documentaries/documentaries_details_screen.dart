@@ -138,7 +138,7 @@ class _DocumentaryDetailsScreenState extends State<DocumentaryDetailsScreen> {
                 ),
               ),
               leading: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_back,
                   color: ProfessionalTheme.textPrimary,
                 ),
@@ -207,7 +207,7 @@ class _HeroSection extends StatelessWidget {
           ),
           errorWidget: (_, __, ___) => Container(
             color: ProfessionalTheme.surfaceCard,
-            child: Icon(
+            child: const Icon(
               Icons.broken_image,
               color: ProfessionalTheme.textTertiary,
               size: 64,
@@ -341,7 +341,7 @@ class _InfoSection extends StatelessWidget {
               width: 160,
               height: 240,
               color: ProfessionalTheme.surfaceCard,
-              child: Icon(
+              child: const Icon(
                 Icons.broken_image,
                 color: ProfessionalTheme.textTertiary,
               ),
@@ -368,7 +368,7 @@ class _InfoSection extends StatelessWidget {
               if (doc.rating > 0) ...[
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.star,
                       color: Colors.amber,
                       size: 20,
@@ -396,7 +396,7 @@ class _InfoSection extends StatelessWidget {
               ],
 
               // Type
-              _InfoRow(
+              const _InfoRow(
                 icon: Icons.movie,
                 label: 'النوع',
                 value: 'وثائقي',
@@ -421,7 +421,7 @@ class _DetailsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _SectionTitle('نبذة عن الوثائقي'),
+        const _SectionTitle('نبذة عن الوثائقي'),
         const SizedBox(height: 16),
         Container(
           width: double.infinity,
@@ -470,7 +470,7 @@ class _MetadataSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _SectionTitle('فريق العمل'),
+        const _SectionTitle('فريق العمل'),
         const SizedBox(height: 16),
         Container(
           width: double.infinity,

@@ -24,7 +24,6 @@ class DeviceManager extends ChangeNotifier {
   bool _isActive = false;
   bool _isBlocked = false;
   String? _deviceToken;
-  DateTime? _lastVerification;
   Timer? _verificationTimer;
 
   // Registered devices list
@@ -145,7 +144,6 @@ class DeviceManager extends ChangeNotifier {
         if (data['status'] == 'active') {
           _isActive = true;
           _isBlocked = false;
-          _lastVerification = DateTime.now();
           notifyListeners();
           return true;
         } else if (data['status'] == 'blocked') {

@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class SocialLoginRow extends StatelessWidget {
   final VoidCallback? onGoogle;
+  final VoidCallback? onApple;
   final VoidCallback? onPhoneOrWhatsApp;
 
-  const SocialLoginRow({super.key, this.onGoogle, this.onPhoneOrWhatsApp});
+  const SocialLoginRow({
+    super.key,
+    this.onGoogle,
+    this.onApple,
+    this.onPhoneOrWhatsApp,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +33,36 @@ class SocialLoginRow extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-           
-            const SizedBox(width: 20),
-            _SocialCircleButton(
-              tooltip: 'الهاتف / واتساب',
-              icon: Icons.phone_iphone,
-              backgroundColor: Colors.white,
-              onTap: onPhoneOrWhatsApp,
-            ),
+            // Google Sign-In
+            if (onGoogle != null)
+              _SocialCircleButton(
+                tooltip: 'Google',
+                icon: Icons.g_mobiledata_rounded, // أو استخدم أيقونة أخرى
+                backgroundColor: Colors.white,
+                onTap: onGoogle,
+              ),
+
+            // Apple Sign-In - Show only on iOS or Web
+            if (onApple != null && (!kIsWeb && Platform.isIOS || kIsWeb)) ...[
+              const SizedBox(width: 20),
+              _SocialCircleButton(
+                tooltip: 'Apple',
+                icon: Icons.apple,
+                backgroundColor: Colors.white,
+                onTap: onApple,
+              ),
+            ],
+
+            // Phone/WhatsApp
+            if (onPhoneOrWhatsApp != null) ...[
+              const SizedBox(width: 20),
+              _SocialCircleButton(
+                tooltip: 'الهاتف / واتساب',
+                icon: Icons.phone_iphone,
+                backgroundColor: Colors.white,
+                onTap: onPhoneOrWhatsApp,
+              ),
+            ],
           ],
         ),
       ],

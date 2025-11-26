@@ -54,6 +54,7 @@ class _ExploreScreenState extends State<ExploreScreen>
 
   bool _isSearching = false;
   List<dynamic> _searchResults = [];
+  // ignore: unused_field
   List<dynamic> _categoryContent = [];
 
   @override
@@ -279,7 +280,7 @@ class _ExploreScreenState extends State<ExploreScreen>
               ),
               prefixIcon: Container(
                 padding: const EdgeInsets.all(8),
-                child: Icon(
+                child: const Icon(
                   Icons.search,
                   color: primaryColor,
                   size: 24,
@@ -359,30 +360,6 @@ class _ExploreScreenState extends State<ExploreScreen>
     );
   }
 
-  Widget _buildCategoryContent() {
-    return TabBarView(
-      controller: _tabController,
-      children: _categories.map((category) {
-        return SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Genre filters
-              _buildGenreFilters(),
-
-              // Featured section
-              _buildFeaturedSection(),
-
-              // Content grid
-              _buildContentGrid(),
-            ],
-          ),
-        );
-      }).toList(),
-    );
-  }
-
   Widget _buildGenreFilters() {
     return Container(
       height: 40,
@@ -439,7 +416,7 @@ class _ExploreScreenState extends State<ExploreScreen>
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.transparent,
-                  Colors.black.withOpacity(0.8),
+                  Colors.black.withValues(alpha: 0.8),
                 ],
               ),
             ),
@@ -465,7 +442,7 @@ class _ExploreScreenState extends State<ExploreScreen>
                 Text(
                   'Handpicked content just for you',
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.8),
+                    color: Colors.white.withValues(alpha: 0.8),
                     fontSize: 14,
                   ),
                 ),
@@ -494,47 +471,6 @@ class _ExploreScreenState extends State<ExploreScreen>
           imageUrl: 'https://example.com/poster.jpg',
           rating: '8.5',
           isPremium: index % 3 == 0,
-          cardType: ContentCardType.poster,
-          onTap: () {
-            // Navigate to details
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildSearchResults() {
-    if (_searchResults.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.search_off, size: 64, color: Colors.grey.shade700),
-            const SizedBox(height: 16),
-            Text(
-              'No results found',
-              style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return GridView.builder(
-      padding: const EdgeInsets.all(16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: 0.6,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 12,
-      ),
-      itemCount: _searchResults.length,
-      itemBuilder: (context, index) {
-        final item = _searchResults[index];
-        return ContentCard(
-          title: item['title'] ?? '',
-          imageUrl: item['thumbnail'] ?? '',
-          rating: item['rating']?.toString(),
           cardType: ContentCardType.poster,
           onTap: () {
             // Navigate to details

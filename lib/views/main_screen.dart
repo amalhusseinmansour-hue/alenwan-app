@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 import 'package:alenwan/views/home/home_screen.dart';
-import 'package:alenwan/views/home/web_home_screen.dart';
+
 import 'package:alenwan/views/downloads/downloads_screen.dart';
 import 'package:alenwan/views/profile/profile_screen.dart';
 import 'package:alenwan/views/search/search_screen.dart';
 import 'package:alenwan/views/common/custom_bottom_nav.dart';
 import 'package:alenwan/controllers/subscription_controller.dart';
+import 'package:alenwan/controllers/auth_controller.dart';
+import 'package:alenwan/widgets/pwa_install_prompt.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -23,7 +25,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   late Animation<double> _fadeAnimation;
 
   late final List<Widget> _screens = [
-    kIsWeb ? const WebHomeScreen() : const HomeScreen(),
+    const HomeScreen(),
     const DownloadsScreen(),
     const LivePageScreen(),
     const SearchScreen(),
@@ -50,9 +52,12 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
     _transitionController.forward();
 
-    // Load subscription status on app start
+    // Load subscription status on app start (only if not in guest mode)
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<SubscriptionController>().load();
+      final authController = context.read<AuthController>();
+      if (!authController.isGuestMode && authController.token != null) {
+        context.read<SubscriptionController>().load();
+      }
     });
   }
 
@@ -75,17 +80,23 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AnimatedBuilder(
-        animation: _fadeAnimation,
-        builder: (context, child) {
-          return FadeTransition(
-            opacity: _fadeAnimation,
-            child: IndexedStack(
-              index: _currentIndex,
-              children: _screens,
-            ),
-          );
-        },
+      body: Stack(
+        children: [
+          AnimatedBuilder(
+            animation: _fadeAnimation,
+            builder: (context, child) {
+              return FadeTransition(
+                opacity: _fadeAnimation,
+                child: IndexedStack(
+                  index: _currentIndex,
+                  children: _screens,
+                ),
+              );
+            },
+          ),
+          // PWA Install Prompt (only on web)
+          if (kIsWeb) const PWAInstallPrompt(),
+        ],
       ),
       bottomNavigationBar: CustomBottomNav(
         currentIndex: _currentIndex,

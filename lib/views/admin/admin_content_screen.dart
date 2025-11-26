@@ -157,7 +157,7 @@ class _AdminContentScreenState extends State<AdminContentScreen>
         color: const Color(0xFF1E1E2E),
         border: Border(
           bottom: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -201,7 +201,7 @@ class _AdminContentScreenState extends State<AdminContentScreen>
         color: const Color(0xFF1E1E2E),
         border: Border(
           bottom: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -211,10 +211,10 @@ class _AdminContentScreenState extends State<AdminContentScreen>
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
           hintText: 'البحث في المحتوى...',
-          hintStyle: TextStyle(color: Colors.white.withOpacity(0.4)),
+          hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.4)),
           prefixIcon: const Icon(Icons.search, color: Colors.white60),
           filled: true,
-          fillColor: Colors.white.withOpacity(0.05),
+          fillColor: Colors.white.withValues(alpha: 0.05),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide.none,
@@ -264,7 +264,7 @@ class _AdminContentScreenState extends State<AdminContentScreen>
         color: const Color(0xFF1E1E2E),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -320,7 +320,7 @@ class _AdminContentScreenState extends State<AdminContentScreen>
                   item['year']?.toString() ?? '',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.white.withOpacity(0.6),
+                    color: Colors.white.withValues(alpha: 0.6),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -362,7 +362,7 @@ class _AdminContentScreenState extends State<AdminContentScreen>
         color: const Color(0xFF1E1E2E),
         border: Border(
           top: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),

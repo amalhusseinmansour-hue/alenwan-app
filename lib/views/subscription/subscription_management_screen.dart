@@ -185,7 +185,7 @@ class _SubscriptionManagementScreenState
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.error_outline,
             color: AppColors.error,
             size: 64,
@@ -260,8 +260,8 @@ class _SubscriptionManagementScreenState
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    AppColors.primary.withOpacity(0.2),
-                    AppColors.accent.withOpacity(0.1),
+                    AppColors.primary.withValues(alpha: 0.2),
+                    AppColors.accent.withValues(alpha: 0.1),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -324,7 +324,7 @@ class _SubscriptionManagementScreenState
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.calendar_today,
                           color: Colors.white70,
                           size: 18,
@@ -484,7 +484,7 @@ class _SubscriptionManagementScreenState
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.subscriptions_outlined,
               color: Colors.white24,
               size: 80,

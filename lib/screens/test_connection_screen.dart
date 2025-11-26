@@ -194,21 +194,21 @@ class _TestConnectionScreenState extends State<TestConnectionScreen> {
               color: ProfessionalTheme.surfaceCard,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
               ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                const Row(
                   children: [
                     Icon(
                       Icons.settings,
                       color: ProfessionalTheme.primaryBrand,
                       size: 20,
                     ),
-                    const SizedBox(width: 8),
-                    const Text(
+                    SizedBox(width: 8),
+                    Text(
                       'Configuration',
                       style: TextStyle(
                         color: ProfessionalTheme.textPrimary,
@@ -241,9 +241,9 @@ class _TestConnectionScreenState extends State<TestConnectionScreen> {
             margin: const EdgeInsets.symmetric(horizontal: 16),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: _statusColor.withOpacity(0.1),
+              color: _statusColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: _statusColor.withOpacity(0.3)),
+              border: Border.all(color: _statusColor.withValues(alpha: 0.3)),
             ),
             child: Row(
               children: [
@@ -340,7 +340,7 @@ class _TestConnectionScreenState extends State<TestConnectionScreen> {
         color: ProfessionalTheme.surfaceCard,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: color.withOpacity(0.3),
+          color: color.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -370,7 +370,7 @@ class _TestConnectionScreenState extends State<TestConnectionScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: ProfessionalTheme.backgroundPrimary.withOpacity(0.5),
+              color: ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.5),
               borderRadius: const BorderRadius.vertical(
                 bottom: Radius.circular(12),
               ),

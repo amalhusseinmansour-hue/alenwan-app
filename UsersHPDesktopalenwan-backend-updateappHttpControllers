@@ -1,0 +1,1683 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class WebAppController extends Controller
+{
+    /**
+     * Convert DB results to array for Blade views
+     */
+    private function toArray($collection)
+    {
+        return json_decode(json_encode($collection), true);
+    }
+
+    /**
+     * Process sliders data for display
+     */
+    private function processSliders($sliders)
+    {
+        return array_map(function($slider) {
+            // Decode JSON title and description
+            $title = json_decode($slider['title'], true);
+            $description = json_decode($slider['description'], true);
+
+            return [
+                'id' => $slider['id'],
+                'title_ar' => $title['ar'] ?? '',
+                'title_en' => $title['en'] ?? '',
+                'description_ar' => $description['ar'] ?? '',
+                'description_en' => $description['en'] ?? '',
+                'image_url' => $slider['image'] ?? '',
+                'content_id' => $slider['movie_id'] ?? $slider['series_id'] ?? null,
+                'type' => $slider['type'] ?? 'movie',
+                'url' => $slider['url'] ?? '',
+                'button_text' => $slider['button_text'] ?? 'شاهد الآن',
+                'is_active' => $slider['is_active'] ?? 1,
+                'order' => $slider['order'] ?? 0,
+            ];
+        }, $sliders);
+    }
+
+    /**
+     * Process categories data for display
+     */
+    private function processCategories($categories)
+    {
+        return array_map(function($category) {
+            // Decode JSON name
+            $name = json_decode($category['name'], true);
+
+            return [
+                'id' => $category['id'],
+                'name_ar' => $name['ar'] ?? $category['name'],
+                'name_en' => $name['en'] ?? $category['name'],
+                'name' => $name['ar'] ?? $category['name'], // Fallback to Arabic
+                'description' => $category['description'] ?? '',
+                'slug' => $category['slug'] ?? '',
+                'icon' => $category['icon'] ?? '',
+                'is_active' => $category['is_active'] ?? 1,
+                'order' => $category['order'] ?? 0,
+            ];
+        }, $categories);
+    }
+
+    /**
+     * Process movies data for display
+     */
+    private function processMovies($movies)
+    {
+        return array_map(function($movie) {
+            // Decode JSON title
+            $title = json_decode($movie['title'], true);
+
+            return [
+                'id' => $movie['id'],
+                'title_ar' => $title['ar'] ?? $movie['title'],
+                'title_en' => $title['en'] ?? $movie['title'],
+                'title' => $title['ar'] ?? $movie['title'], // Fallback to Arabic
+                'description' => $movie['description'] ?? '',
+                'description_ar' => $movie['description'] ?? '', // Alias
+                'slug' => $movie['slug'] ?? '',
+                'category_id' => $movie['category_id'] ?? 0,
+                'video_url' => $movie['video_url'] ?? '',
+                'vimeo_id' => $movie['vimeo_id'] ?? '',
+                'vimeo_url' => $movie['vimeo_url'] ?? '',
+                'thumbnail' => $movie['thumbnail'] ?? '',
+                'thumbnail_url' => $movie['thumbnail'] ?? '', // Alias
+                'poster' => $movie['poster'] ?? '',
+                'poster' => $movie['poster'] ?? '', // Alias
+                'backdrop' => $movie['backdrop'] ?? $movie['poster'] ?? '', // Use poster as fallback
+                'thumbnail' => $movie['backdrop'] ?? $movie['poster'] ?? '', // Alias
+                'duration' => $movie['duration'] ?? 0,
+                'release_year' => $movie['release_year'] ?? 0,
+                'rating' => $movie['rating'] ?? 0,
+                'imdb_id' => $movie['imdb_id'] ?? '',
+                'genres' => $movie['genres'] ?? '',
+                'genre' => $movie['genre'] ?? $movie['genres'] ?? null,
+                'cast' => $movie['cast'] ?? '',
+                'director' => $movie['director'] ?? '',
+                'language' => $movie['language'] ?? null,
+                'quality' => $movie['quality'] ?? null,
+                'is_premium' => $movie['is_premium'] ?? 0,
+                'is_active' => $movie['is_active'] ?? 1,
+                'is_featured' => $movie['is_featured'] ?? 0,
+                'views_count' => $movie['views_count'] ?? 0,
+            ];
+        }, $movies);
+    }
+
+    /**
+     * Process series data for display
+     */
+    private function processSeries($series)
+    {
+        return array_map(function($serie) {
+            // Decode JSON title
+            $title = json_decode($serie['title'], true);
+
+            // Count episodes and seasons for this series
+            $episodesCount = 0;
+            $seasonsCount = 0;
+            try {
+                $episodesCount = DB::table('episodes')
+                    ->join('seasons', 'episodes.season_id', '=', 'seasons.id')
+                    ->where('seasons.series_id', $serie['id'])
+                    ->where('episodes.is_active', 1)
+                    ->count();
+
+                $seasonsCount = DB::table('seasons')
+                    ->where('series_id', $serie['id'])
+                    ->where('is_active', 1)
+                    ->count();
+            } catch (\Exception $e) {
+                // Episodes/Seasons table might not exist or error occurred
+            }
+
+            return [
+                'id' => $serie['id'],
+                'title_ar' => $title['ar'] ?? $serie['title'],
+                'title_en' => $title['en'] ?? $serie['title'],
+                'title' => $title['ar'] ?? $serie['title'], // Fallback to Arabic
+                'description' => $serie['description'] ?? '',
+                'description_ar' => $serie['description'] ?? '', // Alias
+                'slug' => $serie['slug'] ?? '',
+                'category_id' => $serie['category_id'] ?? 0,
+                'thumbnail' => $serie['thumbnail'] ?? '',
+                'thumbnail_url' => $serie['thumbnail'] ?? '', // Alias
+                'poster' => $serie['poster'] ?? '',
+                'poster' => $serie['poster'] ?? '', // Alias
+                'backdrop' => $serie['backdrop'] ?? $serie['poster'] ?? '', // Use poster as fallback
+                'thumbnail' => $serie['backdrop'] ?? $serie['poster'] ?? '', // Alias
+                'release_year' => $serie['release_year'] ?? 0,
+                'rating' => $serie['rating'] ?? 0,
+                'episodes' => $episodesCount, // Total episodes count
+                'seasons' => $seasonsCount, // Total seasons count
+                'age_rating' => $serie['age_rating'] ?? null,
+                'genre' => $serie['genre'] ?? $serie['genres'] ?? null,
+                'cast' => $serie['cast'] ?? null,
+                'director' => $serie['director'] ?? null,
+                'quality' => $serie['quality'] ?? null,
+                'is_premium' => $serie['is_premium'] ?? 0,
+                'is_active' => $serie['is_active'] ?? 1,
+                'is_featured' => $serie['is_featured'] ?? 0,
+                'views_count' => $serie['views_count'] ?? 0,
+            ];
+        }, $series);
+    }
+
+    // ========================================
+    // Web Methods (For Website Views)
+    // ========================================
+
+    /**
+     * Home Page
+     */
+    public function index()
+    {
+        $moviesRaw = $this->toArray(DB::table('movies')
+            ->where('is_active', 1)
+            ->orderBy('created_at', 'desc')
+            ->limit(12)
+            ->get());
+
+        $movies = $this->processMovies($moviesRaw);
+
+        $seriesRaw = $this->toArray(DB::table('series')
+            ->where('is_active', 1)
+            ->orderBy('created_at', 'desc')
+            ->limit(12)
+            ->get());
+
+        $series = $this->processSeries($seriesRaw);
+
+        $slidersRaw = $this->toArray(DB::table('sliders')
+            ->where('is_active', 1)
+            ->orderBy('order')
+            ->get());
+
+        $sliders = $this->processSliders($slidersRaw);
+
+        $categoriesRaw = $this->toArray(DB::table('categories')
+            ->where('is_active', 1)
+            ->orderBy('order')
+            ->get());
+
+        $categories = $this->processCategories($categoriesRaw);
+
+        $liveStreams = $this->toArray(DB::table('live_streams')
+            ->where('is_published', 1)
+            ->orderBy('created_at', 'desc')
+            ->limit(6)
+            ->get());
+
+        // Fetch podcasts (if table exists, otherwise empty array)
+        try {
+            $podcasts = $this->toArray(DB::table('podcasts')
+                ->where('is_active', 1)
+                ->orderBy('created_at', 'desc')
+                ->limit(8)
+                ->get());
+        } catch (\Exception $e) {
+            $podcasts = [];
+        }
+
+        return view('webapp.index', compact('movies', 'series', 'sliders', 'categories', 'liveStreams', 'podcasts'));
+    }
+
+    /**
+     * Movies Page
+     */
+    public function movies()
+    {
+        $moviesPaginator = DB::table('movies')
+            ->where('is_active', 1)
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        // Process the paginated items
+        $processedItems = $this->processMovies($this->toArray($moviesPaginator->items()));
+
+        // Replace the items in the paginator with processed data
+        $moviesPaginator->setCollection(collect($processedItems));
+
+        $categoriesRaw = $this->toArray(DB::table('categories')
+            ->where('is_active', 1)
+            ->orderBy('order')
+            ->get());
+
+        $categories = $this->processCategories($categoriesRaw);
+
+        return view('webapp.movies', ['movies' => $moviesPaginator, 'categories' => $categories]);
+    }
+
+    /**
+     * Movie Details
+     */
+    public function movie($id)
+    {
+        $movieRaw = DB::table('movies')
+            ->where('id', $id)
+            ->where('is_active', 1)
+            ->first();
+
+        if (!$movieRaw) {
+            abort(404);
+        }
+
+        // Convert to array and process
+        $movieArray = $this->toArray([$movieRaw]);
+        $processedMovies = $this->processMovies($movieArray);
+        $movie = $processedMovies[0];
+
+        // Get similar movies from same category
+        $similarMoviesRaw = $this->toArray(DB::table('movies')
+            ->where('is_active', 1)
+            ->where('category_id', $movie['category_id'])
+            ->where('id', '!=', $id)
+            ->limit(12)
+            ->get());
+        $similarMovies = $this->processMovies($similarMoviesRaw);
+
+        return view('webapp.movie', compact('movie', 'similarMovies'));
+    }
+
+    /**
+     * Series List
+     */
+    public function seriesList()
+    {
+        $seriesPaginator = DB::table('series')
+            ->where('is_active', 1)
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        // Process the paginated items
+        $processedItems = $this->processSeries($this->toArray($seriesPaginator->items()));
+
+        // Replace the items in the paginator with processed data
+        $seriesPaginator->setCollection(collect($processedItems));
+
+        $categoriesRaw = $this->toArray(DB::table('categories')
+            ->where('is_active', 1)
+            ->orderBy('order')
+            ->get());
+
+        $categories = $this->processCategories($categoriesRaw);
+
+        return view('webapp.series-list', ['series' => $seriesPaginator, 'categories' => $categories]);
+    }
+
+    /**
+     * Series Details
+     */
+    public function series($id)
+    {
+        $serieRaw = DB::table('series')
+            ->where('id', $id)
+            ->where('is_active', 1)
+            ->first();
+
+        if (!$serieRaw) {
+            abort(404);
+        }
+
+        // Convert to array and process
+        $serieArray = $this->toArray([$serieRaw]);
+        $processedSeries = $this->processSeries($serieArray);
+        $series = $processedSeries[0]; // Use $series to match the view
+
+        $seasons = DB::table('seasons')
+            ->where('series_id', $id)
+            ->orderBy('season_number')
+            ->get();
+
+        foreach ($seasons as $season) {
+            $season->episodes = DB::table('episodes')
+                ->where('season_id', $season->id)
+                ->where('is_active', 1)
+                ->orderBy('episode_number')
+                ->get();
+        }
+
+        // Get similar series from same category
+        $similarSeriesRaw = $this->toArray(DB::table('series')
+            ->where('is_active', 1)
+            ->where('category_id', $series['category_id'])
+            ->where('id', '!=', $id)
+            ->limit(12)
+            ->get());
+        $similarSeries = $this->processSeries($similarSeriesRaw);
+
+        return view('webapp.series', compact('series', 'seasons', 'similarSeries'));
+    }
+
+    /**
+     * Live Streams Page
+     */
+    public function liveStreams()
+    {
+        $liveStreams = $this->toArray(DB::table('live_streams')
+            ->where('is_published', 1)
+            ->orderBy('created_at', 'desc')
+            ->get());
+
+        return view('webapp.live', compact('liveStreams'));
+    }
+
+    /**
+     * Live Stream Details
+     */
+            public function liveStream($id)
+    {
+        $locale = request()->get('locale', 'ar');
+        
+        $stream = DB::table('live_streams')
+            ->where('id', $id)
+            ->where('is_published', 1)
+            ->first();
+
+        if (!$stream) {
+            abort(404);
+        }
+
+        // Convert to array for blade view
+        $stream = $this->toArray($stream);
+        
+        // Decode JSON fields
+        $stream['title'] = $this->decodeJsonField($stream['title'] ?? '', $locale);
+        $stream['description'] = $this->decodeJsonField($stream['description'] ?? '', $locale);
+
+        return view('webapp.live-stream', compact('stream'));
+    }
+
+    /**
+     * FAQ
+     */
+    public function faq()
+    {
+        return view('webapp.faq');
+    }
+
+    /**
+     * Download App
+     */
+    public function downloadApp()
+    {
+        return view('webapp.download-app');
+    }
+
+    /**
+     * Subscribe Page
+     */
+    public function subscribe()
+    {
+        // Get active subscription plans from database
+        $plansRaw = $this->toArray(DB::table('subscription_plans')
+            ->where('is_active', 1)
+            ->orderBy('order')
+            ->orderBy('price')
+            ->get());
+
+        // Process plans to decode JSON fields
+        $plans = array_map(function($plan) {
+            $name = json_decode($plan['name'], true);
+            $description = json_decode($plan['description'], true);
+            $features = json_decode($plan['features'], true);
+
+            return [
+                'id' => $plan['id'],
+                'name' => $name['ar'] ?? $name['en'] ?? $plan['name'],
+                'name_ar' => $name['ar'] ?? $plan['name'],
+                'name_en' => $name['en'] ?? $plan['name'],
+                'description' => $description['ar'] ?? $description['en'] ?? $plan['description'] ?? '',
+                'description_ar' => $description['ar'] ?? $plan['description'] ?? '',
+                'description_en' => $description['en'] ?? $plan['description'] ?? '',
+                'price' => $plan['price'],
+                'currency' => $plan['currency'] ?? 'AED',
+                'duration_months' => $plan['duration_months'] ?? 1,
+                'duration_days' => $plan['duration_days'] ?? 30,
+                'features' => $features ?? [],
+                'is_popular' => $plan['is_popular'] ?? 0,
+                'order' => $plan['order'] ?? 0,
+            ];
+        }, $plansRaw);
+
+        return view('webapp.subscribe', compact('plans'));
+    }
+
+    /**
+     * Terms
+     */
+    public function terms()
+    {
+        return view('webapp.terms');
+    }
+
+    /**
+     * Privacy
+     */
+    public function privacy()
+    {
+        return view('webapp.privacy');
+    }
+
+    /**
+     * Cookies
+     */
+    public function cookies()
+    {
+        return view('webapp.cookies');
+    }
+
+    /**
+     * Login Page
+     */
+    public function login()
+    {
+        return view('webapp.login');
+    }
+
+    /**
+     * Register Page
+     */
+    public function register()
+    {
+        return view('webapp.register');
+    }
+
+
+    /**
+     * Sports Page
+     */
+    public function sports()
+    {
+        try {
+            $sportsPaginator = DB::table('sports')->where('is_published', 1)
+                ->orderBy('created_at', 'desc')
+                ->paginate(20);
+
+            $processedItems = $this->toArray($sportsPaginator->items());
+            $sportsPaginator->setCollection(collect($processedItems));
+
+            $categoriesRaw = $this->toArray(DB::table('categories')
+                ->where('is_active', 1)
+                ->orderBy('order')
+                ->get());
+
+            $categories = $this->processCategories($categoriesRaw);
+
+            return view('webapp.sports', ['sports' => $sportsPaginator, 'categories' => $categories]);
+        } catch (\Exception $e) {
+            return redirect('/')->with('error', 'Sports page not available');
+        }
+    }
+
+    /**
+     * Sport Details
+     */
+    public function sport($id)
+    {
+        try {
+            $sportRaw = DB::table('sports')
+                ->where('id', $id)
+                ->where('is_active', 1)
+                ->first();
+
+            if (!$sportRaw) {
+                abort(404);
+            }
+
+            $sport = $this->toArray($sportRaw);
+
+            return view('webapp.sport', compact('sport'));
+        } catch (\Exception $e) {
+            return redirect('/')->with('error', 'Sport not found');
+        }
+    }
+
+    /**
+     * Documentaries Page
+     */
+    public function documentaries()
+    {
+        try {
+            $documentariesPaginator = DB::table('documentaries')->where('is_published', 1)
+                ->orderBy('created_at', 'desc')
+                ->paginate(20);
+
+            $processedItems = $this->toArray($documentariesPaginator->items());
+            $documentariesPaginator->setCollection(collect($processedItems));
+
+            $categoriesRaw = $this->toArray(DB::table('categories')
+                ->where('is_active', 1)
+                ->orderBy('order')
+                ->get());
+
+            $categories = $this->processCategories($categoriesRaw);
+
+            return view('webapp.documentaries', ['documentaries' => $documentariesPaginator, 'categories' => $categories]);
+        } catch (\Exception $e) {
+            return redirect('/')->with('error', 'Documentaries page not available');
+        }
+    }
+
+    /**
+     * Documentary Details
+     */
+    public function documentary($id)
+    {
+        try {
+            $documentaryRaw = DB::table('documentaries')
+                ->where('id', $id)
+                ->where('is_active', 1)
+                ->first();
+
+            if (!$documentaryRaw) {
+                abort(404);
+            }
+
+            $documentary = $this->toArray($documentaryRaw);
+
+            return view('webapp.documentary', compact('documentary'));
+        } catch (\Exception $e) {
+            return redirect('/')->with('error', 'Documentary not found');
+        }
+    }
+
+    /**
+     * Cartoons Page
+     */
+    public function cartoons()
+    {
+        try {
+            $cartoonsPaginator = DB::table('cartoons')->where('is_published', 1)
+                ->orderBy('created_at', 'desc')
+                ->paginate(20);
+
+            $processedItems = $this->toArray($cartoonsPaginator->items());
+            $cartoonsPaginator->setCollection(collect($processedItems));
+
+            $categoriesRaw = $this->toArray(DB::table('categories')
+                ->where('is_active', 1)
+                ->orderBy('order')
+                ->get());
+
+            $categories = $this->processCategories($categoriesRaw);
+
+            return view('webapp.cartoons', ['cartoons' => $cartoonsPaginator, 'categories' => $categories]);
+        } catch (\Exception $e) {
+            return redirect('/')->with('error', 'Cartoons page not available');
+        }
+    }
+
+    /**
+     * Cartoon Details
+     */
+    public function cartoon($id)
+    {
+        try {
+            $cartoonRaw = DB::table('cartoons')
+                ->where('id', $id)
+                ->where('is_active', 1)
+                ->first();
+
+            if (!$cartoonRaw) {
+                abort(404);
+            }
+
+            $cartoon = $this->toArray($cartoonRaw);
+
+            return view('webapp.cartoon', compact('cartoon'));
+        } catch (\Exception $e) {
+            return redirect('/')->with('error', 'Cartoon not found');
+        }
+    }
+
+    /**
+     * Podcasts Page
+     */
+    public function podcasts()
+    {
+        try {
+            $podcastsPaginator = DB::table('podcasts')
+                ->where('is_active', 1)
+                ->orderBy('created_at', 'desc')
+                ->paginate(20);
+
+            $processedItems = $this->toArray($podcastsPaginator->items());
+            $podcastsPaginator->setCollection(collect($processedItems));
+
+            return view('webapp.podcasts', ['podcasts' => $podcastsPaginator]);
+        } catch (\Exception $e) {
+            return view('webapp.podcasts', ['podcasts' => collect()]);
+        }
+    }
+
+    /**
+     * Help Center Page
+     */
+    public function helpCenter()
+    {
+        return view('webapp.help-center');
+    }
+
+    /**
+     * Contact Us Page
+     */
+    public function contactUs()
+    {
+        return view('webapp.contact');
+    }
+
+    // ========================================
+    // API Methods (For Flutter Mobile App)
+    // ========================================
+
+    /**
+     * API - Get Movies List
+     */
+    public function apiMovies(Request $request)
+    {
+        try {
+            
+            $locale = 'ar';
+            if (method_exists($this, 'getLocale')) {
+                $locale = $this->getLocale();
+            } elseif (request() && request()->has('locale')) {
+                $locale = request()->get('locale', 'ar');
+            }
+$query = DB::table('movies')
+                ->where('is_active', 1)
+                ->orderBy('created_at', 'desc');
+
+            // Pagination
+            $perPage = $request->get('per_page', 20);
+            $page = $request->get('page', 1);
+
+            $total = $query->count();
+            $movies = $query->skip(($page - 1) * $perPage)
+                ->take($perPage)
+                ->get();
+
+            // Transform data for Flutter
+            $moviesArray = [];
+            foreach ($movies as $movie) {
+                $moviesArray[] = [
+                    'id' => $movie->id,
+                    'title' => $this->decodeJsonField($movie->title, $locale),
+                    'description' => $this->decodeJsonField($movie->description, $locale),
+                    'poster' => $movie->poster ? (str_starts_with($movie->poster, 'http') ? $movie->poster : url('storage/' . $movie->poster)) : null,
+                    'thumbnail' => $movie->thumbnail ? (str_starts_with($movie->thumbnail, 'http') ? $movie->thumbnail : url('storage/' . $movie->thumbnail)) : null,
+                    'video_url' => $movie->video_url ?? $movie->vimeo_url,
+                    'vimeo_id' => $movie->vimeo_id,
+                    'duration' => $movie->duration,
+                    'year' => $movie->release_year,
+                    'rating' => $movie->rating ?? 0,
+                    'category' => $movie->category_id,
+                    'is_featured' => $movie->is_featured ?? false,
+                    'created_at' => $movie->created_at,
+                ];
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'movies' => $moviesArray,
+                    'pagination' => [
+                        'total' => $total,
+                        'per_page' => $perPage,
+                        'current_page' => $page,
+                        'last_page' => ceil($total / $perPage),
+                    ]
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء جلب الأفلام',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * API - Get Movie Details
+     */
+    public function apiMovie($id)
+    {
+        try {
+            $movie = DB::table('movies')
+                ->where('id', $id)
+                ->where('is_active', 1)
+                ->first();
+
+            if (!$movie) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'الفيلم غير موجود'
+                ], 404);
+            }
+
+            $movieData = [
+                'id' => $movie->id,
+                'title' => $this->decodeJsonField($movie->title, $locale),
+                'description' => $this->decodeJsonField($movie->description, $locale),
+                'poster' => $movie->poster ? (str_starts_with($movie->poster, 'http') ? $movie->poster : url('storage/' . $movie->poster)) : null,
+                'thumbnail' => $movie->thumbnail ? (str_starts_with($movie->thumbnail, 'http') ? $movie->thumbnail : url('storage/' . $movie->thumbnail)) : null,
+                'video_url' => $movie->video_url ?? $movie->vimeo_url,
+                'vimeo_id' => $movie->vimeo_id,
+                'duration' => $movie->duration,
+                'year' => $movie->release_year,
+                'rating' => $movie->rating ?? 0,
+                'category' => $movie->category_id,
+                'is_featured' => $movie->is_featured ?? false,
+                'cast' => $movie->cast ?? null,
+                'director' => $movie->director ?? null,
+                'created_at' => $movie->created_at,
+            ];
+
+            return response()->json([
+                'success' => true,
+                'data' => $movieData
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * API - Get Series List
+     */
+    public function apiSeries(Request $request)
+    {
+        try {
+            
+            $locale = 'ar';
+            if (method_exists($this, 'getLocale')) {
+                $locale = $this->getLocale();
+            } elseif (request() && request()->has('locale')) {
+                $locale = request()->get('locale', 'ar');
+            }
+$query = DB::table('series')
+                ->where('is_active', 1)
+                ->orderBy('created_at', 'desc');
+
+            $perPage = $request->get('per_page', 20);
+            $page = $request->get('page', 1);
+
+            $total = $query->count();
+            $series = $query->skip(($page - 1) * $perPage)
+                ->take($perPage)
+                ->get();
+
+            $seriesArray = [];
+            foreach ($series as $serie) {
+                $seriesArray[] = [
+                    'id' => $serie->id,
+                    'title' => $this->decodeJsonField($serie->title, $locale),
+                    'description' => $this->decodeJsonField($serie->description, $locale),
+                    'poster' => $serie->poster ? url('storage/' . $serie->poster) : null,
+                    'thumbnail' => $serie->thumbnail ? url('storage/' . $serie->thumbnail) : null,
+                    'year' => $serie->release_year,
+                    'rating' => $serie->rating ?? 0,
+                    'category' => $serie->category_id,
+                    'is_featured' => $serie->is_featured ?? false,
+                    'total_seasons' => DB::table('seasons')->where('series_id', $serie->id)->count(),
+                    'created_at' => $serie->created_at,
+                ];
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'series' => $seriesArray,
+                    'pagination' => [
+                        'total' => $total,
+                        'per_page' => $perPage,
+                        'current_page' => $page,
+                        'last_page' => ceil($total / $perPage),
+                    ]
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء جلب المسلسلات',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * API - Get Series Details with Seasons and Episodes
+     */
+    public function apiSeriesDetails($id)
+    {
+        try {
+            $serie = DB::table('series')
+                ->where('id', $id)
+                ->where('is_active', 1)
+                ->first();
+
+            if (!$serie) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'المسلسل غير موجود'
+                ], 404);
+            }
+
+            // Get seasons with episodes
+            $seasons = DB::table('seasons')
+                ->where('series_id', $id)
+                ->orderBy('season_number')
+                ->get();
+
+            $seasonsArray = [];
+            foreach ($seasons as $season) {
+                $episodes = DB::table('episodes')
+                    ->where('season_id', $season->id)
+                    ->orderBy('episode_number')
+                    ->get();
+
+                $episodesArray = [];
+                foreach ($episodes as $episode) {
+                    $episodesArray[] = [
+                        'id' => $episode->id,
+                        'title' => $episode->title,
+                        'description' => $episode->description,
+                        'episode_number' => $episode->episode_number,
+                        'video_url' => $episode->video_url,
+                        'vimeo_id' => $episode->vimeo_id,
+                        'duration' => $episode->duration,
+                        'thumbnail' => $episode->thumbnail ? url('storage/' . $episode->thumbnail) : null,
+                    ];
+                }
+
+                $seasonsArray[] = [
+                    'id' => $season->id,
+                    'season_number' => $season->season_number,
+                    'title' => $season->title,
+                    'episodes' => $episodesArray,
+                ];
+            }
+
+            $serieData = [
+                'id' => $serie->id,
+                'title' => $serie->title,
+                'description' => $serie->description,
+                'poster' => $serie->poster ? url('storage/' . $serie->poster) : null,
+                'thumbnail' => $serie->thumbnail ? url('storage/' . $serie->thumbnail) : null,
+                'year' => $serie->release_year,
+                'rating' => $serie->rating ?? 0,
+                'category' => $serie->category_id,
+                'is_featured' => $serie->is_featured ?? false,
+                'seasons' => $seasonsArray,
+            ];
+
+            return response()->json([
+                'success' => true,
+                'data' => $serieData
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * API - Get Live Streams
+     */
+    public function apiLiveStreams(Request $request)
+    {
+        try {
+            
+            $locale = 'ar';
+            if (method_exists($this, 'getLocale')) {
+                $locale = $this->getLocale();
+            } elseif (request() && request()->has('locale')) {
+                $locale = request()->get('locale', 'ar');
+            }
+$query = DB::table('live_streams')
+                ->where('is_published', 1)
+                ->orderBy('created_at', 'desc');
+
+            $perPage = $request->get('per_page', 20);
+            $page = $request->get('page', 1);
+
+            $total = $query->count();
+            $streams = $query->skip(($page - 1) * $perPage)
+                ->take($perPage)
+                ->get();
+
+            $streamsArray = [];
+            foreach ($streams as $stream) {
+                $streamsArray[] = [
+                    'id' => $stream->id,
+                    'title' => $stream->title,
+                    'description' => $stream->description,
+                    'thumbnail' => $stream->thumbnail ? url('storage/' . $stream->thumbnail) : null,
+                    'stream_url' => $stream->stream_url,
+                    'is_live' => $stream->is_live ?? true,
+                    'category' => $stream->category_id,
+                    'created_at' => $stream->created_at,
+                ];
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'live_streams' => $streamsArray,
+                    'pagination' => [
+                        'total' => $total,
+                        'per_page' => $perPage,
+                        'current_page' => $page,
+                        'last_page' => ceil($total / $perPage),
+                    ]
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء جلب البث المباشر',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * API - Get Live Stream Details
+     */
+    public function apiLiveStream($id)
+    {
+        try {
+            $stream = DB::table('live_streams')
+                ->where('id', $id)
+                ->where('is_active', 1)
+                ->first();
+
+            if (!$stream) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'البث المباشر غير موجود'
+                ], 404);
+            }
+
+            $streamData = [
+                'id' => $stream->id,
+                'title' => $stream->title,
+                'description' => $stream->description,
+                'thumbnail' => $stream->thumbnail ? url('storage/' . $stream->thumbnail) : null,
+                'stream_url' => $stream->stream_url,
+                'is_live' => $stream->is_live ?? true,
+                'category' => $stream->category_id,
+                'created_at' => $stream->created_at,
+            ];
+
+            return response()->json([
+                'success' => true,
+                'data' => $streamData
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * API - Get Channels
+     */
+    public function apiChannels()
+    {
+        try {
+            
+            $locale = 'ar';
+            if (method_exists($this, 'getLocale')) {
+                $locale = $this->getLocale();
+            } elseif (request() && request()->has('locale')) {
+                $locale = request()->get('locale', 'ar');
+            }
+$channels = DB::table('channels')
+                ->where('is_active', 1)
+                ->orderBy('name')
+                ->get();
+
+            $channelsArray = [];
+            foreach ($channels as $channel) {
+                $channelsArray[] = [
+                    'id' => $channel->id,
+                    'name' => $channel->name,
+                    'logo' => $channel->logo ? (str_starts_with($channel->logo, 'http') ? $channel->logo : url('storage/' . $channel->logo)) : null,
+                    'youtube_channel_url' => $channel->youtube_channel_url,
+                    'vimeo_channel_url' => $channel->vimeo_channel_url,
+                    'platform' => $channel->platform,
+                    'category' => $channel->category_id,
+                ];
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $channelsArray
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء جلب القنوات',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * API - Get Channel Details
+     */
+    public function apiChannel($id)
+    {
+        try {
+            $channel = DB::table('channels')
+                ->where('id', $id)
+                ->where('is_active', 1)
+                ->first();
+
+            if (!$channel) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'القناة غير موجودة'
+                ], 404);
+            }
+
+            $channelData = [
+                'id' => $channel->id,
+                'name' => $channel->name,
+                'logo' => $channel->logo ? (str_starts_with($channel->logo, 'http') ? $channel->logo : url('storage/' . $channel->logo)) : null,
+                'youtube_channel_url' => $channel->youtube_channel_url,
+                    'vimeo_channel_url' => $channel->vimeo_channel_url,
+                    'platform' => $channel->platform,
+                'category' => $channel->category_id,
+                'description' => $channel->description ?? null,
+            ];
+
+            return response()->json([
+                'success' => true,
+                'data' => $channelData
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * API - Get Sliders/Banners
+     */
+    public function apiSliders(Request $request)
+    {
+        try {
+         
+            $locale = 'ar';
+            if (method_exists($this, 'getLocale')) {
+                $locale = $this->getLocale();
+            } elseif (request() && request()->has('locale')) {
+                $locale = request()->get('locale', 'ar');
+            }
+            $sliders = DB::table('sliders')
+                ->where('is_active', 1)
+                ->orderBy('order')
+                ->get();
+
+            $slidersArray = [];
+            foreach ($sliders as $slider) {
+                $slidersArray[] = [
+                    'id' => $slider->id,
+                    'title' => $this->decodeJsonField($slider->title, $locale),
+                    'description' => $this->decodeJsonField($slider->description, $locale),
+                    'image' => $slider->image ? (str_starts_with($slider->image, 'http') ? $slider->image : url('storage/' . $slider->image)) : null,
+                    'video_url' => $slider->video_url ?? null,
+                    'vimeo_id' => $slider->vimeo_id ?? null,
+                    'link' => $slider->link ?? null,
+                    'type' => $slider->type ?? 'image', // image, video
+                ];
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $slidersArray
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء جلب السلايدر',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * API - Get Categories
+     */
+    public function apiCategories()
+    {
+        try {
+            $categories = DB::table('categories')
+                ->where('is_active', 1)
+                ->orderBy('name')
+                ->get();
+
+            $categoriesArray = [];
+            foreach ($categories as $category) {
+                $categoriesArray[] = [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                    'slug' => $category->slug,
+                    'description' => $category->description ?? null,
+                    'icon' => $category->icon ? url('storage/' . $category->icon) : null,
+                ];
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $categoriesArray
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء جلب التصنيفات',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * API - Search
+     */
+    public function apiSearch(Request $request)
+    {
+        try {
+            $query = $request->get('q', '');
+
+            if (empty($query)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'يرجى إدخال كلمة البحث'
+                ], 400);
+            }
+
+            // Search in movies
+            $movies = DB::table('movies')
+                ->where('is_active', 1)
+                ->where(function($q) use ($query) {
+                    $q->where('title', 'like', "%{$query}%")
+                      ->orWhere('description', 'like', "%{$query}%");
+                })
+                ->limit(10)
+                ->get();
+
+            // Search in series
+            $series = DB::table('series')
+                ->where('is_active', 1)
+                ->where(function($q) use ($query) {
+                    $q->where('title', 'like', "%{$query}%")
+                      ->orWhere('description', 'like', "%{$query}%");
+                })
+                ->limit(10)
+                ->get();
+
+            // Transform data
+            $moviesArray = [];
+            foreach ($movies as $movie) {
+                $moviesArray[] = [
+                    'id' => $movie->id,
+                    'title' => $this->decodeJsonField($movie->title, $locale),
+                    'poster' => $movie->poster ? (str_starts_with($movie->poster, 'http') ? $movie->poster : url('storage/' . $movie->poster)) : null,
+                    'type' => 'movie',
+                ];
+            }
+
+            $seriesArray = [];
+            foreach ($series as $serie) {
+                $seriesArray[] = [
+                    'id' => $serie->id,
+                    'title' => $serie->title,
+                    'poster' => $serie->poster ? url('storage/' . $serie->poster) : null,
+                    'type' => 'series',
+                ];
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'movies' => $moviesArray,
+                    'series' => $seriesArray,
+                    'total' => count($moviesArray) + count($seriesArray),
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء البحث',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * API - Get Sports List
+     */
+    public function apiSports(Request $request)
+    {
+        try {
+            
+            $locale = 'ar';
+            if (method_exists($this, 'getLocale')) {
+                $locale = $this->getLocale();
+            } elseif (request() && request()->has('locale')) {
+                $locale = request()->get('locale', 'ar');
+            }
+$query = DB::table('sports')
+                ->where('is_published', 1)
+                ->orderBy('created_at', 'desc');
+
+            $perPage = $request->get('per_page', 20);
+            $page = $request->get('page', 1);
+
+            $total = $query->count();
+            $sports = $query->skip(($page - 1) * $perPage)
+                ->take($perPage)
+                ->get();
+
+            $sportsArray = [];
+            foreach ($sports as $sport) {
+                $sportsArray[] = [
+                    'id' => $sport->id,
+                    'title' => $this->decodeJsonField($sport->title, $locale),
+                    'description' => $sport->description,
+                    'poster' => $sport->poster ? (str_starts_with($sport->poster, 'http') ? $sport->poster : url('storage/' . $sport->poster)) : null,
+                    'thumbnail' => $sport->thumbnail ? (str_starts_with($sport->thumbnail, 'http') ? $sport->thumbnail : url('storage/' . $sport->thumbnail)) : null,
+                    'video_url' => $sport->video_url ?? $sport->stream_url,
+                    'sport_type' => $sport->sport_type,
+                    'league' => $sport->league,
+                    'teams' => $sport->teams,
+                    'is_live' => $sport->is_live ?? false,
+                    'is_premium' => $sport->is_premium ?? false,
+                    'is_featured' => $sport->is_featured ?? false,
+                    'category_id' => $sport->category_id,
+                    'created_at' => $sport->created_at,
+                ];
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'sports' => $sportsArray,
+                    'pagination' => [
+                        'total' => $total,
+                        'per_page' => $perPage,
+                        'current_page' => $page,
+                        'last_page' => ceil($total / $perPage),
+                    ]
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء جلب المحتوى الرياضي',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * API - Get Single Sport
+     */
+    public function apiSport($id)
+    {
+        try {
+            $sport = DB::table('sports')
+                ->where('id', $id)
+                ->where('is_published', 1)
+                ->first();
+
+            if (!$sport) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'المحتوى غير موجود'
+                ], 404);
+            }
+
+            $sportData = [
+                'id' => $sport->id,
+                'title' => $this->decodeJsonField($sport->title, $locale),
+                'description' => $sport->description,
+                'poster' => $sport->poster ? (str_starts_with($sport->poster, 'http') ? $sport->poster : url('storage/' . $sport->poster)) : null,
+                'thumbnail' => $sport->thumbnail ? (str_starts_with($sport->thumbnail, 'http') ? $sport->thumbnail : url('storage/' . $sport->thumbnail)) : null,
+                'video_url' => $sport->video_url ?? $sport->stream_url,
+                'sport_type' => $sport->sport_type,
+                'league' => $sport->league,
+                'teams' => $sport->teams,
+                'match_date' => $sport->match_date,
+                'venue' => $sport->venue,
+                'is_live' => $sport->is_live ?? false,
+                'is_premium' => $sport->is_premium ?? false,
+                'is_featured' => $sport->is_featured ?? false,
+                'category_id' => $sport->category_id,
+                'created_at' => $sport->created_at,
+            ];
+
+            return response()->json([
+                'success' => true,
+                'data' => $sportData
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء جلب المحتوى',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * API - Get Documentaries List
+     */
+    public function apiDocumentaries(Request $request)
+    {
+        try {
+            
+            $locale = 'ar';
+            if (method_exists($this, 'getLocale')) {
+                $locale = $this->getLocale();
+            } elseif (request() && request()->has('locale')) {
+                $locale = request()->get('locale', 'ar');
+            }
+$query = DB::table('documentaries')
+                ->where('is_published', 1)
+                ->orderBy('created_at', 'desc');
+
+            $perPage = $request->get('per_page', 20);
+            $page = $request->get('page', 1);
+
+            $total = $query->count();
+            $documentaries = $query->skip(($page - 1) * $perPage)
+                ->take($perPage)
+                ->get();
+
+            $documentariesArray = [];
+            foreach ($documentaries as $doc) {
+                $documentariesArray[] = [
+                    'id' => $doc->id,
+                    'title' => $this->decodeJsonField($doc->title, $locale),
+                    'description' => $doc->description,
+                    'poster' => $doc->poster ? (str_starts_with($doc->poster, 'http') ? $doc->poster : url('storage/' . $doc->poster)) : null,
+                    'thumbnail' => $doc->thumbnail ? (str_starts_with($doc->thumbnail, 'http') ? $doc->thumbnail : url('storage/' . $doc->thumbnail)) : null,
+                    'video_url' => $doc->video_url,
+                    'duration' => $doc->duration,
+                    'year' => $doc->release_year ?? $doc->year,
+                    'rating' => $doc->rating ?? 0,
+                    'director' => $doc->director,
+                    'topic' => $doc->topic,
+                    'is_premium' => $doc->is_premium ?? false,
+                    'is_featured' => $doc->is_featured ?? false,
+                    'category_id' => $doc->category_id,
+                    'created_at' => $doc->created_at,
+                ];
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'documentaries' => $documentariesArray,
+                    'pagination' => [
+                        'total' => $total,
+                        'per_page' => $perPage,
+                        'current_page' => $page,
+                        'last_page' => ceil($total / $perPage),
+                    ]
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء جلب الوثائقيات',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * API - Get Single Documentary
+     */
+    public function apiDocumentary($id)
+    {
+        try {
+            $doc = DB::table('documentaries')
+                ->where('id', $id)
+                ->where('is_published', 1)
+                ->first();
+
+            if (!$doc) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'الوثائقي غير موجود'
+                ], 404);
+            }
+
+            $docData = [
+                'id' => $doc->id,
+                'title' => $this->decodeJsonField($doc->title, $locale),
+                'description' => $doc->description,
+                'poster' => $doc->poster ? (str_starts_with($doc->poster, 'http') ? $doc->poster : url('storage/' . $doc->poster)) : null,
+                'thumbnail' => $doc->thumbnail ? (str_starts_with($doc->thumbnail, 'http') ? $doc->thumbnail : url('storage/' . $doc->thumbnail)) : null,
+                'video_url' => $doc->video_url,
+                'duration' => $doc->duration,
+                'year' => $doc->release_year ?? $doc->year,
+                'rating' => $doc->rating ?? 0,
+                'director' => $doc->director,
+                'producer' => $doc->producer,
+                'narrator' => $doc->narrator,
+                'topic' => $doc->topic,
+                'release_date' => $doc->release_date,
+                'is_premium' => $doc->is_premium ?? false,
+                'is_featured' => $doc->is_featured ?? false,
+                'category_id' => $doc->category_id,
+                'created_at' => $doc->created_at,
+            ];
+
+            return response()->json([
+                'success' => true,
+                'data' => $docData
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء جلب الوثائقي',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * API - Get Cartoons List
+     */
+    public function apiCartoons(Request $request)
+    {
+        try {
+            
+            $locale = 'ar';
+            if (method_exists($this, 'getLocale')) {
+                $locale = $this->getLocale();
+            } elseif (request() && request()->has('locale')) {
+                $locale = request()->get('locale', 'ar');
+            }
+$query = DB::table('cartoons')
+                ->where('is_published', 1)
+                ->orderBy('created_at', 'desc');
+
+            $perPage = $request->get('per_page', 20);
+            $page = $request->get('page', 1);
+
+            $total = $query->count();
+            $cartoons = $query->skip(($page - 1) * $perPage)
+                ->take($perPage)
+                ->get();
+
+            $cartoonsArray = [];
+            foreach ($cartoons as $cartoon) {
+                $cartoonsArray[] = [
+                    'id' => $cartoon->id,
+                    'title' => $this->decodeJsonField($cartoon->title, $locale),
+                    'description' => $cartoon->description,
+                    'poster' => $cartoon->poster ? (str_starts_with($cartoon->poster, 'http') ? $cartoon->poster : url('storage/' . $cartoon->poster)) : null,
+                    'thumbnail' => $cartoon->thumbnail ? (str_starts_with($cartoon->thumbnail, 'http') ? $cartoon->thumbnail : url('storage/' . $cartoon->thumbnail)) : null,
+                    'video_url' => $cartoon->video_url,
+                    'duration' => $cartoon->duration,
+                    'year' => $cartoon->release_year ?? $cartoon->year,
+                    'rating' => $cartoon->rating ?? 0,
+                    'age_rating' => $cartoon->age_rating,
+                    'is_series' => $cartoon->is_series ?? false,
+                    'season_number' => $cartoon->season_number,
+                    'episode_number' => $cartoon->episode_number,
+                    'is_premium' => $cartoon->is_premium ?? false,
+                    'is_featured' => $cartoon->is_featured ?? false,
+                    'category_id' => $cartoon->category_id,
+                    'created_at' => $cartoon->created_at,
+                ];
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'cartoons' => $cartoonsArray,
+                    'pagination' => [
+                        'total' => $total,
+                        'per_page' => $perPage,
+                        'current_page' => $page,
+                        'last_page' => ceil($total / $perPage),
+                    ]
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء جلب أفلام الكرتون',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * API - Get Single Cartoon
+     */
+    public function apiCartoon($id)
+    {
+        try {
+            $cartoon = DB::table('cartoons')
+                ->where('id', $id)
+                ->where('is_published', 1)
+                ->first();
+
+            if (!$cartoon) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'المحتوى غير موجود'
+                ], 404);
+            }
+
+            $cartoonData = [
+                'id' => $cartoon->id,
+                'title' => $this->decodeJsonField($cartoon->title, $locale),
+                'description' => $cartoon->description,
+                'poster' => $cartoon->poster ? (str_starts_with($cartoon->poster, 'http') ? $cartoon->poster : url('storage/' . $cartoon->poster)) : null,
+                'thumbnail' => $cartoon->thumbnail ? (str_starts_with($cartoon->thumbnail, 'http') ? $cartoon->thumbnail : url('storage/' . $cartoon->thumbnail)) : null,
+                'video_url' => $cartoon->video_url,
+                'duration' => $cartoon->duration,
+                'year' => $cartoon->release_year ?? $cartoon->year,
+                'rating' => $cartoon->rating ?? 0,
+                'age_rating' => $cartoon->age_rating,
+                'is_series' => $cartoon->is_series ?? false,
+                'season_number' => $cartoon->season_number,
+                'episode_number' => $cartoon->episode_number,
+                'release_date' => $cartoon->release_date,
+                'is_premium' => $cartoon->is_premium ?? false,
+                'is_featured' => $cartoon->is_featured ?? false,
+                'category_id' => $cartoon->category_id,
+                'created_at' => $cartoon->created_at,
+            ];
+
+            return response()->json([
+                'success' => true,
+                'data' => $cartoonData
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء جلب المحتوى',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+
+    /**
+     * Helper function to decode JSON fields (title, description)
+     */
+        private function decodeJsonField($field, $locale = "ar")
+    {
+        if (!is_string($field)) return $field;
+        
+        $decoded = json_decode($field, true);
+        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+            // Check if request is from mobile app
+            $userAgent = request()->header("User-Agent", "");
+            $platform = request()->header("X-Device-Platform", "");
+            $isMobileApp = stripos($userAgent, "Dart") !== false || 
+                           stripos($userAgent, "Flutter") !== false ||
+                           $platform === "mobile" || 
+                           $platform === "app";
+            
+            // For mobile apps, return locale-specific value based on request locale
+            if ($isMobileApp) {
+                $requestLocale = request()->get("locale", "ar");
+                return $decoded[$requestLocale] ?? $decoded[$locale] ?? $decoded["ar"] ?? $decoded["en"] ?? $field;
+            }
+            
+            // For web, return locale-specific value
+            return $decoded[$locale] ?? $decoded["en"] ?? $decoded["ar"] ?? $field;
+        }
+        
+        return $field;
+    }
+}

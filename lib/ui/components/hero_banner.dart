@@ -133,7 +133,7 @@ class _HeroBannerState extends State<HeroBanner>
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              ProfessionalTheme.primaryBrand.withOpacity(0.3),
+              ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
               ProfessionalTheme.backgroundPrimary,
             ],
           ),
@@ -156,7 +156,7 @@ class _HeroBannerState extends State<HeroBanner>
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                  ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                   ProfessionalTheme.backgroundPrimary,
                 ],
               ),
@@ -184,8 +184,8 @@ class _HeroBannerState extends State<HeroBanner>
               end: Alignment.bottomCenter,
               colors: [
                 Colors.transparent,
-                ProfessionalTheme.backgroundPrimary.withOpacity(0.5),
-                ProfessionalTheme.backgroundPrimary.withOpacity(0.95),
+                ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.5),
+                ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.95),
               ],
               stops: const [0.0, 0.5, 1.0],
             ),
@@ -198,8 +198,8 @@ class _HeroBannerState extends State<HeroBanner>
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
-                ProfessionalTheme.backgroundPrimary.withOpacity(0.9),
-                ProfessionalTheme.backgroundPrimary.withOpacity(0.4),
+                ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.9),
+                ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.4),
                 Colors.transparent,
               ],
               stops: const [0.0, 0.3, 0.7],
@@ -214,7 +214,7 @@ class _HeroBannerState extends State<HeroBanner>
               radius: 1.2,
               colors: [
                 Colors.transparent,
-                ProfessionalTheme.backgroundPrimary.withOpacity(0.4),
+                ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.4),
               ],
             ),
           ),
@@ -299,7 +299,7 @@ class _HeroBannerState extends State<HeroBanner>
       shaderCallback: (bounds) => LinearGradient(
         colors: [
           ProfessionalTheme.textPrimary,
-          ProfessionalTheme.textPrimary.withOpacity(0.9),
+          ProfessionalTheme.textPrimary.withValues(alpha: 0.9),
         ],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
@@ -361,11 +361,11 @@ class _HeroBannerState extends State<HeroBanner>
                     vertical: ProfessionalTheme.space4,
                   ),
                   decoration: BoxDecoration(
-                    color: ProfessionalTheme.surfaceCard.withOpacity(0.8),
+                    color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
                     borderRadius:
                         BorderRadius.circular(ProfessionalTheme.radiusM),
                     border: Border.all(
-                      color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                      color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                       width: 1,
                     ),
                   ),
@@ -422,7 +422,7 @@ class _HeroBannerState extends State<HeroBanner>
       child: CustomPaint(
         painter: FloatingParticlesPainter(
           animation: _animationController,
-          particleColor: ProfessionalTheme.primaryBrand.withOpacity(0.1),
+          particleColor: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
         ),
         child: Container(),
       ),
@@ -508,13 +508,13 @@ class _PremiumButtonState extends State<_PremiumButton>
                         : null,
                     color: widget.isPrimary
                         ? null
-                        : ProfessionalTheme.surfaceCard.withOpacity(0.8),
+                        : ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
                     borderRadius:
                         BorderRadius.circular(ProfessionalTheme.radiusRound),
                     border: Border.all(
                       color: widget.isPrimary
                           ? Colors.transparent
-                          : ProfessionalTheme.textTertiary.withOpacity(0.3),
+                          : ProfessionalTheme.textTertiary.withValues(alpha: 0.3),
                       width: 1,
                     ),
                     boxShadow: widget.isPrimary
@@ -574,7 +574,7 @@ class FloatingParticlesPainter extends CustomPainter {
       final opacity = (1.0 - progress) * 0.5;
       final radius = 1 + (i % 3);
 
-      paint.color = particleColor.withOpacity(opacity);
+      paint.color = particleColor.withValues(alpha: opacity);
       canvas.drawCircle(Offset(x, y), radius.toDouble(), paint);
     }
   }

@@ -118,7 +118,7 @@ class _LiveStreamCarouselState extends State<LiveStreamCarousel> {
                         fit: BoxFit.cover,
                         placeholder: (c, _) =>
                             Container(color: ProfessionalTheme.surfaceCard),
-                        errorWidget: (c, u, e) => Icon(
+                        errorWidget: (c, u, e) => const Icon(
                           Icons.broken_image,
                           color: ProfessionalTheme.textTertiary,
                           size: 50,

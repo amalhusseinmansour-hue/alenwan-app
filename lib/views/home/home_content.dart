@@ -59,7 +59,7 @@ String bestLiveThumb(dynamic s) {
         s.videoUrl?.isNotEmpty == true ? s.videoUrl! : s.streamUrl ?? '';
     final id = _youtubeIdFromUrl(url);
     if (id != null) {
-      return "https://img.youtube.com/vi/$id/hqdefault.jpg";
+      return 'https://img.youtube.com/vi/$id/hqdefault.jpg';
     }
   }
 

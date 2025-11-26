@@ -113,9 +113,9 @@ class _FavoritesScreenState extends State<FavoritesScreen>
               end: Alignment.bottomRight,
               colors: [
                 ProfessionalTheme.backgroundColor,
-                ProfessionalTheme.surfaceColor.withOpacity(0.3),
+                ProfessionalTheme.surfaceColor.withValues(alpha: 0.3),
                 ProfessionalTheme.backgroundColor,
-                ProfessionalTheme.primaryColor.withOpacity(0.05),
+                ProfessionalTheme.primaryColor.withValues(alpha: 0.05),
               ],
               stops: const [0.0, 0.3, 0.7, 1.0],
             ),
@@ -134,11 +134,11 @@ class _FavoritesScreenState extends State<FavoritesScreen>
       expandedHeight: 180,
       floating: false,
       pinned: true,
-      backgroundColor: ProfessionalTheme.backgroundColor.withOpacity(0.9),
+      backgroundColor: ProfessionalTheme.backgroundColor.withValues(alpha: 0.9),
       leading: Container(
         margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: ProfessionalTheme.primaryColor.withOpacity(0.8),
+          color: ProfessionalTheme.primaryColor.withValues(alpha: 0.8),
           borderRadius: BorderRadius.circular(12),
         ),
         child: IconButton(
@@ -162,9 +162,9 @@ class _FavoritesScreenState extends State<FavoritesScreen>
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                ProfessionalTheme.primaryColor.withOpacity(0.8),
-                ProfessionalTheme.secondaryColor.withOpacity(0.6),
-                ProfessionalTheme.backgroundColor.withOpacity(0.9),
+                ProfessionalTheme.primaryColor.withValues(alpha: 0.8),
+                ProfessionalTheme.secondaryColor.withValues(alpha: 0.6),
+                ProfessionalTheme.backgroundColor.withValues(alpha: 0.9),
               ],
             ),
           ),
@@ -178,22 +178,22 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                     width: 80 + _heartAnimation.value * 10,
                     height: 80 + _heartAnimation.value * 10,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(40),
                       border: Border.all(
-                        color: Colors.white.withOpacity(0.3),
+                        color: Colors.white.withValues(alpha: 0.3),
                         width: 2,
                       ),
                       boxShadow: [
                         BoxShadow(
                           color: ProfessionalTheme.primaryColor
-                              .withOpacity(_heartAnimation.value * 0.5),
+                              .withValues(alpha: _heartAnimation.value * 0.5),
                           blurRadius: 20,
                           spreadRadius: _heartAnimation.value * 5,
                         ),
                       ],
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.favorite,
                       size: 40,
                       color: Colors.white,
@@ -228,10 +228,10 @@ class _FavoritesScreenState extends State<FavoritesScreen>
         child: Container(
           padding: const EdgeInsets.all(32),
           decoration: BoxDecoration(
-            color: ProfessionalTheme.surfaceColor.withOpacity(0.8),
+            color: ProfessionalTheme.surfaceColor.withValues(alpha: 0.8),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: ProfessionalTheme.primaryColor.withOpacity(0.3),
+              color: ProfessionalTheme.primaryColor.withValues(alpha: 0.3),
               width: 1,
             ),
           ),
@@ -268,15 +268,15 @@ class _FavoritesScreenState extends State<FavoritesScreen>
         child: Container(
           padding: const EdgeInsets.all(32),
           decoration: BoxDecoration(
-            color: ProfessionalTheme.surfaceColor.withOpacity(0.6),
+            color: ProfessionalTheme.surfaceColor.withValues(alpha: 0.6),
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: ProfessionalTheme.primaryColor.withOpacity(0.3),
+              color: ProfessionalTheme.primaryColor.withValues(alpha: 0.3),
               width: 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: ProfessionalTheme.primaryColor.withOpacity(0.1),
+                color: ProfessionalTheme.primaryColor.withValues(alpha: 0.1),
                 blurRadius: 20,
                 offset: const Offset(0, 10),
               ),
@@ -304,16 +304,16 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                               gradient: LinearGradient(
                                 colors: [
                                   ProfessionalTheme.primaryColor
-                                      .withOpacity(0.8),
+                                      .withValues(alpha: 0.8),
                                   ProfessionalTheme.secondaryColor
-                                      .withOpacity(0.6),
+                                      .withValues(alpha: 0.6),
                                 ],
                               ),
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
                                   color: ProfessionalTheme.primaryColor
-                                      .withOpacity(0.4),
+                                      .withValues(alpha: 0.4),
                                   blurRadius: 20,
                                   offset: const Offset(0, 8),
                                 ),
@@ -346,7 +346,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                     style: ProfessionalTheme.getTextStyle(
                       context: context,
                       fontSize: 16,
-                      color: Colors.white.withOpacity(0.7),
+                      color: Colors.white.withValues(alpha: 0.7),
                       height: 1.6,
                     ),
                     textAlign: TextAlign.center,
@@ -370,10 +370,10 @@ class _FavoritesScreenState extends State<FavoritesScreen>
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: ProfessionalTheme.surfaceColor.withOpacity(0.6),
+              color: ProfessionalTheme.surfaceColor.withValues(alpha: 0.6),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: ProfessionalTheme.primaryColor.withOpacity(0.3),
+                color: ProfessionalTheme.primaryColor.withValues(alpha: 0.3),
                 width: 1,
               ),
             ),
@@ -393,7 +393,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: ProfessionalTheme.primaryColor.withOpacity(0.3),
+                    color: ProfessionalTheme.primaryColor.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -440,15 +440,15 @@ class _FavoritesScreenState extends State<FavoritesScreen>
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: ProfessionalTheme.surfaceColor.withOpacity(0.8),
+        color: ProfessionalTheme.surfaceColor.withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: ProfessionalTheme.primaryColor.withOpacity(0.3),
+          color: ProfessionalTheme.primaryColor.withValues(alpha: 0.3),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: ProfessionalTheme.primaryColor.withOpacity(0.1),
+            color: ProfessionalTheme.primaryColor.withValues(alpha: 0.1),
             blurRadius: 15,
             offset: const Offset(0, 8),
           ),
@@ -477,14 +477,14 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                         borderRadius: BorderRadius.circular(16),
                         gradient: LinearGradient(
                           colors: [
-                            ProfessionalTheme.primaryColor.withOpacity(0.6),
-                            ProfessionalTheme.secondaryColor.withOpacity(0.4),
+                            ProfessionalTheme.primaryColor.withValues(alpha: 0.6),
+                            ProfessionalTheme.secondaryColor.withValues(alpha: 0.4),
                           ],
                         ),
                         boxShadow: [
                           BoxShadow(
                             color:
-                                ProfessionalTheme.primaryColor.withOpacity(0.3),
+                                ProfessionalTheme.primaryColor.withValues(alpha: 0.3),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
@@ -500,9 +500,9 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                               gradient: LinearGradient(
                                 colors: [
                                   ProfessionalTheme.primaryColor
-                                      .withOpacity(0.6),
+                                      .withValues(alpha: 0.6),
                                   ProfessionalTheme.secondaryColor
-                                      .withOpacity(0.4),
+                                      .withValues(alpha: 0.4),
                                 ],
                               ),
                             ),
@@ -518,9 +518,9 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                               gradient: LinearGradient(
                                 colors: [
                                   ProfessionalTheme.primaryColor
-                                      .withOpacity(0.6),
+                                      .withValues(alpha: 0.6),
                                   ProfessionalTheme.secondaryColor
-                                      .withOpacity(0.4),
+                                      .withValues(alpha: 0.4),
                                 ],
                               ),
                             ),
@@ -557,7 +557,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                                 horizontal: 12, vertical: 6),
                             decoration: BoxDecoration(
                               color: ProfessionalTheme.primaryColor
-                                  .withOpacity(0.3),
+                                  .withValues(alpha: 0.3),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
@@ -565,7 +565,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                               style: ProfessionalTheme.getTextStyle(
                                 context: context,
                                 fontSize: 12,
-                                color: Colors.white.withOpacity(0.9),
+                                color: Colors.white.withValues(alpha: 0.9),
                               ),
                             ),
                           ),
@@ -591,7 +591,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                                 style: ProfessionalTheme.getTextStyle(
                                   context: context,
                                   fontSize: 12,
-                                  color: Colors.white.withOpacity(0.7),
+                                  color: Colors.white.withValues(alpha: 0.7),
                                 ),
                               ),
                             ],
@@ -603,7 +603,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                     // Remove button
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.red.withOpacity(0.2),
+                        color: Colors.red.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Material(
@@ -616,8 +616,8 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                             title: item.title,
                             image: item.image,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
+                          child: const Padding(
+                            padding: EdgeInsets.all(12),
                             child: Icon(
                               Icons.delete_outline,
                               color: Colors.red,
@@ -646,7 +646,7 @@ class FavoritesPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = ProfessionalTheme.primaryColor.withOpacity(0.12)
+      ..color = ProfessionalTheme.primaryColor.withValues(alpha: 0.12)
       ..style = PaintingStyle.fill;
 
     // Draw animated hearts
@@ -663,7 +663,7 @@ class FavoritesPainter extends CustomPainter {
 
     // Draw love waves
     final wavePaint = Paint()
-      ..color = ProfessionalTheme.primaryColor.withOpacity(0.08)
+      ..color = ProfessionalTheme.primaryColor.withValues(alpha: 0.08)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 
@@ -683,8 +683,6 @@ class FavoritesPainter extends CustomPainter {
   }
 
   void _drawHeart(Canvas canvas, Offset center, double size, Paint paint) {
-    final path = Path();
-
     // Simple heart approximation using circles and triangle
     canvas.drawCircle(
       Offset(center.dx - size / 2, center.dy - size / 2),

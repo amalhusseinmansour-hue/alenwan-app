@@ -226,9 +226,9 @@ class _AdvancedSearchFiltersState extends State<AdvancedSearchFilters>
   Widget _buildHeader() {
     return Container(
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: AppTheme.primaryGradient,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -344,9 +344,9 @@ class _AdvancedSearchFiltersState extends State<AdvancedSearchFilters>
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
               activeTrackColor: AppTheme.primaryColor,
-              inactiveTrackColor: AppTheme.primaryColor.withOpacity(0.3),
+              inactiveTrackColor: AppTheme.primaryColor.withValues(alpha: 0.3),
               thumbColor: AppTheme.primaryColor,
-              overlayColor: AppTheme.primaryColor.withOpacity(0.2),
+              overlayColor: AppTheme.primaryColor.withValues(alpha: 0.2),
               trackHeight: 4,
             ),
             child: RangeSlider(
@@ -407,9 +407,9 @@ class _AdvancedSearchFiltersState extends State<AdvancedSearchFilters>
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
               activeTrackColor: AppTheme.primaryColor,
-              inactiveTrackColor: AppTheme.primaryColor.withOpacity(0.3),
+              inactiveTrackColor: AppTheme.primaryColor.withValues(alpha: 0.3),
               thumbColor: AppTheme.primaryColor,
-              overlayColor: AppTheme.primaryColor.withOpacity(0.2),
+              overlayColor: AppTheme.primaryColor.withValues(alpha: 0.2),
             ),
             child: Slider(
               value: _filters.minRating,
@@ -454,9 +454,9 @@ class _AdvancedSearchFiltersState extends State<AdvancedSearchFilters>
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
               activeTrackColor: AppTheme.primaryColor,
-              inactiveTrackColor: AppTheme.primaryColor.withOpacity(0.3),
+              inactiveTrackColor: AppTheme.primaryColor.withValues(alpha: 0.3),
               thumbColor: AppTheme.primaryColor,
-              overlayColor: AppTheme.primaryColor.withOpacity(0.2),
+              overlayColor: AppTheme.primaryColor.withValues(alpha: 0.2),
               trackHeight: 4,
             ),
             child: RangeSlider(
@@ -515,7 +515,7 @@ class _AdvancedSearchFiltersState extends State<AdvancedSearchFilters>
                 padding: const EdgeInsets.all(16),
                 decoration: AppTheme.glassDecoration(
                   color: isSelected
-                      ? AppTheme.primaryColor.withOpacity(0.2)
+                      ? AppTheme.primaryColor.withValues(alpha: 0.2)
                       : Colors.transparent,
                 ),
                 child: Row(
@@ -535,7 +535,7 @@ class _AdvancedSearchFiltersState extends State<AdvancedSearchFilters>
                       ),
                     ),
                     if (isSelected)
-                      Icon(
+                      const Icon(
                         Icons.check_circle,
                         color: AppTheme.primaryColor,
                       ),
@@ -596,7 +596,7 @@ class _AdvancedSearchFiltersState extends State<AdvancedSearchFilters>
             color: isSelected ? null : AppTheme.surfaceColor,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: isSelected ? Colors.transparent : AppTheme.primaryColor.withOpacity(0.3),
+              color: isSelected ? Colors.transparent : AppTheme.primaryColor.withValues(alpha: 0.3),
             ),
             boxShadow: isSelected ? AppTheme.primaryShadow : null,
           ),
@@ -692,7 +692,7 @@ class FiltersBadge extends StatelessWidget {
           color: activeCount > 0 ? null : AppTheme.surfaceColor,
           borderRadius: BorderRadius.circular(25),
           border: Border.all(
-            color: AppTheme.primaryColor.withOpacity(0.3),
+            color: AppTheme.primaryColor.withValues(alpha: 0.3),
           ),
         ),
         child: Row(

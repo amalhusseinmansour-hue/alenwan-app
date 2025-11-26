@@ -310,7 +310,7 @@ class BillingService extends ChangeNotifier {
         // This is an upgrade or downgrade
         return ChangeSubscriptionParam(
           oldPurchaseDetails: oldPurchase as GooglePlayPurchaseDetails,
-          prorationMode: ProrationMode.immediateWithTimeProration,
+          replacementMode: ReplacementMode.withTimeProration,
         );
       }
     }
@@ -357,12 +357,10 @@ class BillingService extends ChangeNotifier {
   Future<void> cancelSubscription() async {
     if (Platform.isIOS) {
       // Open iOS subscription management
-      final url = 'https://apps.apple.com/account/subscriptions';
-      // Use url_launcher to open URL
+      // TODO: Use url_launcher to open: https://apps.apple.com/account/subscriptions
     } else if (Platform.isAndroid) {
       // Open Google Play subscription management
-      final url = 'https://play.google.com/store/account/subscriptions';
-      // Use url_launcher to open URL
+      // TODO: Use url_launcher to open: https://play.google.com/store/account/subscriptions
     }
   }
 

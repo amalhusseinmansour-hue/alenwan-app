@@ -1,0 +1,158 @@
+Resolving dependencies...
+Downloading packages...
+  characters 1.4.0 (1.4.1 available)
+  connectivity_plus 6.1.5 (7.0.0 available)
+  cross_file 0.3.5 (0.3.5+1 available)
+  data_table_2 2.6.0 (2.7.1 available)
+  device_info_plus 10.1.2 (12.2.0 available)
+  file_picker 8.3.7 (10.3.7 available)
+  file_selector_linux 0.9.3+2 (0.9.3+3 available)
+  file_selector_macos 0.9.4+5 (0.9.4+6 available)
+  file_selector_platform_interface 2.6.2 (2.7.0 available)
+  file_selector_windows 0.9.3+4 (0.9.3+5 available)
+  fl_chart 0.69.2 (1.1.1 available)
+  flutter_plugin_android_lifecycle 2.0.32 (2.0.33 available)
+  flutter_tts 3.8.5 (4.2.3 available)
+  google_sign_in 6.3.0 (7.2.0 available)
+  google_sign_in_android 6.2.1 (7.2.5 available)
+  google_sign_in_ios 5.9.0 (6.2.4 available)
+  google_sign_in_platform_interface 2.5.0 (3.1.0 available)
+  google_sign_in_web 0.12.4+4 (1.1.0 available)
+  http 1.5.0 (1.6.0 available)
+  image_picker 1.2.0 (1.2.1 available)
+  image_picker_android 0.8.13+7 (0.8.13+9 available)
+  image_picker_for_web 3.1.0 (3.1.1 available)
+  image_picker_ios 0.8.13+1 (0.8.13+2 available)
+  in_app_purchase 3.2.0 (3.2.3 available)
+  in_app_purchase_android 0.3.6+13 (0.4.0+7 available)
+  in_app_purchase_storekit 0.3.22+1 (0.4.6+2 available)
+  matcher 0.12.17 (0.12.18 available)
+  material_color_utilities 0.11.1 (0.13.0 available)
+  meta 1.16.0 (1.17.0 available)
+  path_provider_android 2.2.20 (2.2.21 available)
+  path_provider_foundation 2.4.3 (2.5.0 available)
+  pay 2.0.0 (3.3.0 available)
+  pay_android 2.0.0 (3.2.0 available)
+  pay_ios 1.0.11 (1.1.0 available)
+  pay_platform_interface 1.0.4 (2.0.0 available)
+  screen_protector 1.4.5 (1.4.7 available)
+  shared_preferences_android 2.4.15 (2.4.17 available)
+  shared_preferences_foundation 2.5.5 (2.5.6 available)
+  test_api 0.7.6 (0.7.8 available)
+  universal_io 2.2.2 (2.3.1 available)
+  url_launcher_android 6.3.24 (6.3.27 available)
+  url_launcher_ios 6.3.5 (6.3.6 available)
+  url_launcher_linux 3.2.1 (3.2.2 available)
+  url_launcher_macos 3.2.4 (3.2.5 available)
+  url_launcher_windows 3.1.4 (3.1.5 available)
+  video_player 2.10.0 (2.10.1 available)
+  video_player_android 2.8.17 (2.8.19 available)
+  video_player_avfoundation 2.8.5 (2.8.7 available)
+  webview_flutter_android 4.10.5 (4.10.6 available)
+  webview_flutter_wkwebview 3.23.2 (3.23.3 available)
+  win32_registry 1.1.5 (2.1.0 available)
+Got dependencies!
+51 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Running Gradle task 'assembleDebug'...                          
+Invalid depfile: C:\Users\HP\Desktop\flutter\alenwan\.dart_tool\flutter_build\ff254ab3a8e01aba3a6a2e6cc6c2a052\kernel_snapshot_program.d
+Invalid depfile: C:\Users\HP\Desktop\flutter\alenwan\.dart_tool\flutter_build\ff254ab3a8e01aba3a6a2e6cc6c2a052\kernel_snapshot_program.d
+lib/views/subscription/payment_webview_screen_web.dart:2:8: Error: Dart library 'dart:html' is not available on this platform.
+import 'dart:html' as html;
+       ^
+Context: The unavailable library 'dart:html' is imported through these packages:
+
+    package:alenwan => dart:html
+
+Detailed import paths for (some of) the these imports:
+
+    package:alenwan/main.dart => package:alenwan/app.dart => package:alenwan/routes/app_routes.dart => package:alenwan/views/main_screen.dart => package:alenwan/widgets/pwa_install_prompt.dart => dart:html
+    package:alenwan/main.dart => package:alenwan/app.dart => package:alenwan/routes/app_routes.dart => package:alenwan/views/subscription/payment_webview_screen_web.dart => dart:html
+
+lib/views/subscription/payment_webview_screen_web.dart:3:8: Error: Dart library 'dart:ui_web' is not available on this platform.
+import 'dart:ui_web' as ui_web;
+       ^
+Context: The unavailable library 'dart:ui_web' is imported through these packages:
+
+    package:alenwan => dart:ui_web
+
+Detailed import paths for (some of) the these imports:
+
+    package:alenwan/main.dart => package:alenwan/app.dart => package:alenwan/routes/app_routes.dart => package:alenwan/views/subscription/payment_webview_screen_web.dart => dart:ui_web
+
+lib/views/subscription/payment_webview_screen_web.dart:33:29: Error: Method not found: 'IFrameElement'.
+        final iframe = html.IFrameElement()
+                            ^^^^^^^^^^^^^
+lib/views/subscription/payment_webview_screen_web.dart:49:14: Error: Undefined name 'window'.
+        html.window.onMessage.listen((event) {
+             ^^^^^^
+lib/views/subscription/payment_webview_screen_web.dart:30:12: Error: Undefined name 'platformViewRegistry'.
+    ui_web.platformViewRegistry.registerViewFactory(
+           ^^^^^^^^^^^^^^^^^^^^
+lib/views/subscription/payment_webview_screen_web.dart:83:20: Error: Undefined name 'window'.
+              html.window.open(widget.paymentUrl, '_blank');
+                   ^^^^^^
+lib/views/subscription/subscription_plans_screen.dart:9:8: Error: Dart library 'dart:js' is not available on this platform.
+import 'dart:js' as js;
+       ^
+Context: The unavailable library 'dart:js' is imported through these packages:
+
+    package:alenwan => dart:js
+
+Detailed import paths for (some of) the these imports:
+
+    package:alenwan/main.dart => package:alenwan/app.dart => package:alenwan/routes/app_routes.dart => package:alenwan/views/main_screen.dart => package:alenwan/widgets/pwa_install_prompt.dart => dart:js
+    package:alenwan/main.dart => package:alenwan/app.dart => package:alenwan/routes/app_routes.dart => package:alenwan/views/subscription/subscription_plans_screen.dart => dart:js
+
+lib/views/subscription/subscription_plans_screen.dart:388:12: Error: Undefined name 'context'.
+        js.context.callMethod('open', [paymobUrl, '_blank']);
+           ^^^^^^^
+lib/widgets/pwa_install_prompt.dart:2:8: Error: Dart library 'dart:js' is not available on this platform.
+import 'dart:js' as js;
+       ^
+lib/widgets/pwa_install_prompt.dart:1:8: Error: Dart library 'dart:html' is not available on this platform.
+import 'dart:html' as html;
+       ^
+lib/widgets/pwa_install_prompt.dart:38:14: Error: Undefined name 'window'.
+    if (html.window.matchMedia('(display-mode: standalone)').matches) {
+             ^^^^^^
+lib/widgets/pwa_install_prompt.dart:44:10: Error: Undefined name 'window'.
+    html.window.addEventListener('pwaInstallAvailable', (_) {
+         ^^^^^^
+lib/widgets/pwa_install_prompt.dart:51:10: Error: Undefined name 'window'.
+    html.window.addEventListener('pwaInstalled', (_) {
+         ^^^^^^
+lib/widgets/pwa_install_prompt.dart:61:10: Error: Undefined name 'context'.
+      js.context.callMethod('showPWAInstall', []);
+         ^^^^^^^
+Unhandled exception:
+FileSystemException(uri=org-dartlang-untranslatable-uri:dart%3Ahtml; message=StandardFileSystem only supports file:* and data:* URIs)
+#0      StandardFileSystem.entityForUri (package:front_end/src/api_prototype/standard_file_system.dart:45)
+#1      asFileUri (package:vm/kernel_front_end.dart:1002)
+#2      writeDepfile (package:vm/kernel_front_end.dart:1165)
+<asynchronous suspension>
+#3      FrontendCompiler.compile (package:frontend_server/frontend_server.dart:729)
+<asynchronous suspension>
+#4      starter (package:frontend_server/starter.dart:102)
+<asynchronous suspension>
+#5      main (file:///C:/b/s/w/ir/x/w/sdk/pkg/frontend_server/bin/frontend_server_starter.dart:13)
+<asynchronous suspension>
+
+Target kernel_snapshot_program failed: Exception
+
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileFlutterBuildDebug'.
+> Process 'command 'C:\Users\HP\flutter\bin\flutter.bat'' finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 10s
+Running Gradle task 'assembleDebug'...                             10.7s
+Gradle task assembleDebug failed with exit code 1

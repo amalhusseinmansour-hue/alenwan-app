@@ -38,7 +38,7 @@ class _LocalVideoPlayerState extends State<LocalVideoPlayer> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(title: Text(widget.title ?? "Offline Video")),
+      appBar: AppBar(title: Text(widget.title ?? 'Offline Video')),
       body: Center(
         child: _cc == null
             ? const CircularProgressIndicator()

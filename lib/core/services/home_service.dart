@@ -7,7 +7,11 @@ class HomeService {
 
   /// Get all home content in one request
   /// Uses /api/home endpoint that returns sliders, live streams, movies, series, etc.
-  Future<Map<String, dynamic>> fetchHomeContent() async {
+  Future<Map<String, dynamic>> fetchHomeContent({bool isGuest = false}) async {
+    if (isGuest) {
+      return fetchGuestHomeContent();
+    }
+
     try {
       final response = await _dio.get('/home');
 
@@ -19,6 +23,59 @@ class HomeService {
     } catch (e) {
       print('HomeService Error: $e');
       throw Exception('فشل تحميل محتوى الصفحة الرئيسية: $e');
+    }
+  }
+
+  /// Fetch content for guests using specific guest endpoints
+  Future<Map<String, dynamic>> fetchGuestHomeContent() async {
+    try {
+      print('🔵 [HomeService] Fetching guest content...');
+      
+      // Execute requests in parallel for better performance
+      final results = await Future.wait([
+        _dio.get('/guest/sliders'),
+        _dio.get('/guest/movies'),
+        _dio.get('/guest/series'),
+        _dio.get('/guest/categories'),
+      ]);
+
+      // Helper to extract data safely
+      List<dynamic> extractData(Response response) {
+        if (response.data is Map && response.data['success'] == true) {
+          return response.data['data'] ?? [];
+        }
+        return [];
+      }
+
+      final sliders = extractData(results[0]);
+      final movies = extractData(results[1]);
+      final series = extractData(results[2]);
+      final categories = extractData(results[3]);
+
+      print('✅ [HomeService] Guest content fetched successfully');
+
+      // Construct a response structure similar to /home
+      return {
+        'sliders': sliders,
+        'featured_movies': movies, // Using movies as featured
+        'trending_movies': movies, // Using movies as trending for now
+        'latest_series': series,
+        'categories': categories,
+        'live_now': [], // Live streams might not be available for guests yet
+        'upcoming_streams': [],
+      };
+    } catch (e) {
+      print('❌ [HomeService] Guest fetch error: $e');
+      // Return empty structure instead of throwing to allow app to open
+      return {
+        'sliders': [],
+        'featured_movies': [],
+        'trending_movies': [],
+        'latest_series': [],
+        'categories': [],
+        'live_now': [],
+        'upcoming_streams': [],
+      };
     }
   }
 

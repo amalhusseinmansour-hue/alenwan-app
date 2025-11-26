@@ -36,6 +36,7 @@ class _PullToRefreshWrapperState extends State<PullToRefreshWrapper>
   late Animation<double> _rippleAnimation;
 
   bool _isRefreshing = false;
+  // ignore: unused_field
   final double _dragDistance = 0.0;
 
   @override
@@ -186,8 +187,8 @@ class BurgundyRefreshIndicator extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color:
-                              AppColors.primary.withOpacity(1 - rippleProgress),
+                          color: AppColors.primary
+                              .withValues(alpha: 1 - rippleProgress),
                           width: 2,
                         ),
                       ),
@@ -202,7 +203,7 @@ class BurgundyRefreshIndicator extends StatelessWidget {
                     height: 40,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
@@ -212,7 +213,7 @@ class BurgundyRefreshIndicator extends StatelessWidget {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primary.withOpacity(0.3),
+                          color: AppColors.primary.withValues(alpha: 0.3),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -220,7 +221,7 @@ class BurgundyRefreshIndicator extends StatelessWidget {
                     ),
                     child: isRefreshing
                         ? const _SpinningIcon()
-                        : Icon(
+                        : const Icon(
                             Icons.refresh,
                             color: Colors.white,
                             size: 20,
@@ -239,7 +240,7 @@ class BurgundyRefreshIndicator extends StatelessWidget {
                 isRefreshing
                     ? loadingText
                     : (progress >= 1.0 ? releaseText : refreshText),
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.primary,
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -487,7 +488,7 @@ class LiquidWavePainter extends CustomPainter {
     if (waveProgress == 0) return;
 
     final paint = Paint()
-      ..color = color.withOpacity(0.3)
+      ..color = color.withValues(alpha: 0.3)
       ..style = PaintingStyle.fill;
 
     final path = Path();

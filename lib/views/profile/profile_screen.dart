@@ -162,14 +162,21 @@ class _ProfileScreenState extends State<ProfileScreen>
                     }
 
                     if (controller.error == 'unauthorized') {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          AppRoutes.login,
-                          (r) => false,
-                        );
-                      });
-                      return _buildLoadingState();
+                      // Check if user is in guest mode
+                      final authController = Provider.of<AuthController>(context, listen: false);
+                      if (!authController.isGuestMode) {
+                        // Only redirect to login if not in guest mode
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            AppRoutes.login,
+                            (r) => false,
+                          );
+                        });
+                        return _buildLoadingState();
+                      }
+                      // If in guest mode, show guest profile UI instead
+                      return _buildGuestProfileUI(context);
                     }
 
                     final user = controller.user;
@@ -227,10 +234,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   const SizedBox(height: 24),
 
                                   // Delete Account button
-                                  _buildDeleteAccountButton(authController, context),
+                                  if (!authController.isGuestMode)
+                                    _buildDeleteAccountButton(authController, context),
 
                                   // Logout button
-                                  _buildLogoutButton(authController, context),
+                                  if (!authController.isGuestMode)
+                                    _buildLogoutButton(authController, context),
 
                                   const SizedBox(height: 100),
                                 ],
@@ -308,6 +317,120 @@ class _ProfileScreenState extends State<ProfileScreen>
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildGuestProfileUI(BuildContext context) {
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: CustomScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        slivers: [
+          // Modern header
+          _buildSliverAppBar(context),
+
+          // Guest content
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  // Guest profile card
+                  ScaleTransition(
+                    scale: _scaleAnimation,
+                    child: Container(
+                      padding: const EdgeInsets.all(32),
+                      decoration: BoxDecoration(
+                        color: ProfessionalTheme.surfaceColor.withValues(alpha: 0.8),
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(
+                          color: ProfessionalTheme.primaryColor.withValues(alpha: 0.3),
+                          width: 1,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: ProfessionalTheme.primaryColor.withValues(alpha: 0.1),
+                            blurRadius: 20,
+                            offset: const Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          // Guest icon
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: LinearGradient(
+                                colors: [
+                                  ProfessionalTheme.primaryColor.withValues(alpha: 0.8),
+                                  ProfessionalTheme.secondaryColor.withValues(alpha: 0.6),
+                                ],
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.person_outline,
+                              size: 50,
+                              color: Colors.white,
+                            ),
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          // Guest title
+                          Text(
+                            'وضع الضيف',
+                            style: ProfessionalTheme.getTextStyle(
+                              context: context,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+
+                          const SizedBox(height: 8),
+
+                          // Guest description
+                          Text(
+                            'أنت تتصفح كضيف. سجل دخولك للوصول إلى جميع المميزات',
+                            style: ProfessionalTheme.getTextStyle(
+                              context: context,
+                              fontSize: 14,
+                              color: Colors.white.withValues(alpha: 0.7),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+
+                          const SizedBox(height: 24),
+
+                          // Login button
+                          _buildGradientButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, AppRoutes.login);
+                            },
+                            text: 'تسجيل الدخول',
+                            icon: Icons.login,
+                            context: context,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Settings section (limited for guests)
+                  _buildSettingsSection(context),
+
+                  const SizedBox(height: 100),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -668,7 +791,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             if (hasActiveSubscription && currentSubscription != null) ...[
                               const SizedBox(height: 4),
                               Text(
-                                'خطة ${currentSubscription.plan.name ?? "Platinum"}',
+                                'خطة ${currentSubscription.plan.name}',
                                 style: ProfessionalTheme.getTextStyle(
                                   context: context,
                                   fontSize: 14,

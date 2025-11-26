@@ -123,7 +123,7 @@ class ModernTheme extends ProfessionalTheme {
   // Glow shadow for effects
   static List<BoxShadow> get glowShadow => [
     BoxShadow(
-      color: primaryColor.withOpacity(0.6),
+      color: primaryColor.withValues(alpha: 0.6),
       blurRadius: 40,
       spreadRadius: 10,
     ),
@@ -132,7 +132,7 @@ class ModernTheme extends ProfessionalTheme {
   // Primary shadow for cards and elevated elements
   static List<BoxShadow> get primaryShadow => [
     BoxShadow(
-      color: primaryColor.withOpacity(0.3),
+      color: primaryColor.withValues(alpha: 0.3),
       blurRadius: 20,
       spreadRadius: 2,
       offset: const Offset(0, 10),
@@ -142,7 +142,7 @@ class ModernTheme extends ProfessionalTheme {
   // Widget methods
   static Widget animatedBackground({Widget? child}) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: darkGradient,
       ),
       child: child,
@@ -157,7 +157,7 @@ class ModernTheme extends ProfessionalTheme {
           end: Alignment.bottomCenter,
           colors: [
             Colors.transparent,
-            Colors.black.withOpacity(0.3),
+            Colors.black.withValues(alpha: 0.3),
           ],
         ),
       ),
@@ -175,7 +175,7 @@ class ModernTheme extends ProfessionalTheme {
       borderRadius: borderRadius ?? BorderRadius.circular(radiusMd),
       boxShadow: boxShadow ?? cardShadow,
       border: Border.all(
-        color: Colors.white.withOpacity(0.1),
+        color: Colors.white.withValues(alpha: 0.1),
         width: 1,
       ),
     );
@@ -191,10 +191,10 @@ class ModernTheme extends ProfessionalTheme {
     return Container(
       decoration: BoxDecoration(
         gradient: isPrimary ? primaryGradient : null,
-        color: isPrimary ? null : Colors.white.withOpacity(0.1),
+        color: isPrimary ? null : Colors.white.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(radiusLarge),
         border: Border.all(
-          color: isPrimary ? Colors.transparent : Colors.white.withOpacity(0.2),
+          color: isPrimary ? Colors.transparent : Colors.white.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -204,7 +204,7 @@ class ModernTheme extends ProfessionalTheme {
           onTap: onPressed,
           borderRadius: BorderRadius.circular(radiusLarge),
           child: Padding(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: spacingL,
               vertical: spacingM,
             ),
@@ -213,7 +213,7 @@ class ModernTheme extends ProfessionalTheme {
               children: [
                 if (icon != null) ...[
                   Icon(icon, color: Colors.white, size: 20),
-                  SizedBox(width: spacingS),
+                  const SizedBox(width: spacingS),
                 ],
                 Text(
                   label,

@@ -1,0 +1,21 @@
+# Dart and Flutter compiler definitions
+# Enables Raptor mini (Preview) compiler for all clients
+
+# Raptor mini compiler settings
+ENABLE_RAPTOR_COMPILER: true
+RAPTOR_ENABLE_OPTIMIZATIONS: true
+RAPTOR_OPTIMIZATION_LEVEL: 3
+
+# Performance optimizations
+ENABLE_COMPILATION_CACHE: true
+ENABLE_CODE_GENERATION: true
+OPTIMIZE_BUNDLE: true
+
+# Platform-specific compiler settings
+ANDROID_RAPTOR_ENABLED: true
+IOS_RAPTOR_ENABLED: true
+WEB_RAPTOR_ENABLED: true
+
+# Build optimizations
+ENABLE_PARALLEL_COMPILATION: true
+MAX_PARALLEL_JOBS: 0  # Use all available cores

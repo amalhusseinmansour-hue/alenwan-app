@@ -175,7 +175,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         color: const Color(0xFF1E1E2E),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -191,8 +191,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: isPositive
-                      ? Colors.green.withOpacity(0.2)
-                      : Colors.red.withOpacity(0.2),
+                      ? Colors.green.withValues(alpha: 0.2)
+                      : Colors.red.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
@@ -232,7 +232,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 title,
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.white.withOpacity(0.6),
+                  color: Colors.white.withValues(alpha: 0.6),
                 ),
               ),
             ],
@@ -249,7 +249,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         color: const Color(0xFF1E1E2E),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -275,7 +275,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   horizontalInterval: 1,
                   getDrawingHorizontalLine: (value) {
                     return FlLine(
-                      color: Colors.white.withOpacity(0.1),
+                      color: Colors.white.withValues(alpha: 0.1),
                       strokeWidth: 1,
                     );
                   },
@@ -355,7 +355,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     dotData: const FlDotData(show: false),
                     belowBarData: BarAreaData(
                       show: true,
-                      color: Colors.blue.withOpacity(0.1),
+                      color: Colors.blue.withValues(alpha: 0.1),
                     ),
                   ),
                 ],
@@ -374,7 +374,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         color: const Color(0xFF1E1E2E),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -456,7 +456,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   horizontalInterval: 2000,
                   getDrawingHorizontalLine: (value) {
                     return FlLine(
-                      color: Colors.white.withOpacity(0.1),
+                      color: Colors.white.withValues(alpha: 0.1),
                       strokeWidth: 1,
                     );
                   },
@@ -501,7 +501,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         color: const Color(0xFF1E1E2E),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -556,7 +556,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
+              color: color.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(icon, color: color, size: 20),
@@ -579,7 +579,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   subtitle,
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.white.withOpacity(0.6),
+                    color: Colors.white.withValues(alpha: 0.6),
                   ),
                 ),
               ],
@@ -589,7 +589,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             time,
             style: TextStyle(
               fontSize: 11,
-              color: Colors.white.withOpacity(0.4),
+              color: Colors.white.withValues(alpha: 0.4),
             ),
           ),
         ],
@@ -634,7 +634,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         color: const Color(0xFF1E1E2E),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -688,10 +688,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.05),
+          color: Colors.white.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -710,7 +710,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             ),
             Icon(
               Icons.arrow_forward_ios,
-              color: Colors.white.withOpacity(0.3),
+              color: Colors.white.withValues(alpha: 0.3),
               size: 14,
             ),
           ],

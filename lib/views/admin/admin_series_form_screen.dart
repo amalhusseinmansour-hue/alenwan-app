@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/admin_service.dart';
+import '../../widgets/imdb_search_dialog.dart';
 import 'widgets/admin_sidebar.dart';
 
 class AdminSeriesFormScreen extends StatefulWidget {
@@ -91,6 +92,30 @@ class _AdminSeriesFormScreenState extends State<AdminSeriesFormScreen> {
       print('Error loading series: $e');
       setState(() => _isLoading = false);
     }
+  }
+
+  Future<void> _showIMDbSearch() async {
+    showDialog(
+      context: context,
+      builder: (context) => IMDbSearchDialog(
+        contentType: 'series',
+        onSelect: (data) {
+          setState(() {
+            _titleController.text = data['title'] ?? '';
+            _descriptionController.text = data['description'] ?? '';
+            _yearController.text = data['year']?.toString() ?? '';
+            _directorController.text = data['director'] ?? '';
+            _castController.text = data['cast'] ?? '';
+            _genreController.text = data['genre'] ?? '';
+            _ratingController.text = data['rating']?.toString() ?? '';
+            if (data['poster_url'] != null && data['poster_url'] != 'N/A') {
+              _posterUrl = data['poster_url'];
+              _thumbnailUrl = data['poster_url'];
+            }
+          });
+        },
+      ),
+    );
   }
 
   Future<void> _pickFile(String type) async {
@@ -253,7 +278,7 @@ class _AdminSeriesFormScreenState extends State<AdminSeriesFormScreen> {
         color: const Color(0xFF1E1E2E),
         border: Border(
           bottom: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -273,6 +298,23 @@ class _AdminSeriesFormScreenState extends State<AdminSeriesFormScreen> {
               color: Colors.white,
             ),
           ),
+          const Spacer(),
+          ElevatedButton.icon(
+            onPressed: _showIMDbSearch,
+            icon: const Icon(Icons.search, size: 20),
+            label: const Text('بحث في IMDb'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.amber,
+              foregroundColor: Colors.black,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 12,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -289,7 +331,7 @@ class _AdminSeriesFormScreenState extends State<AdminSeriesFormScreen> {
             color: const Color(0xFF1E1E2E),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: Colors.white.withOpacity(0.1),
+              color: Colors.white.withValues(alpha: 0.1),
               width: 1,
             ),
           ),
@@ -446,16 +488,16 @@ class _AdminSeriesFormScreenState extends State<AdminSeriesFormScreen> {
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
+        labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
         filled: true,
-        fillColor: Colors.white.withOpacity(0.05),
+        fillColor: Colors.white.withValues(alpha: 0.05),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.2)),
+          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.2)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.2)),
+          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.2)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -476,7 +518,7 @@ class _AdminSeriesFormScreenState extends State<AdminSeriesFormScreen> {
       children: [
         Text(
           label,
-          style: TextStyle(fontSize: 14, color: Colors.white.withOpacity(0.8)),
+          style: TextStyle(fontSize: 14, color: Colors.white.withValues(alpha: 0.8)),
         ),
         const SizedBox(height: 8),
         InkWell(
@@ -484,10 +526,10 @@ class _AdminSeriesFormScreenState extends State<AdminSeriesFormScreen> {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.05),
+              color: Colors.white.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 width: 1,
               ),
             ),
@@ -518,7 +560,7 @@ class _AdminSeriesFormScreenState extends State<AdminSeriesFormScreen> {
 
   Widget _buildEpisodeCard(int index, Map<String, dynamic> episode) {
     return Card(
-      color: Colors.white.withOpacity(0.05),
+      color: Colors.white.withValues(alpha: 0.05),
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
         title: Text(
@@ -564,6 +606,8 @@ class _EpisodeDialogState extends State<_EpisodeDialog> {
   late final TextEditingController _episodeNumberController;
   late final TextEditingController _durationController;
   late final TextEditingController _videoUrlController;
+  late final TextEditingController _vimeoIdController;
+  String _videoSource = 'url'; // 'url' or 'vimeo'
 
   @override
   void initState() {
@@ -579,6 +623,17 @@ class _EpisodeDialogState extends State<_EpisodeDialog> {
     _videoUrlController = TextEditingController(
       text: widget.episode?['video_url'] ?? '',
     );
+    _vimeoIdController = TextEditingController(
+      text: widget.episode?['vimeo_id'] ?? '',
+    );
+
+    // Detect video source type
+    if (widget.episode?['vimeo_id'] != null &&
+        widget.episode!['vimeo_id'].toString().isNotEmpty) {
+      _videoSource = 'vimeo';
+    } else {
+      _videoSource = 'url';
+    }
   }
 
   @override
@@ -587,6 +642,7 @@ class _EpisodeDialogState extends State<_EpisodeDialog> {
     _episodeNumberController.dispose();
     _durationController.dispose();
     _videoUrlController.dispose();
+    _vimeoIdController.dispose();
     super.dispose();
   }
 
@@ -636,14 +692,134 @@ class _EpisodeDialogState extends State<_EpisodeDialog> {
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 16),
-              TextFormField(
-                controller: _videoUrlController,
-                decoration: const InputDecoration(
-                  labelText: 'رابط الفيديو',
-                  border: OutlineInputBorder(),
+
+              // Video Source Selection
+              const Text(
+                'مصدر الفيديو',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
-                validator: (v) => v?.isEmpty ?? true ? 'مطلوب' : null,
               ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () => setState(() => _videoSource = 'url'),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: _videoSource == 'url'
+                              ? Colors.blue.withValues(alpha: 0.2)
+                              : Colors.grey.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: _videoSource == 'url'
+                                ? Colors.blue
+                                : Colors.grey.withValues(alpha: 0.3),
+                            width: 2,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              _videoSource == 'url'
+                                  ? Icons.radio_button_checked
+                                  : Icons.radio_button_unchecked,
+                              color: Colors.blue,
+                            ),
+                            const SizedBox(width: 8),
+                            const Text('رابط مباشر'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () => setState(() => _videoSource = 'vimeo'),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: _videoSource == 'vimeo'
+                              ? Colors.blue.withValues(alpha: 0.2)
+                              : Colors.grey.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: _videoSource == 'vimeo'
+                                ? Colors.blue
+                                : Colors.grey.withValues(alpha: 0.3),
+                            width: 2,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              _videoSource == 'vimeo'
+                                  ? Icons.radio_button_checked
+                                  : Icons.radio_button_unchecked,
+                              color: Colors.blue,
+                            ),
+                            const SizedBox(width: 8),
+                            const Text('Vimeo'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+
+              if (_videoSource == 'url')
+                TextFormField(
+                  controller: _videoUrlController,
+                  decoration: const InputDecoration(
+                    labelText: 'رابط الفيديو',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (v) {
+                    if (_videoSource == 'url' && (v?.isEmpty ?? true)) {
+                      return 'الرجاء إدخال رابط الفيديو';
+                    }
+                    return null;
+                  },
+                ),
+
+              if (_videoSource == 'vimeo')
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      controller: _vimeoIdController,
+                      decoration: const InputDecoration(
+                        labelText: 'معرّف فيديو Vimeo (Video ID)',
+                        border: OutlineInputBorder(),
+                        hintText: '123456789',
+                      ),
+                      validator: (v) {
+                        if (_videoSource == 'vimeo' && (v?.isEmpty ?? true)) {
+                          return 'الرجاء إدخال معرّف فيديو Vimeo';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      'مثال: 123456789 من https://vimeo.com/123456789',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.grey,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
+                ),
+
               const SizedBox(height: 24),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -662,7 +838,10 @@ class _EpisodeDialogState extends State<_EpisodeDialog> {
                           'title': _titleController.text,
                           'duration':
                               int.tryParse(_durationController.text) ?? 0,
-                          'video_url': _videoUrlController.text,
+                          'video_url':
+                              _videoSource == 'url' ? _videoUrlController.text : '',
+                          'vimeo_id':
+                              _videoSource == 'vimeo' ? _vimeoIdController.text : '',
                         });
                         Navigator.of(context).pop();
                       }

@@ -158,7 +158,7 @@ class _AdminPaymentsScreenState extends State<AdminPaymentsScreen> {
         color: const Color(0xFF1E1E2E),
         border: Border(
           bottom: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -253,7 +253,7 @@ class _AdminPaymentsScreenState extends State<AdminPaymentsScreen> {
         color: const Color(0xFF1E1E2E),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -275,7 +275,7 @@ class _AdminPaymentsScreenState extends State<AdminPaymentsScreen> {
             title,
             style: TextStyle(
               fontSize: 14,
-              color: Colors.white.withOpacity(0.6),
+              color: Colors.white.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -290,7 +290,7 @@ class _AdminPaymentsScreenState extends State<AdminPaymentsScreen> {
         color: const Color(0xFF1E1E2E),
         border: Border(
           bottom: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -304,9 +304,9 @@ class _AdminPaymentsScreenState extends State<AdminPaymentsScreen> {
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelText: 'الحالة',
-                labelStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
+                labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
                 filled: true,
-                fillColor: Colors.white.withOpacity(0.05),
+                fillColor: Colors.white.withValues(alpha: 0.05),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide.none,
@@ -336,7 +336,7 @@ class _AdminPaymentsScreenState extends State<AdminPaymentsScreen> {
                     : '${DateFormat('yyyy-MM-dd').format(_dateRange!.start)} - ${DateFormat('yyyy-MM-dd').format(_dateRange!.end)}',
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white.withOpacity(0.05),
+                backgroundColor: Colors.white.withValues(alpha: 0.05),
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
@@ -376,7 +376,7 @@ class _AdminPaymentsScreenState extends State<AdminPaymentsScreen> {
           color: const Color(0xFF1E1E2E),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -384,7 +384,7 @@ class _AdminPaymentsScreenState extends State<AdminPaymentsScreen> {
           columnSpacing: 24,
           horizontalMargin: 24,
           headingRowColor: WidgetStateProperty.all(
-            Colors.white.withOpacity(0.05),
+            Colors.white.withValues(alpha: 0.05),
           ),
           columns: const [
             DataColumn(
@@ -518,7 +518,7 @@ class _AdminPaymentsScreenState extends State<AdminPaymentsScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
@@ -539,7 +539,7 @@ class _AdminPaymentsScreenState extends State<AdminPaymentsScreen> {
         color: const Color(0xFF1E1E2E),
         border: Border(
           top: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),

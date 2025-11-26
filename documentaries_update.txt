@@ -1,0 +1,29 @@
+            $documentariesArray = [];
+            foreach ($documentaries as $doc) {
+                $documentariesArray[] = [
+                    'id' => $doc->id,
+                    'title' => $this->decodeJsonField($doc->title, $locale),
+                    'title_ar' => $this->decodeJsonField($doc->title, 'ar'),
+                    'description' => $this->decodeJsonField($doc->description ?? '', $locale),
+                    'description_ar' => $this->decodeJsonField($doc->description ?? '', 'ar'),
+                    'poster' => $doc->poster ?? $doc->thumbnail ?? null,
+                    'poster_url' => $doc->poster ? (str_starts_with($doc->poster, 'http') ? $doc->poster : url('storage/' . $doc->poster)) : null,
+                    'banner_url' => $doc->backdrop ?? $doc->banner ?? null,
+                    'thumbnail' => $doc->thumbnail ?? $doc->poster ?? null,
+                    'video_url' => $doc->video_url ?? $doc->video_path ?? null,
+                    'release_year' => $doc->release_year ?? $doc->year ?? null,
+                    'rating' => $doc->rating ?? 0,
+                    'is_premium' => $doc->is_premium ?? false,
+                    'is_featured' => $doc->is_featured ?? false,
+                    'is_published' => $doc->is_published ?? true,
+                    'subscription_tier' => $doc->subscription_tier ?? 'free',
+                    'type' => $doc->type ?? null,
+                    'presenter' => $doc->presenter ?? null,
+                    'director' => $doc->director ?? null,
+                    'narrator' => $doc->narrator ?? null,
+                    'topic' => $doc->topic ?? null,
+                    'duration' => $doc->duration ?? null,
+                    'category_id' => $doc->category_id ?? 0,
+                    'created_at' => $doc->created_at,
+                ];
+            }

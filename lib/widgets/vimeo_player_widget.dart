@@ -83,8 +83,8 @@ class _VimeoPlayerWidgetState extends State<VimeoPlayerWidget> {
       }
 
       // Initialize video controller
-      _videoController = VideoPlayerController.network(
-        videoUrl,
+      _videoController = VideoPlayerController.networkUrl(
+        Uri.parse(videoUrl),
         httpHeaders: {
           'Referer': 'https://alenwan.app',
           'User-Agent': 'Alenwan Mobile App',
@@ -278,8 +278,8 @@ class _VimeoPlayerWidgetState extends State<VimeoPlayerWidget> {
     await _videoController!.pause();
 
     // Create new controller with new quality
-    _videoController = VideoPlayerController.network(
-      quality.url,
+    _videoController = VideoPlayerController.networkUrl(
+      Uri.parse(quality.url),
       httpHeaders: {
         'Referer': 'https://alenwan.app',
         'User-Agent': 'Alenwan Mobile App',
@@ -306,8 +306,8 @@ class _VimeoPlayerWidgetState extends State<VimeoPlayerWidget> {
       materialProgressColors: ChewieProgressColors(
         playedColor: Colors.red,
         handleColor: Colors.red,
-        bufferedColor: Colors.red.withOpacity(0.3),
-        backgroundColor: Colors.white.withOpacity(0.3),
+        bufferedColor: Colors.red.withValues(alpha: 0.3),
+        backgroundColor: Colors.white.withValues(alpha: 0.3),
       ),
       placeholder: Container(
         color: Colors.black,
@@ -496,13 +496,15 @@ class _VimeoPlayerWidgetState extends State<VimeoPlayerWidget> {
       DeviceOrientation.landscapeRight,
     ]);
 
-    return WillPopScope(
-      onWillPop: () async {
-        SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-        SystemChrome.setPreferredOrientations([
-          DeviceOrientation.portraitUp,
-        ]);
-        return true;
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (bool didPop, dynamic result) async {
+        if (didPop) {
+          SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+          SystemChrome.setPreferredOrientations([
+            DeviceOrientation.portraitUp,
+          ]);
+        }
       },
       child: Scaffold(
         backgroundColor: Colors.black,

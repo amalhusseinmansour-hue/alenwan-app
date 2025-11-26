@@ -143,7 +143,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen> {
                         ),
                         prefixIcon: const Icon(Icons.person, color: Colors.white54),
                         filled: true,
-                        fillColor: Colors.white.withOpacity(0.05),
+                        fillColor: Colors.white.withValues(alpha: 0.05),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,
@@ -182,7 +182,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen> {
                         ),
                         prefixIcon: const Icon(Icons.person_outline, color: Colors.white54),
                         filled: true,
-                        fillColor: Colors.white.withOpacity(0.05),
+                        fillColor: Colors.white.withValues(alpha: 0.05),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,
@@ -222,7 +222,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen> {
                         ),
                         prefixIcon: const Icon(Icons.email, color: Colors.white54),
                         filled: true,
-                        fillColor: Colors.white.withOpacity(0.05),
+                        fillColor: Colors.white.withValues(alpha: 0.05),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,
@@ -268,7 +268,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen> {
                         ),
                         prefixIcon: const Icon(Icons.phone, color: Colors.white54),
                         filled: true,
-                        fillColor: Colors.white.withOpacity(0.05),
+                        fillColor: Colors.white.withValues(alpha: 0.05),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,
@@ -336,7 +336,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.lock,
                           color: AppColors.success,
                           size: 16,
@@ -372,7 +372,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen> {
         color: const Color(0xFF1A1A1A),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primary.withOpacity(0.3),
+          color: AppColors.primary.withValues(alpha: 0.3),
           width: 1,
         ),
       ),

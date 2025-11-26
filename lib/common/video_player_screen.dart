@@ -122,23 +122,23 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       try {
         fromApi = await widget.dubLoader!();
       } catch (e) {
-        debugPrint("Failed to load audio dubs: $e");
+        debugPrint('Failed to load audio dubs: $e');
         // Continue with default dubs if API fails
       }
     }
 
     List<Map<String, dynamic>> dubs =
         (fromApi.isNotEmpty ? fromApi : widget.audioDubs)!.map((e) {
-          final hls = (e['hls'] ?? e['url'] ?? '').toString();
-          final mp4 = (e['mp4'] ?? e['mp4_url'] ?? '').toString();
-          return {
-            'label': (e['label'] ?? e['lang'] ?? '').toString(),
-            'lang': (e['lang'] ?? '').toString(),
-            'status': (e['status'] ?? 'ready').toString(),
-            'hls': _makeAbsolute(hls),
-            'mp4': _makeAbsolute(mp4),
-          };
-        }).toList();
+      final hls = (e['hls'] ?? e['url'] ?? '').toString();
+      final mp4 = (e['mp4'] ?? e['mp4_url'] ?? '').toString();
+      return {
+        'label': (e['label'] ?? e['lang'] ?? '').toString(),
+        'lang': (e['lang'] ?? '').toString(),
+        'status': (e['status'] ?? 'ready').toString(),
+        'hls': _makeAbsolute(hls),
+        'mp4': _makeAbsolute(mp4),
+      };
+    }).toList();
 
     if (dubs.isEmpty) {
       if (!ctx.mounted) return;
@@ -203,11 +203,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                   trailing: isCurrent
                       ? const Icon(Icons.check, color: Colors.greenAccent)
                       : (playable
-                            ? const Icon(Icons.play_arrow, color: Colors.white)
-                            : const Icon(
-                                Icons.hourglass_bottom,
-                                color: Colors.white54,
-                              )),
+                          ? const Icon(Icons.play_arrow, color: Colors.white)
+                          : const Icon(
+                              Icons.hourglass_bottom,
+                              color: Colors.white54,
+                            )),
                   enabled: playable,
                   onTap: !playable
                       ? null

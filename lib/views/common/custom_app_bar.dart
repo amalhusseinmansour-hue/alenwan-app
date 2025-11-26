@@ -143,7 +143,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         ),
                       ),
                       child: TextField(
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           hintText: 'Search...',
                           hintStyle: TextStyle(

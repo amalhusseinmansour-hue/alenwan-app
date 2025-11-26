@@ -46,7 +46,7 @@ class WebMobileWrapper extends StatelessWidget {
                   color: Colors.black,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.8),
+                      color: Colors.black.withValues(alpha: 0.8),
                       blurRadius: 30,
                       spreadRadius: 10,
                     ),

@@ -131,7 +131,6 @@ class _ShahidStyleBannerState extends State<ShahidStyleBanner> {
   Widget _buildShahidStyleSlider(Map<String, dynamic> slider, double height, int index) {
     final imageUrl = slider['image']?.toString() ?? '';
     final title = _parseTitle(slider['title']);
-    final url = slider['url']?.toString() ?? '';
 
     return Stack(
       fit: StackFit.expand,
@@ -169,10 +168,10 @@ class _ShahidStyleBannerState extends State<ShahidStyleBanner> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Colors.black.withOpacity(0.3),
-                Colors.black.withOpacity(0.5),
-                Colors.black.withOpacity(0.85),
-                Colors.black.withOpacity(0.95),
+                Colors.black.withValues(alpha: 0.3),
+                Colors.black.withValues(alpha: 0.5),
+                Colors.black.withValues(alpha: 0.85),
+                Colors.black.withValues(alpha: 0.95),
               ],
               stops: const [0.0, 0.4, 0.75, 1.0],
             ),
@@ -224,12 +223,12 @@ class _ShahidStyleBannerState extends State<ShahidStyleBanner> {
             decoration: BoxDecoration(
               color: isActive
                   ? const Color(0xFFE50914)
-                  : Colors.white.withOpacity(0.4),
+                  : Colors.white.withValues(alpha: 0.4),
               borderRadius: BorderRadius.circular(4),
               boxShadow: isActive
                   ? [
                       BoxShadow(
-                        color: const Color(0xFFE50914).withOpacity(0.5),
+                        color: const Color(0xFFE50914).withValues(alpha: 0.5),
                         blurRadius: 8,
                         spreadRadius: 1,
                       ),
@@ -261,14 +260,14 @@ class _ShahidStyleBannerState extends State<ShahidStyleBanner> {
         children: [
           Icon(
             Icons.movie_creation_outlined,
-            color: Colors.white.withOpacity(0.3),
+            color: Colors.white.withValues(alpha: 0.3),
             size: 80,
           ),
           const SizedBox(height: 16),
           Text(
             'لا توجد عروض حالياً',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.5),
+              color: Colors.white.withValues(alpha: 0.5),
               fontSize: 18,
             ),
           ),

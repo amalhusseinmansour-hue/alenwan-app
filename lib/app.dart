@@ -51,7 +51,7 @@ class App extends StatelessWidget {
       themeMode: themeController.themeMode,
 
       // ✅ Routes
-      initialRoute: AppRoutes.splash,
+      initialRoute: AppRoutes.splash,  // Start with splash screen to enable guest mode
       routes: AppRoutes.routes,
       onGenerateRoute: AppRoutes.onGenerateRoute,
     );

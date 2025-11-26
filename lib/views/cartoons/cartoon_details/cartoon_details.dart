@@ -112,7 +112,7 @@ class _CartoonDetailsScreenState extends State<CartoonDetailsScreen> {
     try {
       apiDubs = await _dubService.list(type: 'cartoon', id: cartoon.id);
     } catch (e) {
-      debugPrint("Error: $e");
+      debugPrint('Error: $e');
     }
 
     // دمج الدبلجات

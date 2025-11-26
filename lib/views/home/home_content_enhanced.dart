@@ -155,10 +155,11 @@ class _HomeContentEnhancedState extends State<HomeContentEnhanced>
       final userId = authC.user?['id'];
       if (userId != null) {
         Future.delayed(const Duration(milliseconds: 700), () {
-          if (mounted)
+          if (mounted) {
             context
                 .read<RecommendationController>()
                 .loadRecommendations(userId);
+          }
         });
       }
     });
@@ -546,7 +547,7 @@ class _ModernContentRowState extends State<ModernContentRow>
                           ),
                         ),
                         const SizedBox(width: 4),
-                        Icon(Icons.arrow_forward_ios,
+                        const Icon(Icons.arrow_forward_ios,
                             size: 14, color: primaryColor),
                       ],
                     ),
@@ -664,14 +665,14 @@ class _ModernContentCardState extends State<ModernContentCard>
                           imageUrl: widget.item.image,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Container(
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [surfaceColor, backgroundColor],
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                               ),
                             ),
-                            child: Center(
+                            child: const Center(
                               child: CircularProgressIndicator(
                                 color: primaryColor,
                                 strokeWidth: 2,
@@ -777,6 +778,7 @@ class _ModernContentCardState extends State<ModernContentCard>
                         child: Container(
                           padding: const EdgeInsets.all(12),
                           child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
@@ -790,13 +792,14 @@ class _ModernContentCardState extends State<ModernContentCard>
                                   color: Colors.white,
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 6),
 
                               // Action Buttons
                               AnimatedOpacity(
                                 opacity: _isHovered ? 1.0 : 0.0,
                                 duration: const Duration(milliseconds: 300),
                                 child: Row(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
                                     _buildActionButton(
                                       icon: Icons.play_circle_fill,

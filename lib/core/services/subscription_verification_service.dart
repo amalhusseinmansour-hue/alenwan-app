@@ -35,7 +35,7 @@ class SubscriptionVerificationService {
   void redirectToSubscription(BuildContext context, {String? message}) {
     if (message != null && message.isNotEmpty) {
       Get.snackbar(
-        "تنبيه",
+        'تنبيه',
         message,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.orange,

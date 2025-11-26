@@ -76,7 +76,7 @@ class _ContinueWatchingSectionState extends State<ContinueWatchingSection>
                         gradient: LinearGradient(
                           colors: [
                             ProfessionalTheme.accentRed,
-                            ProfessionalTheme.accentRed.withOpacity(0.3),
+                            ProfessionalTheme.accentRed.withValues(alpha: 0.3),
                           ],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
@@ -102,7 +102,7 @@ class _ContinueWatchingSectionState extends State<ContinueWatchingSection>
                         color: ProfessionalTheme.textSecondary,
                       ),
                     ),
-                    label: Icon(
+                    label: const Icon(
                       Icons.arrow_forward_rounded,
                       size: 18,
                       color: ProfessionalTheme.textSecondary,
@@ -222,14 +222,14 @@ class _ContinueWatchingCardState extends State<ContinueWatchingCard>
               boxShadow: _isHovering
                   ? [
                       BoxShadow(
-                        color: ProfessionalTheme.primaryBrand.withOpacity(0.2),
+                        color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
                     ]
                   : [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: Colors.black.withValues(alpha: 0.3),
                         blurRadius: 10,
                         offset: const Offset(0, 5),
                       ),
@@ -271,7 +271,7 @@ class _ContinueWatchingCardState extends State<ContinueWatchingCard>
                       // Time remaining
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.access_time,
                             size: 14,
                             color: ProfessionalTheme.textTertiary,
@@ -302,14 +302,14 @@ class _ContinueWatchingCardState extends State<ContinueWatchingCard>
         // Thumbnail image
         Container(
           height: 180,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             borderRadius: BorderRadius.vertical(
               top: Radius.circular(ProfessionalTheme.radiusL),
             ),
             color: ProfessionalTheme.surfaceHover,
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.vertical(
+            borderRadius: const BorderRadius.vertical(
               top: Radius.circular(ProfessionalTheme.radiusL),
             ),
             child: Stack(
@@ -324,7 +324,7 @@ class _ContinueWatchingCardState extends State<ContinueWatchingCard>
                     ),
                     errorWidget: (context, url, error) => Container(
                       color: ProfessionalTheme.surfaceHover,
-                      child: Icon(
+                      child: const Icon(
                         Icons.movie_outlined,
                         size: 48,
                         color: ProfessionalTheme.textTertiary,
@@ -340,7 +340,7 @@ class _ContinueWatchingCardState extends State<ContinueWatchingCard>
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.transparent,
-                        Colors.black.withOpacity(0.7),
+                        Colors.black.withValues(alpha: 0.7),
                       ],
                     ),
                   ),
@@ -358,7 +358,7 @@ class _ContinueWatchingCardState extends State<ContinueWatchingCard>
           child: Container(
             height: 4,
             decoration: BoxDecoration(
-              color: ProfessionalTheme.surfaceActive.withOpacity(0.3),
+              color: ProfessionalTheme.surfaceActive.withValues(alpha: 0.3),
             ),
             child: FractionallySizedBox(
               alignment: Alignment.centerLeft,
@@ -368,7 +368,7 @@ class _ContinueWatchingCardState extends State<ContinueWatchingCard>
                   gradient: ProfessionalTheme.premiumGradient,
                   boxShadow: [
                     BoxShadow(
-                      color: ProfessionalTheme.primaryBrand.withOpacity(0.5),
+                      color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.5),
                       blurRadius: 4,
                     ),
                   ],
@@ -386,8 +386,8 @@ class _ContinueWatchingCardState extends State<ContinueWatchingCard>
               duration: ProfessionalTheme.durationFast,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.4),
-                  borderRadius: BorderRadius.vertical(
+                  color: Colors.black.withValues(alpha: 0.4),
+                  borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(ProfessionalTheme.radiusL),
                   ),
                 ),
@@ -400,7 +400,7 @@ class _ContinueWatchingCardState extends State<ContinueWatchingCard>
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: ProfessionalTheme.primaryBrand.withOpacity(0.5),
+                          color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.5),
                           blurRadius: 16,
                         ),
                       ],
@@ -426,7 +426,7 @@ class _ContinueWatchingCardState extends State<ContinueWatchingCard>
               duration: ProfessionalTheme.durationFast,
               child: Container(
                 decoration: BoxDecoration(
-                  color: ProfessionalTheme.backgroundPrimary.withOpacity(0.8),
+                  color: ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.8),
                   borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
                 ),
                 child: Row(
@@ -458,7 +458,7 @@ class _ContinueWatchingCardState extends State<ContinueWatchingCard>
                 vertical: ProfessionalTheme.space4,
               ),
               decoration: BoxDecoration(
-                color: ProfessionalTheme.backgroundPrimary.withOpacity(0.8),
+                color: ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.8),
                 borderRadius: BorderRadius.circular(ProfessionalTheme.radiusS),
               ),
               child: Text(

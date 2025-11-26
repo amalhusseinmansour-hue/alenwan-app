@@ -5,20 +5,9 @@ import '../config/app_constants.dart';
 import '../core/services/auth_service.dart';
 
 class PaymentService {
-  final AuthService _authService = AuthService();
-
   // Payment configuration for Apple Pay & Google Pay
   static const String _applePayMerchantId = 'merchant.com.alenwan';
   static const String _googlePayMerchantId = 'BCR2DN4T...';
-
-  // Payment items configuration
-  static const List<PaymentItem> _paymentItems = [
-    PaymentItem(
-      label: 'Alenwan Subscription',
-      amount: '0',
-      status: PaymentItemStatus.final_price,
-    )
-  ];
 
   /// Apple Pay Configuration
   static const Map<String, dynamic> applePayConfig = {

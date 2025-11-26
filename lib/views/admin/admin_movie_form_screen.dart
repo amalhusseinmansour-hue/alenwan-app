@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/admin_service.dart';
+import '../../widgets/imdb_search_dialog.dart';
 import 'widgets/admin_sidebar.dart';
 
 class AdminMovieFormScreen extends StatefulWidget {
@@ -30,7 +31,9 @@ class _AdminMovieFormScreenState extends State<AdminMovieFormScreen> {
   final _ratingController = TextEditingController();
   final _trailerUrlController = TextEditingController();
   final _videoUrlController = TextEditingController();
+  final _vimeoIdController = TextEditingController();
 
+  String? _videoSource = 'url'; // 'url', 'upload', or 'vimeo'
   String? _posterPath;
   String? _thumbnailPath;
   String? _videoPath;
@@ -57,6 +60,7 @@ class _AdminMovieFormScreenState extends State<AdminMovieFormScreen> {
     _ratingController.dispose();
     _trailerUrlController.dispose();
     _videoUrlController.dispose();
+    _vimeoIdController.dispose();
     super.dispose();
   }
 
@@ -85,8 +89,17 @@ class _AdminMovieFormScreenState extends State<AdminMovieFormScreen> {
             _ratingController.text = movie['rating']?.toString() ?? '';
             _trailerUrlController.text = movie['trailer_url'] ?? '';
             _videoUrlController.text = movie['video_url'] ?? '';
+            _vimeoIdController.text = movie['vimeo_id'] ?? '';
             _posterUrl = movie['poster_url'];
             _thumbnailUrl = movie['thumbnail_url'];
+
+            // Detect video source type
+            if (movie['vimeo_id'] != null && movie['vimeo_id'].toString().isNotEmpty) {
+              _videoSource = 'vimeo';
+            } else if (movie['video_url'] != null && movie['video_url'].toString().isNotEmpty) {
+              _videoSource = 'url';
+            }
+
             _isLoading = false;
           });
         }
@@ -95,6 +108,42 @@ class _AdminMovieFormScreenState extends State<AdminMovieFormScreen> {
       print('Error loading movie: $e');
       setState(() => _isLoading = false);
     }
+  }
+
+  Future<void> _showIMDbSearch() async {
+    showDialog(
+      context: context,
+      builder: (context) => IMDbSearchDialog(
+        contentType: 'movie',
+        onSelect: (data) {
+          setState(() {
+            _titleController.text = data['title'] ?? '';
+            _descriptionController.text = data['description'] ?? '';
+            _yearController.text = data['year']?.toString() ?? '';
+            _durationController.text = data['duration']?.toString() ?? '';
+            _directorController.text = data['director'] ?? '';
+            _castController.text = data['cast'] ?? '';
+            _genreController.text = data['genre'] ?? '';
+            _ratingController.text = data['rating']?.toString() ?? '';
+
+            // Set poster URL from IMDb
+            if (data['poster_url'] != null && data['poster_url'] != 'N/A') {
+              _posterUrl = data['poster_url'];
+              _thumbnailUrl = data['poster_url'];
+            }
+          });
+
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('✅ تم استيراد البيانات من IMDb بنجاح'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+        },
+      ),
+    );
   }
 
   Future<void> _pickFile(String type) async {
@@ -193,7 +242,8 @@ class _AdminMovieFormScreenState extends State<AdminMovieFormScreen> {
         'genre': _genreController.text,
         'rating': double.tryParse(_ratingController.text) ?? 0.0,
         'trailer_url': _trailerUrlController.text,
-        'video_url': videoUrl ?? '',
+        'video_url': _videoSource == 'vimeo' ? '' : (videoUrl ?? ''),
+        'vimeo_id': _videoSource == 'vimeo' ? _vimeoIdController.text : '',
         'poster_url': posterUrl ?? '',
         'thumbnail_url': thumbnailUrl ?? '',
       };
@@ -265,7 +315,7 @@ class _AdminMovieFormScreenState extends State<AdminMovieFormScreen> {
         color: const Color(0xFF1E1E2E),
         border: Border(
           bottom: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -285,6 +335,24 @@ class _AdminMovieFormScreenState extends State<AdminMovieFormScreen> {
               color: Colors.white,
             ),
           ),
+          const Spacer(),
+          // IMDb Search Button
+          ElevatedButton.icon(
+            onPressed: _showIMDbSearch,
+            icon: const Icon(Icons.search, size: 20),
+            label: const Text('بحث في IMDb'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.amber,
+              foregroundColor: Colors.black,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 12,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -301,7 +369,7 @@ class _AdminMovieFormScreenState extends State<AdminMovieFormScreen> {
             color: const Color(0xFF1E1E2E),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: Colors.white.withOpacity(0.1),
+              color: Colors.white.withValues(alpha: 0.1),
               width: 1,
             ),
           ),
@@ -402,19 +470,181 @@ class _AdminMovieFormScreenState extends State<AdminMovieFormScreen> {
                 controller: _trailerUrlController,
                 label: 'رابط الإعلان',
               ),
+              const SizedBox(height: 24),
+
+              // Video Source Selection
+              const Text(
+                'مصدر الفيديو',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
               const SizedBox(height: 16),
 
-              _buildTextField(
-                controller: _videoUrlController,
-                label: 'رابط الفيديو',
-                validator: (value) {
-                  if (_videoPath == null &&
-                      (value == null || value.isEmpty)) {
-                    return 'الرجاء إدخال رابط الفيديو أو رفع ملف';
-                  }
-                  return null;
-                },
+              // Video Source Radio Buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () => setState(() => _videoSource = 'url'),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: _videoSource == 'url'
+                              ? Colors.blue.withValues(alpha: 0.2)
+                              : Colors.white.withValues(alpha: 0.05),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: _videoSource == 'url'
+                                ? Colors.blue
+                                : Colors.white.withValues(alpha: 0.2),
+                            width: 2,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              _videoSource == 'url'
+                                  ? Icons.radio_button_checked
+                                  : Icons.radio_button_unchecked,
+                              color: Colors.blue,
+                            ),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'رابط مباشر',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () => setState(() => _videoSource = 'upload'),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: _videoSource == 'upload'
+                              ? Colors.blue.withValues(alpha: 0.2)
+                              : Colors.white.withValues(alpha: 0.05),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: _videoSource == 'upload'
+                                ? Colors.blue
+                                : Colors.white.withValues(alpha: 0.2),
+                            width: 2,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              _videoSource == 'upload'
+                                  ? Icons.radio_button_checked
+                                  : Icons.radio_button_unchecked,
+                              color: Colors.blue,
+                            ),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'رفع ملف',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () => setState(() => _videoSource = 'vimeo'),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: _videoSource == 'vimeo'
+                              ? Colors.blue.withValues(alpha: 0.2)
+                              : Colors.white.withValues(alpha: 0.05),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: _videoSource == 'vimeo'
+                                ? Colors.blue
+                                : Colors.white.withValues(alpha: 0.2),
+                            width: 2,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              _videoSource == 'vimeo'
+                                  ? Icons.radio_button_checked
+                                  : Icons.radio_button_unchecked,
+                              color: Colors.blue,
+                            ),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Vimeo',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
+              const SizedBox(height: 16),
+
+              // Video Source Input based on selection
+              if (_videoSource == 'url')
+                _buildTextField(
+                  controller: _videoUrlController,
+                  label: 'رابط الفيديو',
+                  validator: (value) {
+                    if (_videoSource == 'url' &&
+                        (value == null || value.isEmpty)) {
+                      return 'الرجاء إدخال رابط الفيديو';
+                    }
+                    return null;
+                  },
+                ),
+
+              if (_videoSource == 'vimeo')
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTextField(
+                      controller: _vimeoIdController,
+                      label: 'معرّف فيديو Vimeo (Video ID)',
+                      validator: (value) {
+                        if (_videoSource == 'vimeo' &&
+                            (value == null || value.isEmpty)) {
+                          return 'الرجاء إدخال معرّف فيديو Vimeo';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'مثال: إذا كان رابط الفيديو https://vimeo.com/123456789\nفإن المعرّف هو: 123456789',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.white.withValues(alpha: 0.5),
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
+                ),
+
+              if (_videoSource == 'upload')
+                _buildFileUpload(
+                  label: 'ملف الفيديو',
+                  filePath: _videoPath,
+                  onTap: () => _pickFile('video'),
+                ),
+
               const SizedBox(height: 24),
 
               // File Uploads
@@ -443,14 +673,6 @@ class _AdminMovieFormScreenState extends State<AdminMovieFormScreen> {
                 filePath: _thumbnailPath,
                 fileUrl: _thumbnailUrl,
                 onTap: () => _pickFile('thumbnail'),
-              ),
-              const SizedBox(height: 16),
-
-              // Video
-              _buildFileUpload(
-                label: 'ملف الفيديو (اختياري)',
-                filePath: _videoPath,
-                onTap: () => _pickFile('video'),
               ),
               const SizedBox(height: 32),
 
@@ -499,16 +721,16 @@ class _AdminMovieFormScreenState extends State<AdminMovieFormScreen> {
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
+        labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
         filled: true,
-        fillColor: Colors.white.withOpacity(0.05),
+        fillColor: Colors.white.withValues(alpha: 0.05),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.2)),
+          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.2)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.2)),
+          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.2)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -531,7 +753,7 @@ class _AdminMovieFormScreenState extends State<AdminMovieFormScreen> {
           label,
           style: TextStyle(
             fontSize: 14,
-            color: Colors.white.withOpacity(0.8),
+            color: Colors.white.withValues(alpha: 0.8),
           ),
         ),
         const SizedBox(height: 8),
@@ -540,10 +762,10 @@ class _AdminMovieFormScreenState extends State<AdminMovieFormScreen> {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.05),
+              color: Colors.white.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 width: 1,
               ),
             ),

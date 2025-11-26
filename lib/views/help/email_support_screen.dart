@@ -76,10 +76,10 @@ class _EmailSupportScreenState extends State<EmailSupportScreen>
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: ProfessionalTheme.surfaceCard.withOpacity(0.6),
+              color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
               borderRadius: BorderRadius.circular(ProfessionalTheme.radiusL),
               border: Border.all(
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withValues(alpha: 0.1),
                 width: 1,
               ),
             ),
@@ -167,15 +167,15 @@ class _EmailSupportScreenState extends State<EmailSupportScreen>
     return Container(
       padding: const EdgeInsets.all(ProfessionalTheme.space20),
       decoration: ProfessionalTheme.glassMorphism.copyWith(
-        color: ProfessionalTheme.primaryBrand.withOpacity(0.1),
+        color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
         border: Border.all(
-          color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+          color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
       child: Column(
         children: [
-          Icon(
+          const Icon(
             Icons.email_outlined,
             color: ProfessionalTheme.primaryBrand,
             size: 48,
@@ -211,7 +211,7 @@ class _EmailSupportScreenState extends State<EmailSupportScreen>
             decoration: ProfessionalTheme.glassMorphism.copyWith(
               boxShadow: [
                 BoxShadow(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   blurRadius: 20,
                   offset: const Offset(0, 8),
                 ),
@@ -225,11 +225,11 @@ class _EmailSupportScreenState extends State<EmailSupportScreen>
                     Container(
                       padding: const EdgeInsets.all(ProfessionalTheme.space12),
                       decoration: BoxDecoration(
-                        color: color.withOpacity(0.2),
+                        color: color.withValues(alpha: 0.2),
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: color.withOpacity(0.3),
+                            color: color.withValues(alpha: 0.3),
                             blurRadius: 10,
                             spreadRadius: 2,
                           ),
@@ -251,7 +251,7 @@ class _EmailSupportScreenState extends State<EmailSupportScreen>
                         ),
                       ),
                     ),
-                    Icon(
+                    const Icon(
                       Icons.copy,
                       color: ProfessionalTheme.textTertiary,
                       size: 18,
@@ -262,10 +262,10 @@ class _EmailSupportScreenState extends State<EmailSupportScreen>
                 Container(
                   padding: const EdgeInsets.all(ProfessionalTheme.space12),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.1),
+                    color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
                     border: Border.all(
-                      color: color.withOpacity(0.3),
+                      color: color.withValues(alpha: 0.3),
                       width: 1,
                     ),
                   ),
@@ -314,7 +314,7 @@ class _EmailSupportScreenState extends State<EmailSupportScreen>
           ),
           child: Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.check_circle,
                 color: ProfessionalTheme.accentGreen,
                 size: 20,

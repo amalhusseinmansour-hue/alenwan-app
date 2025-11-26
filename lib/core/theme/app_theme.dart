@@ -41,7 +41,7 @@ class AppTheme {
   // Box Shadows
   static final List<BoxShadow> primaryShadow = [
     BoxShadow(
-      color: primaryColor.withOpacity(0.4),
+      color: primaryColor.withValues(alpha: 0.4),
       blurRadius: 20,
       offset: const Offset(0, 10),
     ),
@@ -49,7 +49,7 @@ class AppTheme {
 
   static final List<BoxShadow> cardShadow = [
     BoxShadow(
-      color: Colors.black.withOpacity(0.5),
+      color: Colors.black.withValues(alpha: 0.5),
       blurRadius: 10,
       offset: const Offset(0, 5),
     ),
@@ -119,7 +119,7 @@ class AppTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryColor,
           foregroundColor: textPrimary,
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: mediumRadius,
           ),
           elevation: 4,
@@ -130,7 +130,7 @@ class AppTheme {
           foregroundColor: primaryColor,
         ),
       ),
-      cardTheme: CardThemeData(
+      cardTheme: const CardThemeData(
         color: cardColor,
         elevation: 8,
         shape: RoundedRectangleBorder(
@@ -175,10 +175,10 @@ class AppTheme {
     List<BoxShadow>? boxShadow,
   }) {
     return BoxDecoration(
-      color: color ?? Colors.white.withOpacity(0.1),
+      color: color ?? Colors.white.withValues(alpha: 0.1),
       borderRadius: borderRadius ?? mediumRadius,
       border: Border.all(
-        color: Colors.white.withOpacity(0.2),
+        color: Colors.white.withValues(alpha: 0.2),
         width: 1,
       ),
       boxShadow: boxShadow ?? cardShadow,

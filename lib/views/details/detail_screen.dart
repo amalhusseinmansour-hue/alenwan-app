@@ -132,10 +132,10 @@ class _DetailScreenState extends State<DetailScreen>
       leading: Container(
         margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: ProfessionalTheme.surfaceCard.withOpacity(0.8),
+          color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -148,10 +148,10 @@ class _DetailScreenState extends State<DetailScreen>
         Container(
           margin: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: ProfessionalTheme.surfaceCard.withOpacity(0.8),
+            color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+              color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
               width: 1,
             ),
           ),
@@ -246,13 +246,13 @@ class _DetailScreenState extends State<DetailScreen>
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              ProfessionalTheme.surfaceCard.withOpacity(0.8),
-              ProfessionalTheme.surfaceCard.withOpacity(0.6),
+              ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
+              ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
             ],
           ),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -260,14 +260,14 @@ class _DetailScreenState extends State<DetailScreen>
           borderRadius: BorderRadius.circular(16),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Column(
+            child: const Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 CircularProgressIndicator(
                   color: ProfessionalTheme.primaryBrand,
                   strokeWidth: 3,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 Text(
                   'جاري التحميل...',
                   style: TextStyle(
@@ -294,13 +294,13 @@ class _DetailScreenState extends State<DetailScreen>
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              ProfessionalTheme.surfaceCard.withOpacity(0.8),
-              ProfessionalTheme.surfaceCard.withOpacity(0.6),
+              ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
+              ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
             ],
           ),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: ProfessionalTheme.errorColor.withOpacity(0.3),
+            color: ProfessionalTheme.errorColor.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -319,7 +319,7 @@ class _DetailScreenState extends State<DetailScreen>
                     borderRadius: BorderRadius.circular(40),
                     boxShadow: [
                       BoxShadow(
-                        color: ProfessionalTheme.errorColor.withOpacity(0.3),
+                        color: ProfessionalTheme.errorColor.withValues(alpha: 0.3),
                         blurRadius: 20,
                         spreadRadius: 5,
                       ),
@@ -332,7 +332,7 @@ class _DetailScreenState extends State<DetailScreen>
                   ),
                 ),
                 const SizedBox(height: 24),
-                Text(
+                const Text(
                   'حدث خطأ',
                   style: TextStyle(
                     color: ProfessionalTheme.textPrimary,
@@ -343,7 +343,7 @@ class _DetailScreenState extends State<DetailScreen>
                 const SizedBox(height: 12),
                 Text(
                   controller.error!,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: ProfessionalTheme.textSecondary,
                     fontSize: 14,
                   ),
@@ -357,7 +357,7 @@ class _DetailScreenState extends State<DetailScreen>
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                        color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                         blurRadius: 15,
                         offset: const Offset(0, 4),
                       ),
@@ -432,7 +432,7 @@ class _DetailScreenState extends State<DetailScreen>
               end: Alignment.bottomCenter,
               colors: [
                 Colors.transparent,
-                ProfessionalTheme.backgroundPrimary.withOpacity(0.9),
+                ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.9),
               ],
               stops: const [0.3, 1.0],
             ),
@@ -449,18 +449,18 @@ class _DetailScreenState extends State<DetailScreen>
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    ProfessionalTheme.surfaceCard.withOpacity(0.9),
-                    ProfessionalTheme.surfaceCard.withOpacity(0.7),
+                    ProfessionalTheme.surfaceCard.withValues(alpha: 0.9),
+                    ProfessionalTheme.surfaceCard.withValues(alpha: 0.7),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: ProfessionalTheme.accentGold.withOpacity(0.5),
+                  color: ProfessionalTheme.accentGold.withValues(alpha: 0.5),
                   width: 1,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: ProfessionalTheme.accentGold.withOpacity(0.3),
+                    color: ProfessionalTheme.accentGold.withValues(alpha: 0.3),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -473,7 +473,7 @@ class _DetailScreenState extends State<DetailScreen>
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.star,
                         color: ProfessionalTheme.accentGold,
                         size: 18,
@@ -539,13 +539,13 @@ class _DetailScreenState extends State<DetailScreen>
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            accentColor.withOpacity(0.2),
-            accentColor.withOpacity(0.1),
+            accentColor.withValues(alpha: 0.2),
+            accentColor.withValues(alpha: 0.1),
           ],
         ),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: accentColor.withOpacity(0.3),
+          color: accentColor.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -560,7 +560,7 @@ class _DetailScreenState extends State<DetailScreen>
           const SizedBox(width: 6),
           Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
               color: ProfessionalTheme.textPrimary,
               fontSize: 12,
               fontWeight: FontWeight.w600,
@@ -579,13 +579,13 @@ class _DetailScreenState extends State<DetailScreen>
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            ProfessionalTheme.surfaceCard.withOpacity(0.6),
-            ProfessionalTheme.surfaceCard.withOpacity(0.4),
+            ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
+            ProfessionalTheme.surfaceCard.withValues(alpha: 0.4),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: ProfessionalTheme.primaryBrand.withOpacity(0.2),
+          color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -595,7 +595,7 @@ class _DetailScreenState extends State<DetailScreen>
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Text(
             mediaItem.description!,
-            style: TextStyle(
+            style: const TextStyle(
               color: ProfessionalTheme.textPrimary,
               fontSize: 16,
               height: 1.6,
@@ -618,7 +618,7 @@ class _DetailScreenState extends State<DetailScreen>
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: ProfessionalTheme.primaryBrand.withOpacity(0.4),
+                  color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.4),
                   blurRadius: 15,
                   offset: const Offset(0, 4),
                 ),
@@ -656,13 +656,13 @@ class _DetailScreenState extends State<DetailScreen>
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  ProfessionalTheme.surfaceCard.withOpacity(0.8),
-                  ProfessionalTheme.surfaceCard.withOpacity(0.6),
+                  ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
+                  ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
                 ],
               ),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                 width: 1,
               ),
             ),
@@ -674,13 +674,13 @@ class _DetailScreenState extends State<DetailScreen>
                   onPressed: () {
                     _showProfessionalSnackBar('جاري تحضير التنزيل...');
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.download,
                     color: ProfessionalTheme.primaryBrand,
                   ),
                   label: Text(
                     'download'.tr(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: ProfessionalTheme.primaryBrand,
                       fontWeight: FontWeight.bold,
                     ),
@@ -761,19 +761,19 @@ class _DetailScreenState extends State<DetailScreen>
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              ProfessionalTheme.surfaceCard.withOpacity(0.6),
-              ProfessionalTheme.surfaceCard.withOpacity(0.4),
+              ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
+              ProfessionalTheme.surfaceCard.withValues(alpha: 0.4),
             ],
           ),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: ProfessionalTheme.primaryBrand.withOpacity(0.2),
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
         child: Column(
           children: [
-            Icon(
+            const Icon(
               Icons.tv_off,
               color: ProfessionalTheme.textSecondary,
               size: 48,
@@ -781,7 +781,7 @@ class _DetailScreenState extends State<DetailScreen>
             const SizedBox(height: 16),
             Text(
               'no_episodes'.tr(),
-              style: TextStyle(
+              style: const TextStyle(
                 color: ProfessionalTheme.textSecondary,
                 fontSize: 16,
               ),
@@ -802,18 +802,18 @@ class _DetailScreenState extends State<DetailScreen>
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            ProfessionalTheme.surfaceCard.withOpacity(0.8),
-            ProfessionalTheme.surfaceCard.withOpacity(0.6),
+            ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
+            ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: ProfessionalTheme.primaryBrand.withOpacity(0.2),
+          color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: ProfessionalTheme.primaryBrand.withOpacity(0.1),
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
             blurRadius: 15,
             offset: const Offset(0, 4),
           ),
@@ -890,7 +890,7 @@ class _DetailScreenState extends State<DetailScreen>
                             const SizedBox(height: 8),
                             Text(
                               episode['description'],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: ProfessionalTheme.textSecondary,
                                 fontSize: 14,
                               ),
@@ -911,7 +911,7 @@ class _DetailScreenState extends State<DetailScreen>
                         borderRadius: BorderRadius.circular(24),
                         boxShadow: [
                           BoxShadow(
-                            color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
@@ -945,9 +945,9 @@ class _DetailScreenState extends State<DetailScreen>
           height: height,
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment(-1.0, -0.3),
-              end: Alignment(1.0, 0.3),
-              colors: [
+              begin: const Alignment(-1.0, -0.3),
+              end: const Alignment(1.0, 0.3),
+              colors: const [
                 ProfessionalTheme.surfaceCard,
                 ProfessionalTheme.surfaceHover,
                 ProfessionalTheme.surfaceCard,
@@ -973,9 +973,9 @@ class _DetailScreenState extends State<DetailScreen>
           height: height,
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment(-1.0, -0.3),
-              end: Alignment(1.0, 0.3),
-              colors: [
+              begin: const Alignment(-1.0, -0.3),
+              end: const Alignment(1.0, 0.3),
+              colors: const [
                 ProfessionalTheme.surfaceCard,
                 ProfessionalTheme.surfaceHover,
                 ProfessionalTheme.surfaceCard,

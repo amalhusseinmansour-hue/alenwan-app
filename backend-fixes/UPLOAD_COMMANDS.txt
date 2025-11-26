@@ -1,0 +1,149 @@
+================================================================================
+🚀 أوامر رفع OMDB Integration على السيرفر
+================================================================================
+
+الطريقة السريعة - نسخ ولصق
+================================================================================
+
+1️⃣ افتح PuTTY وسجل دخول:
+   Host: 46.202.180.189
+   Port: 65002
+   Username: u996186400
+   Password: Alenwanapp33510421@
+
+2️⃣ انسخ هذه الأوامر كلها دفعة واحدة:
+
+--------------------------------------------------------------------------------
+cd domains/alenwan.app/public_html
+
+# إنشاء المجلدات
+mkdir -p app/Services
+mkdir -p app/Http/Controllers/Api
+mkdir -p app/Filament/Pages
+mkdir -p resources/views/filament/pages
+
+# رفع OmdbImportService.php
+cat > app/Services/OmdbImportService.php << 'EOFSERVICE'
+[الصق محتوى الملف هنا]
+EOFSERVICE
+
+# رفع OmdbApiController.php
+cat > app/Http/Controllers/Api/OmdbApiController.php << 'EOFCONTROLLER'
+[الصق محتوى الملف هنا]
+EOFCONTROLLER
+
+# رفع OmdbImportPage.php
+cat > app/Filament/Pages/OmdbImportPage.php << 'EOFPAGE'
+[الصق محتوى الملف هنا]
+EOFPAGE
+
+# رفع omdb-import-page.blade.php
+cat > resources/views/filament/pages/omdb-import-page.blade.php << 'EOFBLADE'
+[الصق محتوى الملف هنا]
+EOFBLADE
+
+# إنشاء Migration
+php artisan make:migration add_imdb_id_to_movies_and_series
+
+# تشغيل Migration
+php artisan migrate --force
+
+# تحديث Routes - إضافة هذا الكود في routes/api.php
+echo "
+// OMDB Routes
+use App\Http\Controllers\Api\OmdbApiController;
+
+Route::prefix('omdb')->name('omdb.')->group(function () {
+    Route::get('search', [OmdbApiController::class, 'search'])->name('search');
+    Route::get('movies', [OmdbApiController::class, 'searchMovies'])->name('movies');
+    Route::get('series', [OmdbApiController::class, 'searchSeries'])->name('series');
+    Route::get('details/{imdbId}', [OmdbApiController::class, 'details'])->name('details');
+});
+" >> routes/api.php
+
+# مسح الـ Cache
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+php artisan filament:cache-components
+
+# إعادة بناء Cache
+php artisan config:cache
+php artisan route:cache
+
+# اختبار
+curl "https://alenwan.app/api/omdb/search?query=Batman"
+
+echo "✅ تم الانتهاء من الرفع!"
+--------------------------------------------------------------------------------
+
+================================================================================
+الطريقة البديلة - استخدام FileZilla/WinSCP
+================================================================================
+
+1. افتح FileZilla أو WinSCP
+2. اتصل بالسيرفر:
+   - Host: sftp://46.202.180.189
+   - Port: 65002
+   - Username: u996186400
+   - Password: Alenwanapp33510421@
+
+3. انتقل إلى: /domains/alenwan.app/public_html/
+
+4. ارفع الملفات:
+
+   من مجلد backend-fixes على جهازك:
+
+   ┌─────────────────────────────────────────────────────────────┐
+   │ الملف المحلي                    → المسار على السيرفر      │
+   ├─────────────────────────────────────────────────────────────┤
+   │ OmdbImportService.php           → app/Services/             │
+   │ OmdbApiController.php           → app/Http/Controllers/Api/ │
+   │ OmdbImportPage.php              → app/Filament/Pages/       │
+   │ omdb-import-page.blade.php      → resources/views/filament/pages/ │
+   │ add_imdb_id_to_movies_and_series.php → database/migrations/ │
+   └─────────────────────────────────────────────────────────────┘
+
+5. بعد الرفع، افتح PuTTY وشغّل:
+
+   cd domains/alenwan.app/public_html
+   php artisan migrate --force
+   php artisan cache:clear
+   php artisan route:clear
+   php artisan config:cache
+   php artisan route:cache
+
+================================================================================
+اختبار بعد الرفع
+================================================================================
+
+1. API Test:
+   https://alenwan.app/api/omdb/search?query=Batman
+   https://alenwan.app/api/omdb/details/tt0468569
+
+2. Filament Page:
+   https://alenwan.app/admin/login
+   Email: info@alenwan.app
+   Password: Admin@2025!
+
+   ثم ابحث عن: "استيراد من IMDb" في القائمة
+
+3. استورد فيلم تجريبي:
+   - ابحث عن: The Dark Knight
+   - اضغط استيراد
+   - افتح "إدارة الأفلام" للتأكد
+
+================================================================================
+🎯 الخطوة التالية
+================================================================================
+
+بعد الاستيراد:
+1. اذهب إلى "إدارة الأفلام" أو "إدارة المسلسلات"
+2. افتح المحتوى المستورد
+3. أضف روابط الفيديو والتريلر
+4. احفظ
+
+المحتوى سيظهر تلقائياً في التطبيق! 🎉
+
+================================================================================

@@ -77,7 +77,7 @@ class _AdminSidebarWidgetState extends State<AdminSidebarWidget> {
               color: const Color(0xFF2A2A3E),
               border: Border(
                 bottom: BorderSide(
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                   width: 1,
                 ),
               ),
@@ -110,7 +110,7 @@ class _AdminSidebarWidgetState extends State<AdminSidebarWidget> {
                   userEmail,
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.white.withOpacity(0.6),
+                    color: Colors.white.withValues(alpha: 0.6),
                   ),
                 ),
               ],
@@ -136,6 +136,11 @@ class _AdminSidebarWidgetState extends State<AdminSidebarWidget> {
                   icon: Icons.video_library,
                   title: 'المحتوى',
                   route: '/admin/content',
+                ),
+                _buildMenuItem(
+                  icon: Icons.cloud_download,
+                  title: 'استيراد من Vimeo',
+                  route: '/admin/vimeo-import',
                 ),
                 _buildMenuItem(
                   icon: Icons.card_membership,
@@ -173,7 +178,7 @@ class _AdminSidebarWidgetState extends State<AdminSidebarWidget> {
             decoration: BoxDecoration(
               border: Border(
                 top: BorderSide(
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                   width: 1,
                 ),
               ),
@@ -207,7 +212,7 @@ class _AdminSidebarWidgetState extends State<AdminSidebarWidget> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       decoration: BoxDecoration(
-        color: isActive ? Colors.blue.withOpacity(0.2) : Colors.transparent,
+        color: isActive ? Colors.blue.withValues(alpha: 0.2) : Colors.transparent,
         borderRadius: BorderRadius.circular(8),
       ),
       child: ListTile(

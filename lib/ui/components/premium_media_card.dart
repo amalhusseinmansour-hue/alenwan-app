@@ -104,7 +104,7 @@ class _PremiumMediaCardState extends State<PremiumMediaCard>
                   boxShadow: _isHovering
                       ? [
                           BoxShadow(
-                            color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                             blurRadius: 30,
                             offset: const Offset(0, 15),
                           ),
@@ -159,7 +159,7 @@ class _PremiumMediaCardState extends State<PremiumMediaCard>
     if (widget.imageUrl == null || widget.imageUrl!.isEmpty) {
       return Container(
         color: ProfessionalTheme.surfaceCard,
-        child: Center(
+        child: const Center(
           child: Icon(
             Icons.movie_outlined,
             size: 48,
@@ -178,14 +178,14 @@ class _PremiumMediaCardState extends State<PremiumMediaCard>
           child: CircularProgressIndicator(
             strokeWidth: 2,
             valueColor: AlwaysStoppedAnimation<Color>(
-              ProfessionalTheme.primaryBrand.withOpacity(0.5),
+              ProfessionalTheme.primaryBrand.withValues(alpha: 0.5),
             ),
           ),
         ),
       ),
       errorWidget: (context, url, error) => Container(
         color: ProfessionalTheme.surfaceCard,
-        child: Center(
+        child: const Center(
           child: Icon(
             Icons.broken_image_outlined,
             size: 48,
@@ -204,8 +204,8 @@ class _PremiumMediaCardState extends State<PremiumMediaCard>
           end: Alignment.bottomCenter,
           colors: [
             Colors.transparent,
-            Colors.black.withOpacity(0.3),
-            Colors.black.withOpacity(0.8),
+            Colors.black.withValues(alpha: 0.3),
+            Colors.black.withValues(alpha: 0.8),
           ],
           stops: const [0.0, 0.6, 1.0],
         ),
@@ -223,8 +223,8 @@ class _PremiumMediaCardState extends State<PremiumMediaCard>
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              ProfessionalTheme.primaryBrand.withOpacity(0.2),
-              ProfessionalTheme.primaryBrand.withOpacity(0.4),
+              ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
+              ProfessionalTheme.primaryBrand.withValues(alpha: 0.4),
             ],
           ),
         ),
@@ -277,7 +277,7 @@ class _PremiumMediaCardState extends State<PremiumMediaCard>
                 vertical: ProfessionalTheme.space4,
               ),
               decoration: BoxDecoration(
-                color: ProfessionalTheme.backgroundPrimary.withOpacity(0.8),
+                color: ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.8),
                 borderRadius: BorderRadius.circular(ProfessionalTheme.radiusS),
               ),
               child: Row(
@@ -317,7 +317,7 @@ class _PremiumMediaCardState extends State<PremiumMediaCard>
             end: Alignment.bottomCenter,
             colors: [
               Colors.transparent,
-              Colors.black.withOpacity(0.9),
+              Colors.black.withValues(alpha: 0.9),
             ],
           ),
         ),
@@ -357,10 +357,10 @@ class _PremiumMediaCardState extends State<PremiumMediaCard>
                       vertical: ProfessionalTheme.space2,
                     ),
                     decoration: BoxDecoration(
-                      color: ProfessionalTheme.surfaceCard.withOpacity(0.8),
+                      color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
                       borderRadius: BorderRadius.circular(ProfessionalTheme.radiusS),
                       border: Border.all(
-                        color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                        color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                         width: 0.5,
                       ),
                     ),
@@ -422,7 +422,7 @@ class _PremiumMediaCardState extends State<PremiumMediaCard>
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: ProfessionalTheme.primaryBrand.withOpacity(0.5),
+                color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.5),
                 blurRadius: 20,
                 spreadRadius: 5,
               ),
@@ -497,7 +497,7 @@ class _PremiumMediaCardSkeletonState extends State<PremiumMediaCardSkeleton>
                     gradient: LinearGradient(
                       begin: Alignment(-2 + _shimmerController.value * 4, 0),
                       end: Alignment(-1 + _shimmerController.value * 4, 0),
-                      colors: [
+                      colors: const [
                         ProfessionalTheme.surfaceCard,
                         ProfessionalTheme.surfaceHover,
                         ProfessionalTheme.surfaceCard,

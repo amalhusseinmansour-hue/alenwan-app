@@ -1,0 +1,20 @@
+# Flutter Configuration for Raptor mini (Preview)
+# This file enables Raptor compiler settings for faster builds across all platforms
+
+# Enable Raptor mini compiler
+enable-raptor-compiler=true
+
+# Optimize for production builds
+optimization-level=3
+
+# Enable code generation optimizations
+enable-code-generation-optimizations=true
+
+# Platform-specific settings
+android-enable-raptor=true
+ios-enable-raptor=true
+web-enable-raptor=true
+
+# Compilation cache settings
+enable-compilation-cache=true
+cache-dir=.dart_tool/raptor_cache

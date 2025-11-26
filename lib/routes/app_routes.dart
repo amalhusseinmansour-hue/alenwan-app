@@ -1,7 +1,7 @@
 // Flutter & Core
 import 'package:alenwan/models/channel_model.dart';
 import 'package:flutter/material.dart';
-import 'package:alenwan/core/widgets/auth_guard.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 // Models
 import 'package:alenwan/models/movie_model.dart';
@@ -12,6 +12,7 @@ import 'package:alenwan/views/auth/login_screen.dart';
 import 'package:alenwan/views/auth/register_screen.dart';
 import 'package:alenwan/views/auth/forgot_password_screen.dart';
 import 'package:alenwan/views/auth/reset_password_screen.dart';
+import 'package:alenwan/views/admin/admin_login_screen.dart';
 
 // Views - Main & Splash
 import 'package:alenwan/views/main_screen.dart';
@@ -55,6 +56,8 @@ import 'package:alenwan/views/subscription/subscription_screen.dart';
 import 'package:alenwan/views/subscription/subscription_plans_screen.dart';
 import 'package:alenwan/views/subscription/subscription_management_screen.dart';
 import 'package:alenwan/views/subscription/payment_webview_screen.dart';
+import 'package:alenwan/views/subscription/payment_webview_screen_web_stub.dart'
+    if (dart.library.html) 'package:alenwan/views/subscription/payment_webview_screen_web.dart';
 import 'package:alenwan/views/payment/paymob_iframe_screen.dart';
 import 'package:alenwan/views/payment/payment_history_screen.dart';
 import '../services/paymob_service.dart' hide SubscriptionPlan;
@@ -63,6 +66,7 @@ import '../models/live_stream_model.dart';
 import '../views/live/live_stream_screen.dart';
 import '../views/live/channel_details_screen.dart';
 import '../screens/backend_test_screen.dart';
+import '../screens/backend_diagnostic_tool.dart';
 
 // Admin Screens
 import '../views/admin/admin_dashboard_screen.dart';
@@ -73,6 +77,8 @@ import '../views/admin/admin_series_form_screen.dart';
 import '../views/admin/admin_subscriptions_screen.dart';
 import '../views/admin/admin_payments_screen.dart';
 import '../views/admin/admin_revenue_screen.dart';
+import '../views/admin/admin_vimeo_bulk_import_screen.dart';
+
 
 class AppRoutes {
   // ثوابت المسارات
@@ -114,6 +120,7 @@ class AppRoutes {
   static const String allPodcasts = '/all-podcasts';
 
   static const String backendTest = '/backend-test';
+  static const String backendDiagnostic = '/backend-diagnostic';
 
   // Payment & Subscription Routes
   static const String subscriptionPlans = '/subscription-plans';
@@ -124,6 +131,7 @@ class AppRoutes {
   static const String subscriptionManagement = '/subscription-management';
 
   // Admin Routes
+  static const String adminLogin = '/admin/login';
   static const String adminDashboard = '/admin/dashboard';
   static const String adminUsers = '/admin/users';
   static const String adminContent = '/admin/content';
@@ -131,9 +139,11 @@ class AppRoutes {
   static const String adminMovieEdit = '/admin/movie/edit';
   static const String adminSeriesAdd = '/admin/series/add';
   static const String adminSeriesEdit = '/admin/series/edit';
+  static const String adminVimeoImport = '/admin/vimeo-import';
   static const String adminSubscriptions = '/admin/subscriptions';
   static const String adminPayments = '/admin/payments';
   static const String adminRevenue = '/admin/revenue';
+
 
   // خريطة المسارات
   static Map<String, WidgetBuilder> get routes => {
@@ -147,72 +157,70 @@ class AppRoutes {
         resetPassword: (_) {
           try {
             final frag = Uri.base.fragment;
-            final fragUri = Uri.tryParse(frag.isEmpty ? '/' : frag) ?? Uri.parse('/');
+            final fragUri =
+                Uri.tryParse(frag.isEmpty ? '/' : frag) ?? Uri.parse('/');
             final token = fragUri.queryParameters['token'] ?? '';
             final email = fragUri.queryParameters['email'] ?? '';
             return ResetPasswordScreen(token: token, email: email);
           } catch (e) {
             return const Scaffold(
               body: Center(
-                child: Text("Error: Invalid reset password link"),
+                child: Text('Error: Invalid reset password link'),
               ),
             );
           }
         },
         languageSelection: (_) => const LanguageSelectionScreen(),
 
-        // محمية بـ AuthGuard
-        main: (_) => const AuthGuard(child: MainScreen()),
-        home: (_) => const AuthGuard(child: MainScreen()),
-        favorites: (_) => const AuthGuard(child: FavoritesScreen()),
-        profile: (_) => const AuthGuard(child: ProfileScreen()),
-        settings: (_) => const AuthGuard(child: SettingsScreen()),
-        downloads: (_) => const AuthGuard(child: DownloadsScreen()),
-        devices: (_) => const AuthGuard(child: DevicesScreen()),
-        changePassword: (_) => const AuthGuard(child: ChangePasswordScreen()),
+        // محمية بـ AuthGuard - تم إزالة الحماية مؤقتاً للسماح بوضع الضيف
+        main: (_) => const MainScreen(),
+        home: (_) => const MainScreen(),
+        favorites: (_) => const FavoritesScreen(),
+        profile: (_) => const ProfileScreen(),
+        settings: (_) => const SettingsScreen(),
+        downloads: (_) => const DownloadsScreen(),
+        devices: (_) => const DevicesScreen(),
+        changePassword: (_) => const ChangePasswordScreen(),
 
-        allSeries: (_) => const AuthGuard(child: SeriesScreen()),
-        allMovies: (_) => const AuthGuard(child: MoviesScreen()),
-        allSports: (_) => const AuthGuard(child: SportsScreen()),
-        allCartoons: (_) => const AuthGuard(child: AllCartoonsScreen()),
-        allDocumentaries: (_) => const AuthGuard(child: DocumentariesScreen()),
-        allPodcasts: (_) => const AuthGuard(child: PodcastsScreen()),
+        allSeries: (_) => const SeriesScreen(),
+        allMovies: (_) => const MoviesScreen(),
+        allSports: (_) => const SportsScreen(),
+        allCartoons: (_) => const AllCartoonsScreen(),
+        allDocumentaries: (_) => const DocumentariesScreen(),
+        allPodcasts: (_) => const PodcastsScreen(),
 
         backendTest: (_) => const BackendTestScreen(),
-        search: (_) => const AuthGuard(child: SearchScreen()),
-        subscription: (_) => const AuthGuard(child: SubscriptionScreen()),
-        liveStream: (_) => const AuthGuard(child: LivePageScreen()),
+        backendDiagnostic: (_) => const BackendDiagnosticTool(),
+        search: (_) => const SearchScreen(),
+        subscription: (_) => const SubscriptionScreen(),
+        liveStream: (_) => const LivePageScreen(),
 
         // Payment & Subscription Routes
-        subscriptionPlans: (_) => const AuthGuard(child: SubscriptionPlansScreen()),
-        subscriptionManagement: (_) => const AuthGuard(child: SubscriptionManagementScreen()),
-        paymentHistory: (_) => const AuthGuard(child: PaymentHistoryScreen()),
+        subscriptionPlans: (_) => const SubscriptionPlansScreen(),
+        subscriptionManagement: (_) => const SubscriptionManagementScreen(),
+        paymentHistory: (_) => const PaymentHistoryScreen(),
         // paymentCheckout route removed - using paymentWebview instead
         paymobIframe: (context) {
           final args = ModalRoute.of(context)!.settings.arguments;
           if (args is PaymentInitResponse) {
-            return AuthGuard(child: PaymobIframeScreen(paymentData: args));
+            return PaymobIframeScreen(paymentData: args);
           }
-          return const AuthGuard(
-            child: Scaffold(
-              body: Center(
-                child: Text("Error: Invalid payment data"),
-              ),
+          return const Scaffold(
+            body: Center(
+              child: Text('Error: Invalid payment data'),
             ),
           );
         },
         paymentWebview: (context) {
           final args = ModalRoute.of(context)!.settings.arguments;
           if (args is Map && args['url'] != null) {
-            return AuthGuard(
-              child: PaymentWebViewScreen(paymentUrl: args['url'] as String),
-            );
+            return kIsWeb
+                ? PaymentWebViewScreenWeb(paymentUrl: args['url'] as String)
+                : PaymentWebViewScreen(paymentUrl: args['url'] as String);
           }
-          return const AuthGuard(
-            child: Scaffold(
-              body: Center(
-                child: Text("Error: Invalid payment URL"),
-              ),
+          return const Scaffold(
+            body: Center(
+              child: Text('Error: Invalid payment URL'),
             ),
           );
         },
@@ -220,15 +228,13 @@ class AppRoutes {
           final args = ModalRoute.of(context)!.settings.arguments;
 
           if (args is LiveStreamModel) {
-            return AuthGuard(child: LiveStreamScreen(stream: args));
+            return LiveStreamScreen(stream: args);
           }
 
           // fallback لو ماجاش stream
-          return const AuthGuard(
-            child: Scaffold(
-              body: Center(
-                child: Text("❌ لا يوجد بث محدد"),
-              ),
+          return const Scaffold(
+            body: Center(
+              child: Text('❌ لا يوجد بث محدد'),
             ),
           );
         },
@@ -236,107 +242,99 @@ class AppRoutes {
           final args = ModalRoute.of(context)!.settings.arguments;
 
           if (args is ChannelModel) {
-            return AuthGuard(child: ChannelDetailsScreen(channel: args));
+            return ChannelDetailsScreen(channel: args);
           }
 
           // fallback لو ماجاش channel
-          return const AuthGuard(
-            child: Scaffold(
-              body: Center(
-                child: Text("❌ لا يوجد قناة محددة"),
-              ),
+          return const Scaffold(
+            body: Center(
+              child: Text('❌ لا يوجد قناة محددة'),
             ),
           );
         },
 
         // تفاصيل
         movieDetails: (context) {
-          return AuthGuard(
-            child: Builder(builder: (context) {
-              final arg = ModalRoute.of(context)!.settings.arguments;
-              if (arg is MovieModel) return MovieDetailsScreen(movie: arg);
-              if (arg is int) return MovieDetailsScreen(movieId: arg);
-              return const MovieDetailsScreen();
-            }),
-          );
+          return Builder(builder: (context) {
+            final arg = ModalRoute.of(context)!.settings.arguments;
+            if (arg is MovieModel) return MovieDetailsScreen(movie: arg);
+            if (arg is int) return MovieDetailsScreen(movieId: arg);
+            return const MovieDetailsScreen();
+          });
         },
         seriesDetails: (context) {
           final args = ModalRoute.of(context)?.settings.arguments;
-          final int id = (args is int) ? args : int.tryParse(args?.toString() ?? '') ?? 0;
+          final int id =
+              (args is int) ? args : int.tryParse(args?.toString() ?? '') ?? 0;
           if (id == 0) {
-            return const AuthGuard(
-              child: Scaffold(
-                body: Center(
-                  child: Text("Error: Invalid series ID"),
-                ),
+            return const Scaffold(
+              body: Center(
+                child: Text('Error: Invalid series ID'),
               ),
             );
           }
-          return AuthGuard(child: SeriesDetailsScreen(seriesId: id));
+          return SeriesDetailsScreen(seriesId: id);
         },
         sportDetails: (context) {
           final args = ModalRoute.of(context)!.settings.arguments;
           final int sportId =
               (args is int) ? args : int.tryParse(args?.toString() ?? '') ?? 0;
-          return AuthGuard(
-            child: SportDetailsScreen(
-              sport: SportModel(
-                  id: sportId, title: '', categoryId: 0, languageId: 1),
-            ),
+          return SportDetailsScreen(
+            sport: SportModel(
+                id: sportId, title: '', categoryId: 0, languageId: 1),
           );
         },
         cartoonDetails: (context) {
           final args = ModalRoute.of(context)?.settings.arguments;
-          final int id = (args is int) ? args : int.tryParse(args?.toString() ?? '') ?? 0;
+          final int id =
+              (args is int) ? args : int.tryParse(args?.toString() ?? '') ?? 0;
           if (id == 0) {
-            return const AuthGuard(
-              child: Scaffold(
-                body: Center(
-                  child: Text("Error: Invalid cartoon ID"),
-                ),
+            return const Scaffold(
+              body: Center(
+                child: Text('Error: Invalid cartoon ID'),
               ),
             );
           }
-          return AuthGuard(child: CartoonDetailsScreen(cartoonId: id));
+          return CartoonDetailsScreen(cartoonId: id);
         },
         documentaryDetails: (context) {
           final args = ModalRoute.of(context)?.settings.arguments;
-          final int id = (args is int) ? args : int.tryParse(args?.toString() ?? '') ?? 0;
+          final int id =
+              (args is int) ? args : int.tryParse(args?.toString() ?? '') ?? 0;
           if (id == 0) {
-            return const AuthGuard(
-              child: Scaffold(
-                body: Center(
-                  child: Text("Error: Invalid documentary ID"),
-                ),
+            return const Scaffold(
+              body: Center(
+                child: Text('Error: Invalid documentary ID'),
               ),
             );
           }
-          return AuthGuard(child: DocumentaryDetailsScreen(documentaryId: id));
+          return DocumentaryDetailsScreen(documentaryId: id);
         },
         podcastDetails: (context) {
           final args = ModalRoute.of(context)?.settings.arguments;
-          final int id = (args is int) ? args : int.tryParse(args?.toString() ?? '') ?? 0;
+          final int id =
+              (args is int) ? args : int.tryParse(args?.toString() ?? '') ?? 0;
           if (id == 0) {
-            return const AuthGuard(
-              child: Scaffold(
-                body: Center(
-                  child: Text("Error: Invalid podcast ID"),
-                ),
+            return const Scaffold(
+              body: Center(
+                child: Text('Error: Invalid podcast ID'),
               ),
             );
           }
-          return AuthGuard(child: PodcastDetailsScreen(podcastId: id));
+          return PodcastDetailsScreen(podcastId: id);
         },
 
         // Admin Routes
-        adminDashboard: (_) => const AuthGuard(child: AdminDashboardScreen()),
-        adminUsers: (_) => const AuthGuard(child: AdminUsersScreen()),
-        adminContent: (_) => const AuthGuard(child: AdminContentScreen()),
-        adminMovieAdd: (_) => const AuthGuard(child: AdminMovieFormScreen()),
-        adminSeriesAdd: (_) => const AuthGuard(child: AdminSeriesFormScreen()),
-        adminSubscriptions: (_) => const AuthGuard(child: AdminSubscriptionsScreen()),
-        adminPayments: (_) => const AuthGuard(child: AdminPaymentsScreen()),
-        adminRevenue: (_) => const AuthGuard(child: AdminRevenueScreen()),
+        adminLogin: (_) => const AdminLoginScreen(),
+        adminDashboard: (_) => const AdminDashboardScreen(),
+        adminUsers: (_) => const AdminUsersScreen(),
+        adminContent: (_) => const AdminContentScreen(),
+        adminMovieAdd: (_) => const AdminMovieFormScreen(),
+        adminSeriesAdd: (_) => const AdminSeriesFormScreen(),
+        adminVimeoImport: (_) => const AdminVimeoBulkImportScreen(),
+        adminSubscriptions: (_) => const AdminSubscriptionsScreen(),
+        adminPayments: (_) => const AdminPaymentsScreen(),
+        adminRevenue: (_) => const AdminRevenueScreen(),
       };
 
   // Dynamic route handler for admin movie edit
@@ -346,7 +344,7 @@ class AppRoutes {
       final id = int.tryParse(settings.name!.split('/').last);
       if (id != null) {
         return MaterialPageRoute(
-          builder: (_) => AuthGuard(child: AdminMovieFormScreen(movieId: id)),
+          builder: (_) => AdminMovieFormScreen(movieId: id),
           settings: settings,
         );
       }
@@ -357,7 +355,7 @@ class AppRoutes {
       final id = int.tryParse(settings.name!.split('/').last);
       if (id != null) {
         return MaterialPageRoute(
-          builder: (_) => AuthGuard(child: AdminSeriesFormScreen(seriesId: id)),
+          builder: (_) => AdminSeriesFormScreen(seriesId: id),
           settings: settings,
         );
       }

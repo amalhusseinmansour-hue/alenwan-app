@@ -235,7 +235,7 @@ class _DownloadsScreenState extends State<DownloadsScreen>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CircularProgressIndicator(
+              const CircularProgressIndicator(
                 color: primaryColor,
                 strokeWidth: 3,
               ),
@@ -552,7 +552,7 @@ class _DownloadsScreenState extends State<DownloadsScreen>
                                           ),
                                         ],
                                       ),
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.play_arrow,
                                         color: primaryColor,
                                         size: 20,
@@ -625,7 +625,7 @@ class _DownloadsScreenState extends State<DownloadsScreen>
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: PopupMenuButton<String>(
-                        icon: Icon(Icons.more_vert, color: Colors.white),
+                        icon: const Icon(Icons.more_vert, color: Colors.white),
                         color: surfaceColor.withValues(alpha: 0.95),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
@@ -652,7 +652,7 @@ class _DownloadsScreenState extends State<DownloadsScreen>
                             value: 'play',
                             child: Row(
                               children: [
-                                Icon(Icons.play_arrow, color: primaryColor),
+                                const Icon(Icons.play_arrow, color: primaryColor),
                                 const SizedBox(width: 12),
                                 Text(
                                   'تشغيل',

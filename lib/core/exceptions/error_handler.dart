@@ -46,12 +46,6 @@ class ErrorHandler {
           message: 'حدث خطأ غير متوقع: ${error.message}',
           data: error.response?.data,
         );
-
-      default:
-        return UnknownException(
-          message: 'حدث خطأ غير متوقع.',
-          data: error.response?.data,
-        );
     }
   }
 
@@ -62,9 +56,13 @@ class ErrorHandler {
 
     // Extract error message from response
     String? errorMessage;
-    if (responseData is Map<String, dynamic>) {
-      errorMessage = responseData['message']?.toString() ??
-          responseData['error']?.toString();
+    try {
+      if (responseData is Map<String, dynamic>) {
+        errorMessage = responseData['message']?.toString() ??
+            responseData['error']?.toString();
+      }
+    } catch (e) {
+      print('⚠️ Error extracting error message: $e');
     }
 
     switch (statusCode) {
@@ -203,8 +201,7 @@ class ErrorHandler {
 
   /// Check if error requires authentication
   static bool requiresAuth(ApiException error) {
-    return error is UnauthorizedException ||
-        error is TokenExpiredException;
+    return error is UnauthorizedException || error is TokenExpiredException;
   }
 
   /// Check if error is related to subscription

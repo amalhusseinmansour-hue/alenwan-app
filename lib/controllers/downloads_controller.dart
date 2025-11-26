@@ -7,7 +7,7 @@ class DownloadsController extends ChangeNotifier {
   List<DownloadModel> downloads = [];
   bool isLoading = false;
 
-  static const String _storageKey = "offline_downloads";
+  static const String _storageKey = 'offline_downloads';
 
   Future<void> loadDownloads() async {
     isLoading = true;

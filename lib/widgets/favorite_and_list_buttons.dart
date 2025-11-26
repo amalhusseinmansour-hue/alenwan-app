@@ -165,8 +165,8 @@ class _FavoriteAndListButtonsState extends State<FavoriteAndListButtons> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           color: isActive
-              ? activeColor.withOpacity(0.2)
-              : Colors.grey[800]?.withOpacity(0.6),
+              ? activeColor.withValues(alpha: 0.2)
+              : Colors.grey[800]?.withValues(alpha: 0.6),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: isActive ? activeColor : Colors.grey[700]!,

@@ -232,18 +232,18 @@ class _CategoryChipState extends State<_CategoryChip>
                 ? null
                 : (_isHovering
                     ? ProfessionalTheme.surfaceCard
-                    : ProfessionalTheme.surfaceCard.withOpacity(0.5)),
+                    : ProfessionalTheme.surfaceCard.withValues(alpha: 0.5)),
             borderRadius: BorderRadius.circular(ProfessionalTheme.radiusRound),
             border: Border.all(
               color: widget.isSelected
                   ? Colors.transparent
-                  : ProfessionalTheme.textTertiary.withOpacity(0.2),
+                  : ProfessionalTheme.textTertiary.withValues(alpha: 0.2),
               width: 1,
             ),
             boxShadow: widget.isSelected
                 ? [
                     BoxShadow(
-                      color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                      color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
@@ -285,8 +285,8 @@ class _CategoryChipState extends State<_CategoryChip>
                   ),
                   decoration: BoxDecoration(
                     color: widget.isSelected
-                        ? ProfessionalTheme.textPrimary.withOpacity(0.2)
-                        : ProfessionalTheme.textTertiary.withOpacity(0.2),
+                        ? ProfessionalTheme.textPrimary.withValues(alpha: 0.2)
+                        : ProfessionalTheme.textTertiary.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(ProfessionalTheme.radiusS),
                   ),
                   child: Text(
@@ -331,10 +331,10 @@ class _ActionButton extends StatelessWidget {
             vertical: ProfessionalTheme.space10,
           ),
           decoration: BoxDecoration(
-            color: ProfessionalTheme.surfaceCard.withOpacity(0.5),
+            color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
             border: Border.all(
-              color: ProfessionalTheme.textTertiary.withOpacity(0.2),
+              color: ProfessionalTheme.textTertiary.withValues(alpha: 0.2),
               width: 1,
             ),
           ),
@@ -379,12 +379,12 @@ class _SortDropdown extends StatelessWidget {
         color: ProfessionalTheme.surfaceCard,
         borderRadius: BorderRadius.circular(ProfessionalTheme.radiusL),
         border: Border.all(
-          color: ProfessionalTheme.primaryBrand.withOpacity(0.2),
+          color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.5),
+            color: Colors.black.withValues(alpha: 0.5),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -409,7 +409,7 @@ class _SortDropdown extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? ProfessionalTheme.primaryBrand.withOpacity(0.1)
+                          ? ProfessionalTheme.primaryBrand.withValues(alpha: 0.1)
                           : null,
                     ),
                     child: Row(
@@ -436,7 +436,7 @@ class _SortDropdown extends StatelessWidget {
                           ),
                         ),
                         if (isSelected)
-                          Icon(
+                          const Icon(
                             Icons.check_rounded,
                             size: 16,
                             color: ProfessionalTheme.primaryBrand,

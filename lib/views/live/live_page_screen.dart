@@ -141,7 +141,7 @@ class _LivePageScreenState extends State<LivePageScreen> {
         showBackButton: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.refresh, color: ProfessionalTheme.textPrimary),
+            icon: const Icon(Icons.refresh, color: ProfessionalTheme.textPrimary),
             onPressed: () {
               context.read<LiveController>().loadStreams();
               context.read<ChannelController>().loadChannels();
@@ -154,7 +154,7 @@ class _LivePageScreenState extends State<LivePageScreen> {
           final isLoading = liveC.isLoading || chC.isLoading;
 
           if (isLoading) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(
                 color: ProfessionalTheme.primaryBrand,
               ),
@@ -167,7 +167,7 @@ class _LivePageScreenState extends State<LivePageScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.error_outline,
                     size: 64,
                     color: ProfessionalTheme.textTertiary,
@@ -213,7 +213,7 @@ class _LivePageScreenState extends State<LivePageScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.live_tv_outlined,
                     size: 80,
                     color: ProfessionalTheme.textTertiary,
@@ -242,7 +242,7 @@ class _LivePageScreenState extends State<LivePageScreen> {
                     label: const Text('تحديث'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: ProfessionalTheme.primaryBrand,
-                      side: BorderSide(color: ProfessionalTheme.primaryBrand),
+                      side: const BorderSide(color: ProfessionalTheme.primaryBrand),
                     ),
                   ),
                 ],
@@ -453,7 +453,7 @@ class _LivePageScreenState extends State<LivePageScreen> {
                         fit: BoxFit.cover,
                         placeholder: (c, _) =>
                             Container(color: ProfessionalTheme.surfaceCard),
-                        errorWidget: (c, u, e) => Icon(
+                        errorWidget: (c, u, e) => const Icon(
                           Icons.broken_image,
                           color: ProfessionalTheme.textTertiary,
                           size: 50,
@@ -592,7 +592,7 @@ class _LivePageScreenState extends State<LivePageScreen> {
       ),
       child: Row(
         children: [
-          Icon(
+          const Icon(
             Icons.visibility,
             size: 14,
             color: ProfessionalTheme.primaryBrand,
@@ -662,7 +662,7 @@ class _LivePageScreenState extends State<LivePageScreen> {
                                   placeholder: (c, _) => Container(
                                     color: ProfessionalTheme.surfaceCard,
                                   ),
-                                  errorWidget: (c, u, e) => Icon(
+                                  errorWidget: (c, u, e) => const Icon(
                                     Icons.broken_image,
                                     color: ProfessionalTheme.textTertiary,
                                     size: 40,
@@ -738,7 +738,7 @@ class _LivePageScreenState extends State<LivePageScreen> {
                                 ),
                                 child: Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.schedule,
                                       size: 13,
                                       color: ProfessionalTheme.primaryBrand,
@@ -848,7 +848,7 @@ class _LiveThumbCard extends StatelessWidget {
               fit: BoxFit.cover,
               placeholder: (c, _) => Container(
                 color: ProfessionalTheme.surfaceCard,
-                child: Center(
+                child: const Center(
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
                     color: ProfessionalTheme.primaryBrand,
@@ -857,7 +857,7 @@ class _LiveThumbCard extends StatelessWidget {
               ),
               errorWidget: (c, u, e) => Container(
                 color: ProfessionalTheme.surfaceCard,
-                child: Icon(
+                child: const Icon(
                   Icons.broken_image,
                   color: ProfessionalTheme.textTertiary,
                   size: 28,

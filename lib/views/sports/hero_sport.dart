@@ -112,7 +112,7 @@ class HeroSport extends StatelessWidget {
                             ),
                           ),
                           icon: const Icon(Icons.play_arrow, color: Colors.white),
-                          label: const Text("شاهد الآن",
+                          label: const Text('شاهد الآن',
                               style: TextStyle(color: Colors.white)),
                         ),
                         const SizedBox(width: 10),
@@ -143,7 +143,7 @@ class HeroSport extends StatelessWidget {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content:
-                                        Text("✅ تمت الإضافة إلى التنزيلات"),
+                                        Text('✅ تمت الإضافة إلى التنزيلات'),
                                   ),
                                 );
                               }
@@ -151,7 +151,7 @@ class HeroSport extends StatelessWidget {
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text("❌ فشل التنزيل: $e"),
+                                    content: Text('❌ فشل التنزيل: $e'),
                                   ),
                                 );
                               }
@@ -162,7 +162,7 @@ class HeroSport extends StatelessWidget {
                             foregroundColor: Colors.white,
                           ),
                           icon: const Icon(Icons.download),
-                          label: const Text("قائمتي"),
+                          label: const Text('قائمتي'),
                         ),
                         if (onMoreInfo != null) ...[
                           const SizedBox(width: 10),
@@ -173,7 +173,7 @@ class HeroSport extends StatelessWidget {
                               foregroundColor: Colors.white,
                             ),
                             icon: const Icon(Icons.info_outline),
-                            label: const Text("مزيد من المعلومات"),
+                            label: const Text('مزيد من المعلومات'),
                           ),
                         ],
                       ],

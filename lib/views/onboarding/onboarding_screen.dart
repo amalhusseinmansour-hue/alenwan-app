@@ -18,7 +18,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   late AnimationController _particleController;
   late List<AnimationController> _slideControllers;
 
+  // ignore: unused_field
   late Animation<double> _fadeAnimation;
+  // ignore: unused_field
   late Animation<double> _slideAnimation;
 
   int _currentPage = 0;
@@ -170,8 +172,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  ProfessionalTheme.backgroundColor.withOpacity(0.8),
-                  ProfessionalTheme.backgroundColor.withOpacity(0.9),
+                  ProfessionalTheme.backgroundColor.withValues(alpha: 0.8),
+                  ProfessionalTheme.backgroundColor.withValues(alpha: 0.9),
                   ProfessionalTheme.backgroundColor,
                 ],
               ),
@@ -230,7 +232,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
                     colors: [
-                      ProfessionalTheme.primaryColor.withOpacity(0.3),
+                      ProfessionalTheme.primaryColor.withValues(alpha: 0.3),
                       Colors.transparent,
                     ],
                   ),
@@ -263,7 +265,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             style: TextButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             ),
-            child: Text(
+            child: const Text(
               'تخطي',
               style: TextStyle(
                 color: ProfessionalTheme.textSecondary,
@@ -300,14 +302,16 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       shape: BoxShape.circle,
                       gradient: RadialGradient(
                         colors: [
-                          ProfessionalTheme.primaryColor.withOpacity(0.2),
-                          ProfessionalTheme.secondaryColor.withOpacity(0.1),
+                          ProfessionalTheme.primaryColor.withValues(alpha: 0.2),
+                          ProfessionalTheme.secondaryColor
+                              .withValues(alpha: 0.1),
                           Colors.transparent,
                         ],
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: ProfessionalTheme.primaryColor.withOpacity(0.3),
+                          color: ProfessionalTheme.primaryColor
+                              .withValues(alpha: 0.3),
                           blurRadius: 30,
                           spreadRadius: 10,
                         ),
@@ -388,7 +392,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   child: Text(
                     data.description,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       color: ProfessionalTheme.textSecondary,
                       fontFamily: 'Cairo',
@@ -426,7 +430,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   boxShadow: _currentPage == index
                       ? [
                           BoxShadow(
-                            color: ProfessionalTheme.primaryColor.withOpacity(0.5),
+                            color: ProfessionalTheme.primaryColor
+                                .withValues(alpha: 0.5),
                             blurRadius: 8,
                             offset: const Offset(0, 2),
                           ),
@@ -489,7 +494,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   borderRadius: BorderRadius.circular(25),
                 )
               : BoxDecoration(
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
@@ -500,7 +505,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   borderRadius: BorderRadius.circular(25),
                   boxShadow: [
                     BoxShadow(
-                      color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                      color:
+                          ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                       blurRadius: 15,
                       offset: const Offset(0, 8),
                     ),
@@ -581,8 +587,8 @@ class OnboardingBackgroundPainter extends CustomPainter {
 
       paint.shader = RadialGradient(
         colors: [
-          ProfessionalTheme.primaryColor.withOpacity(0.15),
-          ProfessionalTheme.primaryColor.withOpacity(0.05),
+          ProfessionalTheme.primaryColor.withValues(alpha: 0.15),
+          ProfessionalTheme.primaryColor.withValues(alpha: 0.05),
           Colors.transparent,
         ],
       ).createShader(Rect.fromCircle(center: center, radius: 120));
@@ -595,7 +601,7 @@ class OnboardingBackgroundPainter extends CustomPainter {
     // Draw content grid pattern
     final gridSize = 40.0;
     paint.shader = null;
-    paint.color = ProfessionalTheme.primaryColor.withOpacity(0.1);
+    paint.color = ProfessionalTheme.primaryColor.withValues(alpha: 0.1);
 
     for (double x = 0; x < size.width; x += gridSize) {
       for (double y = 0; y < size.height; y += gridSize) {
@@ -618,7 +624,7 @@ class OnboardingBackgroundPainter extends CustomPainter {
 
       paint.shader = RadialGradient(
         colors: [
-          ProfessionalTheme.accentColor.withOpacity(0.2),
+          ProfessionalTheme.accentColor.withValues(alpha: 0.2),
           Colors.transparent,
         ],
       ).createShader(Rect.fromCircle(center: center, radius: 30));
@@ -635,8 +641,8 @@ class OnboardingBackgroundPainter extends CustomPainter {
       final y = size.height * (1.0 - progress);
 
       paint.shader = null;
-      paint.color = ProfessionalTheme.primaryColor.withOpacity(
-        0.05 + (1.0 - progress) * 0.1,
+      paint.color = ProfessionalTheme.primaryColor.withValues(
+        alpha: 0.05 + (1.0 - progress) * 0.1,
       );
 
       canvas.drawCircle(

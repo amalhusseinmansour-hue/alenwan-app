@@ -114,11 +114,11 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       backgroundColor: _showAppBarBackground
-          ? ProfessionalTheme.backgroundPrimary.withOpacity(0.95)
+          ? ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.95)
           : Colors.transparent,
       elevation: 0,
       systemOverlayStyle: SystemUiOverlayStyle.light,
-      iconTheme: IconThemeData(color: ProfessionalTheme.textPrimary),
+      iconTheme: const IconThemeData(color: ProfessionalTheme.textPrimary),
       title: Row(
         children: [
           Image.asset(
@@ -127,11 +127,11 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
           ),
           const Spacer(),
           IconButton(
-            icon: Icon(Icons.search, size: 28, color: ProfessionalTheme.textPrimary),
+            icon: const Icon(Icons.search, size: 28, color: ProfessionalTheme.textPrimary),
             onPressed: () => Navigator.pushNamed(context, '/search'),
           ),
           IconButton(
-            icon: Icon(Icons.notifications_outlined, size: 28, color: ProfessionalTheme.textPrimary),
+            icon: const Icon(Icons.notifications_outlined, size: 28, color: ProfessionalTheme.textPrimary),
             onPressed: () => Navigator.pushNamed(context, '/notifications'),
           ),
           GestureDetector(
@@ -141,18 +141,18 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
               height: 32,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: [ProfessionalTheme.primaryBrand, ProfessionalTheme.accentBrand],
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                    color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
                 ],
               ),
-              child: Icon(Icons.person, size: 20, color: ProfessionalTheme.textPrimary),
+              child: const Icon(Icons.person, size: 20, color: ProfessionalTheme.textPrimary),
             ),
           ),
         ],
@@ -270,7 +270,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    ProfessionalTheme.backgroundPrimary.withOpacity(0.7),
+                    ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.7),
                     ProfessionalTheme.backgroundPrimary,
                   ],
                 ),
@@ -301,7 +301,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
                     borderRadius: BorderRadius.circular(4),
                     color: index == _currentBannerIndex
                         ? ProfessionalTheme.primaryBrand
-                        : ProfessionalTheme.textSecondary.withOpacity(0.5),
+                        : ProfessionalTheme.textSecondary.withValues(alpha: 0.5),
                   ),
                 ),
               ),
@@ -321,13 +321,13 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
           fit: BoxFit.cover,
           placeholder: (context, url) => Container(
             color: Colors.grey.shade900,
-            child: Center(
+            child: const Center(
               child: CircularProgressIndicator(color: ProfessionalTheme.primaryBrand),
             ),
           ),
           errorWidget: (context, url, error) => Container(
             color: Colors.grey.shade900,
-            child: Icon(Icons.error, color: ProfessionalTheme.primaryBrand),
+            child: const Icon(Icons.error, color: ProfessionalTheme.primaryBrand),
           ),
         ),
 
@@ -340,7 +340,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
                 begin: Alignment.topCenter,
                 end: Alignment.center,
                 colors: [
-                  ProfessionalTheme.backgroundPrimary.withOpacity(0.3),
+                  ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.3),
                   Colors.transparent,
                 ],
               ),
@@ -361,8 +361,6 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
             if (item['is_trending'] == true)
               _buildTag('TRENDING', ProfessionalTheme.accentBrand),
             if (item['is_featured'] == true) _buildTag('FEATURED', ProfessionalTheme.primaryBrand),
-            if (item['imdb_rating'] != null)
-              _buildTag('IMDb ${item['imdb_rating']}', ProfessionalTheme.warningColor),
           ],
         ),
         const SizedBox(height: 12),
@@ -376,7 +374,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
             color: ProfessionalTheme.textPrimary,
             shadows: [
               Shadow(
-                color: ProfessionalTheme.backgroundPrimary.withOpacity(0.8),
+                color: ProfessionalTheme.backgroundPrimary.withValues(alpha: 0.8),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
@@ -390,7 +388,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
           item['description'] ?? '',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 14,
             color: ProfessionalTheme.textSecondary,
           ),
@@ -404,11 +402,11 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 gradient: LinearGradient(
-                  colors: [ProfessionalTheme.primaryBrand, ProfessionalTheme.primaryBrand.withOpacity(0.8)],
+                  colors: [ProfessionalTheme.primaryBrand, ProfessionalTheme.primaryBrand.withValues(alpha: 0.8)],
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                    color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -433,11 +431,11 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: ProfessionalTheme.surfaceCard.withOpacity(0.3),
-                border: Border.all(color: ProfessionalTheme.textSecondary.withOpacity(0.3)),
+                color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.3),
+                border: Border.all(color: ProfessionalTheme.textSecondary.withValues(alpha: 0.3)),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Colors.black.withValues(alpha: 0.2),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -469,7 +467,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
       margin: const EdgeInsets.only(right: 8),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(4),
         border: Border.all(color: color),
       ),
@@ -488,12 +486,12 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 24, 16, 12),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(16, 24, 16, 12),
           child: Row(
             children: [
               Icon(Icons.history, color: ProfessionalTheme.primaryBrand, size: 24),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
               Text(
                 'Continue Watching',
                 style: TextStyle(
@@ -548,7 +546,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
               ],
               Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: ProfessionalTheme.textPrimary,
@@ -557,7 +555,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
               const Spacer(),
               TextButton(
                 onPressed: () => _viewAllContent(title, items),
-                child: Text(
+                child: const Text(
                   'See All',
                   style: TextStyle(color: ProfessionalTheme.primaryBrand),
                 ),
@@ -576,7 +574,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
               return ContentCard(
                 title: item['title'] ?? '',
                 imageUrl: item['thumbnail'] ?? '',
-                rating: item['imdb_rating']?.toString(),
+                rating: null,
                 year: item['release_date']?.substring(0, 4),
                 isPremium: item['is_premium'] ?? false,
                 cardType: cardType,
@@ -592,7 +590,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
   Widget _buildLoadingState() {
     return Shimmer.fromColors(
       baseColor: ProfessionalTheme.surfaceCard,
-      highlightColor: ProfessionalTheme.surfaceCard.withOpacity(0.7),
+      highlightColor: ProfessionalTheme.surfaceCard.withValues(alpha: 0.7),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -607,7 +605,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
                   end: Alignment.bottomCenter,
                   colors: [
                     ProfessionalTheme.surfaceCard,
-                    ProfessionalTheme.surfaceCard.withOpacity(0.8),
+                    ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
                   ],
                 ),
               ),
@@ -642,7 +640,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
                                         borderRadius: BorderRadius.circular(8),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.black.withOpacity(0.2),
+                                            color: Colors.black.withValues(alpha: 0.2),
                                             blurRadius: 4,
                                             offset: const Offset(0, 2),
                                           ),

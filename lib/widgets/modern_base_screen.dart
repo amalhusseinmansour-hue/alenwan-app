@@ -112,7 +112,7 @@ class _ModernBaseScreenState extends State<ModernBaseScreen>
 
   PreferredSizeWidget? _buildAppBar() {
     return AppBar(
-      backgroundColor: ModernTheme.backgroundColor.withOpacity(0.9),
+      backgroundColor: ModernTheme.backgroundColor.withValues(alpha: 0.9),
       elevation: 0,
       title: Text(
         widget.title,
@@ -242,10 +242,10 @@ class _ModernContentScreenState extends State<ModernContentScreen>
   Widget _buildFilterChips() {
     return Container(
       height: 60,
-      margin: EdgeInsets.symmetric(vertical: ModernTheme.spacingM),
+      margin: const EdgeInsets.symmetric(vertical: ModernTheme.spacingM),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: ModernTheme.spacingL),
+        padding: const EdgeInsets.symmetric(horizontal: ModernTheme.spacingL),
         itemCount: _filters.length,
         itemBuilder: (context, index) {
           final filter = _filters[index];
@@ -259,19 +259,19 @@ class _ModernContentScreenState extends State<ModernContentScreen>
               HapticFeedback.lightImpact();
             },
             child: Container(
-              margin: EdgeInsets.only(right: ModernTheme.spacingM),
-              padding: EdgeInsets.symmetric(
+              margin: const EdgeInsets.only(right: ModernTheme.spacingM),
+              padding: const EdgeInsets.symmetric(
                 horizontal: ModernTheme.spacingL,
                 vertical: ModernTheme.spacingM,
               ),
               decoration: BoxDecoration(
                 gradient: isSelected ? ModernTheme.primaryGradient : null,
-                color: isSelected ? null : Colors.white.withOpacity(0.1),
+                color: isSelected ? null : Colors.white.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(ModernTheme.radiusXLarge),
                 border: Border.all(
                   color: isSelected
                       ? Colors.transparent
-                      : Colors.white.withOpacity(0.3),
+                      : Colors.white.withValues(alpha: 0.3),
                   width: 1,
                 ),
                 boxShadow: isSelected ? ModernTheme.glowShadow : null,
@@ -282,7 +282,7 @@ class _ModernContentScreenState extends State<ModernContentScreen>
                   style: ModernTheme.body1(
                     color: isSelected
                         ? Colors.white
-                        : Colors.white.withOpacity(0.7),
+                        : Colors.white.withValues(alpha: 0.7),
                   ),
                 ),
               ),
@@ -299,7 +299,7 @@ class _ModernContentScreenState extends State<ModernContentScreen>
       backgroundColor: ModernTheme.surfaceColor,
       onRefresh: _loadContent,
       child: GridView.builder(
-        padding: EdgeInsets.all(ModernTheme.spacingL),
+        padding: const EdgeInsets.all(ModernTheme.spacingL),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 0.7,
@@ -379,16 +379,16 @@ class _ModernContentScreenState extends State<ModernContentScreen>
               );
             },
           ),
-          SizedBox(height: ModernTheme.spacingXL),
+          const SizedBox(height: ModernTheme.spacingXL),
           SizedBox(
             width: 200,
             child: LinearProgressIndicator(
-              backgroundColor: Colors.white.withOpacity(0.1),
+              backgroundColor: Colors.white.withValues(alpha: 0.1),
               valueColor:
-                  AlwaysStoppedAnimation<Color>(ModernTheme.primaryColor),
+                  const AlwaysStoppedAnimation<Color>(ModernTheme.primaryColor),
             ),
           ),
-          SizedBox(height: ModernTheme.spacingL),
+          const SizedBox(height: ModernTheme.spacingL),
           Text(
             'Loading ${widget.contentType}...',
             style: ModernTheme.subtitle2(),
@@ -437,11 +437,11 @@ class ModernContentCard extends StatelessWidget {
               fit: StackFit.expand,
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.vertical(
+                  borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(ModernTheme.radiusLarge),
                   ),
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       gradient: ModernTheme.primaryGradient,
                     ),
                     child: localImage != null
@@ -464,7 +464,7 @@ class ModernContentCard extends StatelessWidget {
                 // Gradient overlay
                 Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.vertical(
+                    borderRadius: const BorderRadius.vertical(
                       top: Radius.circular(ModernTheme.radiusLarge),
                     ),
                     gradient: LinearGradient(
@@ -472,7 +472,7 @@ class ModernContentCard extends StatelessWidget {
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.transparent,
-                        Colors.black.withOpacity(0.7),
+                        Colors.black.withValues(alpha: 0.7),
                       ],
                     ),
                   ),
@@ -484,7 +484,7 @@ class ModernContentCard extends StatelessWidget {
                     top: ModernTheme.spacingS,
                     left: ModernTheme.spacingS,
                     child: Container(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: ModernTheme.spacingS,
                         vertical: ModernTheme.spacingXS,
                       ),
@@ -506,9 +506,9 @@ class ModernContentCard extends StatelessWidget {
                     top: ModernTheme.spacingS,
                     right: ModernTheme.spacingS,
                     child: Container(
-                      padding: EdgeInsets.all(ModernTheme.spacingXS),
+                      padding: const EdgeInsets.all(ModernTheme.spacingXS),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.7),
+                        color: Colors.black.withValues(alpha: 0.7),
                         borderRadius:
                             BorderRadius.circular(ModernTheme.radiusSmall),
                       ),
@@ -516,7 +516,7 @@ class ModernContentCard extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           const Icon(Icons.star, color: Colors.amber, size: 14),
-                          SizedBox(width: ModernTheme.spacingXS),
+                          const SizedBox(width: ModernTheme.spacingXS),
                           Text(
                             rating!.toStringAsFixed(1),
                             style: ModernTheme.caption(color: Colors.white),
@@ -532,10 +532,10 @@ class ModernContentCard extends StatelessWidget {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: Colors.white.withOpacity(0.4),
+                        color: Colors.white.withValues(alpha: 0.4),
                         width: 2,
                       ),
                     ),
@@ -552,7 +552,7 @@ class ModernContentCard extends StatelessWidget {
 
           // Info
           Padding(
-            padding: EdgeInsets.all(ModernTheme.spacingM),
+            padding: const EdgeInsets.all(ModernTheme.spacingM),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -563,7 +563,7 @@ class ModernContentCard extends StatelessWidget {
                   style: ModernTheme.subtitle2(color: Colors.white),
                 ),
                 if (subtitle != null) ...[
-                  SizedBox(height: ModernTheme.spacingXS),
+                  const SizedBox(height: ModernTheme.spacingXS),
                   Text(
                     subtitle!,
                     maxLines: 1,
@@ -582,7 +582,7 @@ class ModernContentCard extends StatelessWidget {
 
   Widget _buildPlaceholder() {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: ModernTheme.primaryGradient,
       ),
       child: const Icon(

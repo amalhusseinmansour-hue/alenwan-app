@@ -6,7 +6,7 @@ class SportRelatedTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text("محتوى رياضي مشابه سيُعرض هنا لاحقاً"),
+      child: Text('محتوى رياضي مشابه سيُعرض هنا لاحقاً'),
     );
   }
 }

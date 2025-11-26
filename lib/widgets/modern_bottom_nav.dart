@@ -18,6 +18,7 @@ class ModernBottomNav extends StatefulWidget {
 class _ModernBottomNavState extends State<ModernBottomNav>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  // ignore: unused_field
   late List<Animation<double>> _animations;
 
   @override
@@ -52,10 +53,10 @@ class _ModernBottomNavState extends State<ModernBottomNav>
     return Container(
       height: 70,
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.95),
+        color: Colors.black.withValues(alpha: 0.95),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, -5),
           ),
@@ -64,7 +65,7 @@ class _ModernBottomNavState extends State<ModernBottomNav>
       child: ClipRRect(
         child: BackdropFilter(
           filter: ColorFilter.mode(
-            Colors.black.withOpacity(0.8),
+            Colors.black.withValues(alpha: 0.8),
             BlendMode.darken,
           ),
           child: Container(
@@ -106,7 +107,9 @@ class _ModernBottomNavState extends State<ModernBottomNav>
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.red.withOpacity(0.1) : Colors.transparent,
+          color: isSelected
+              ? Colors.red.withValues(alpha: 0.1)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(

@@ -105,7 +105,7 @@ class _HoverMediaCardDocumentaryState extends State<HoverMediaCardDocumentary> {
                           errorWidget: (_, __, ___) => Container(
                             color: ProfessionalTheme.surfaceCard,
                             alignment: Alignment.center,
-                            child: Icon(
+                            child: const Icon(
                               Icons.broken_image,
                               color: ProfessionalTheme.textTertiary,
                             ),
@@ -212,7 +212,7 @@ class DocumentariesContent extends StatelessWidget {
   }
 
   String _imageFor(Documentary d) {
-    final raw = (d.posterPath.isNotEmpty) ? d.posterPath : (d.bannerPath ?? '');
+    final raw = (d.posterPath.isNotEmpty) ? d.posterPath : d.bannerPath;
     return _documentaryImageUrl(raw);
   }
 

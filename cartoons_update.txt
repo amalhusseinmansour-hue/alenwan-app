@@ -1,0 +1,26 @@
+            $cartoonsArray = [];
+            foreach ($cartoons as $cartoon) {
+                $cartoonsArray[] = [
+                    'id' => $cartoon->id,
+                    'title' => $this->decodeJsonField($cartoon->title, $locale),
+                    'title_ar' => $this->decodeJsonField($cartoon->title, 'ar'),
+                    'description' => $this->decodeJsonField($cartoon->description ?? '', $locale),
+                    'description_ar' => $this->decodeJsonField($cartoon->description ?? '', 'ar'),
+                    'poster' => $cartoon->poster ?? $cartoon->thumbnail ?? null,
+                    'poster_url' => $cartoon->poster ? (str_starts_with($cartoon->poster, 'http') ? $cartoon->poster : url('storage/' . $cartoon->poster)) : null,
+                    'banner_url' => $cartoon->backdrop ?? $cartoon->banner ?? null,
+                    'thumbnail' => $cartoon->thumbnail ?? $cartoon->poster ?? null,
+                    'video_url' => $cartoon->video_url ?? $cartoon->video_path ?? null,
+                    'release_year' => $cartoon->release_year ?? $cartoon->year ?? null,
+                    'rating' => $cartoon->rating ?? 0,
+                    'language_id' => $cartoon->language_id ?? 1,
+                    'status' => $cartoon->status ?? 'draft',
+                    'audience' => $cartoon->audience ?? $cartoon->age_rating ?? null,
+                    'is_series' => $cartoon->is_series ?? false,
+                    'season_number' => $cartoon->season_number ?? null,
+                    'episode_number' => $cartoon->episode_number ?? null,
+                    'duration' => $cartoon->duration ?? null,
+                    'category_id' => $cartoon->category_id ?? 0,
+                    'created_at' => $cartoon->created_at,
+                ];
+            }

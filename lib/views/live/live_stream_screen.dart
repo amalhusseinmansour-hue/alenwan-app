@@ -4,14 +4,14 @@ import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import 'package:alenwan/models/live_stream_model.dart';
 import 'package:alenwan/models/comment_live.dart';
 import 'package:alenwan/core/theme/professional_theme.dart';
-import 'package:alenwan/core/services/comment_service.dart';
-import 'package:alenwan/core/services/api_client.dart';
 import 'package:alenwan/core/services/auth_service.dart';
 import 'package:provider/provider.dart';
+import 'package:alenwan/controllers/live_controller.dart';
 
 class LiveStreamScreen extends StatefulWidget {
   final LiveStreamModel stream;
@@ -26,14 +26,15 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
   YoutubePlayerController? _ytController;
   VideoPlayerController? _videoController;
   ChewieController? _chewieController;
+  WebViewController? _webViewController;
   bool _isLive = false;
 
   final TextEditingController _commentController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  List<LiveComment> comments = [];
-  bool _isLoadingComments = false;
+  // Comments are now managed by LiveController
   bool _isPostingComment = false;
-  CommentService? _commentService;
+  // ignore: unused_field
+  final bool _isLoadingComments = false;
 
   String? extractYoutubeId(String url) {
     try {
@@ -93,15 +94,16 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
     // Initialize comment service after first frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        final apiClient = Provider.of<ApiClient>(context, listen: false);
-        _commentService = CommentService(apiClient.dio);
-        _loadComments();
+        context.read<LiveController>().setCurrentStream(widget.stream);
+        context.read<LiveController>().startCommentsPolling();
       }
     });
   }
 
   void _initializePlayer() {
-    final url = widget.stream.videoUrl ?? widget.stream.streamUrl ?? '';
+    final url = widget.stream.videoUrl?.isNotEmpty == true
+        ? widget.stream.videoUrl!
+        : widget.stream.streamUrl;
 
     print('🎥 Initializing player for URL: $url');
     print('🎥 Stream type: ${widget.stream.sourceType}');
@@ -122,7 +124,7 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
 
       if (videoId != null) {
         _ytController = YoutubePlayerController(
-          params: YoutubePlayerParams(
+          params: const YoutubePlayerParams(
             showControls: true,
             showFullscreenButton: true,
             mute: false,
@@ -141,35 +143,35 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
     }
     // 🔧 دعم Vimeo
     else if (url.contains('vimeo.com') ||
-             widget.stream.sourceType.toLowerCase() == 'vimeo') {
-      print('🎬 Vimeo stream detected, using web view or direct URL');
-      // For Vimeo, we might need to use WebView or extract the direct stream URL
-      // For now, try to use as direct stream
-      _videoController = VideoPlayerController.networkUrl(Uri.parse(url))
-        ..initialize().then((_) {
-          setState(() {});
-          _chewieController = ChewieController(
-            videoPlayerController: _videoController!,
-            autoPlay: true,
-            looping: false,
-            aspectRatio: 16 / 9,
-            allowFullScreen: true,
-            allowMuting: true,
-            showControls: true,
-            placeholder: Container(color: ProfessionalTheme.backgroundColor),
-            materialProgressColors: ChewieProgressColors(
-              playedColor: ProfessionalTheme.primaryBrand,
-              handleColor: ProfessionalTheme.primaryBrand,
-              backgroundColor: Colors.grey,
-              bufferedColor: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
-            ),
-          );
-        }).catchError((error) {
-          print('❌ Error initializing Vimeo player: $error');
-        });
+        widget.stream.sourceType.toLowerCase() == 'vimeo') {
+      print('🎬 Vimeo stream detected, using WebView');
+
+      final WebViewController controller = WebViewController()
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setBackgroundColor(const Color(0x00000000))
+        ..setNavigationDelegate(
+          NavigationDelegate(
+            onProgress: (int progress) {
+              debugPrint('WebView loading: $progress%');
+            },
+            onPageStarted: (String url) {},
+            onPageFinished: (String url) {},
+            onWebResourceError: (WebResourceError error) {
+              debugPrint('WebView error: ${error.description}');
+            },
+          ),
+        )
+        ..loadRequest(Uri.parse(url));
+
+      setState(() {
+        _webViewController = controller;
+      });
     }
     // 🔧 البثوث المباشرة بصيغ أخرى
-    else if (url.endsWith('.m3u8') || url.endsWith('.mp4') || url.startsWith('rtmp://')) {
+    else if (url.isNotEmpty &&
+        (url.endsWith('.m3u8') ||
+            url.endsWith('.mp4') ||
+            url.startsWith('rtmp://'))) {
       print('🎬 Initializing video player for direct stream');
 
       _videoController = VideoPlayerController.networkUrl(Uri.parse(url))
@@ -188,13 +190,14 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
               playedColor: ProfessionalTheme.primaryBrand,
               handleColor: ProfessionalTheme.primaryBrand,
               backgroundColor: Colors.grey,
-              bufferedColor: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
+              bufferedColor:
+                  ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
             ),
           );
         }).catchError((error) {
           print('❌ Error initializing video player: $error');
         });
-    } else {
+    } else if (url.isNotEmpty) {
       print('⚠️ Unknown stream format, attempting as direct URL');
       // Try as direct URL anyway
       _videoController = VideoPlayerController.networkUrl(Uri.parse(url))
@@ -213,7 +216,8 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
               playedColor: ProfessionalTheme.primaryBrand,
               handleColor: ProfessionalTheme.primaryBrand,
               backgroundColor: Colors.grey,
-              bufferedColor: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
+              bufferedColor:
+                  ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
             ),
           );
         }).catchError((error) {
@@ -222,57 +226,16 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
     }
   }
 
-  void _loadComments() async {
-    if (_commentService == null) return;
-
-    setState(() => _isLoadingComments = true);
-
-    try {
-      // Load comments for this livestream
-      final loadedComments = await _commentService!.fetchComments(
-        commentableType: 'App\\Models\\LiveStream',
-        commentableId: widget.stream.id,
-        perPage: 50,
-      );
-
-      if (mounted) {
-        setState(() {
-          comments = loadedComments;
-          _isLoadingComments = false;
-        });
-      }
-
-      print('✅ Loaded ${comments.length} comments for livestream #${widget.stream.id}');
-    } catch (e) {
-      print('❌ Error loading comments: $e');
-      if (mounted) {
-        setState(() => _isLoadingComments = false);
-
-        // Show sample comments as fallback
-        setState(() {
-          comments = [
-            LiveComment(
-              id: 1,
-              userName: 'مستخدم تجريبي',
-              text: 'مرحباً بالجميع! 👋',
-              createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
-            ),
-          ];
-        });
-      }
-    }
-  }
+  // _loadComments removed as it is handled by LiveController
 
   void _sendComment() async {
-    if (_commentService == null) return;
-
     // Check if user is logged in
     final isLoggedIn = await AuthService.isLoggedIn();
     if (!isLoggedIn) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('يجب تسجيل الدخول أولاً للتعليق'),
+            content: const Text('يجب تسجيل الدخول أولاً للتعليق'),
             backgroundColor: Colors.orange,
             action: SnackBarAction(
               label: 'تسجيل الدخول',
@@ -297,16 +260,11 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
     setState(() => _isPostingComment = true);
 
     try {
-      // Post comment to API
-      final newComment = await _commentService!.postComment(
-        commentableType: 'App\\Models\\LiveStream',
-        commentableId: widget.stream.id,
-        content: commentText,
-      );
+      // Post comment via controller
+      await context.read<LiveController>().postComment(commentText);
 
       if (mounted) {
         setState(() {
-          comments.add(newComment);
           _isPostingComment = false;
         });
 
@@ -330,7 +288,7 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
 
         // Show error message
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('فشل إرسال التعليق. يرجى المحاولة مرة أخرى.'),
             backgroundColor: Colors.red,
           ),
@@ -351,8 +309,14 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
       return Chewie(controller: _chewieController!);
     }
 
+    if (_webViewController != null) {
+      return WebViewWidget(controller: _webViewController!);
+    }
+
     // Check if URL is empty or invalid
-    final url = widget.stream.videoUrl ?? widget.stream.streamUrl ?? '';
+    final url = widget.stream.videoUrl?.isNotEmpty == true
+        ? widget.stream.videoUrl!
+        : widget.stream.streamUrl;
     if (url.isEmpty) {
       return Container(
         color: Colors.black,
@@ -363,20 +327,20 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
               Icon(
                 Icons.videocam_off,
                 size: 64,
-                color: Colors.white.withOpacity(0.5),
+                color: Colors.white.withValues(alpha: 0.5),
               ),
               const SizedBox(height: 16),
               Text(
                 'لا يوجد رابط فيديو',
                 style: ProfessionalTheme.bodyLarge(
-                  color: Colors.white.withOpacity(0.7),
+                  color: Colors.white.withValues(alpha: 0.7),
                 ),
               ),
               const SizedBox(height: 8),
               Text(
                 'يرجى إضافة رابط الفيديو من لوحة التحكم',
                 style: ProfessionalTheme.bodySmall(
-                  color: Colors.white.withOpacity(0.5),
+                  color: Colors.white.withValues(alpha: 0.5),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -387,7 +351,7 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
     }
 
     // Loading state
-    return Center(
+    return const Center(
       child: CircularProgressIndicator(
         color: ProfessionalTheme.primaryBrand,
       ),
@@ -413,7 +377,7 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
         elevation: 2,
         shadowColor: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios,
             color: ProfessionalTheme.textPrimary,
           ),
@@ -423,7 +387,8 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
           children: [
             if (_isLive) ...[
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -484,7 +449,7 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
         ),
         actions: [
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.share_outlined,
               color: ProfessionalTheme.textPrimary,
             ),
@@ -493,7 +458,7 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
             },
           ),
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.fullscreen,
               color: ProfessionalTheme.textPrimary,
             ),
@@ -506,142 +471,150 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-          // Video Player Section
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: Container(
-              margin: const EdgeInsets.all(12),
+            // Video Player Section
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: Container(
+                margin: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color:
+                          ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
+                      blurRadius: 15,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: _buildPlayer(),
+                ),
+              ),
+            ),
+
+            // Stream Info with enhanced design
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(12),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    ProfessionalTheme.surfaceCard,
+                    ProfessionalTheme.surfaceCard.withValues(alpha: 0.9),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
+                    color:
+                        ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
                     blurRadius: 15,
-                    offset: const Offset(0, 6),
+                    offset: const Offset(0, 5),
                   ),
                 ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: _buildPlayer(),
-              ),
-            ),
-          ),
-
-          // Stream Info with enhanced design
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  ProfessionalTheme.surfaceCard,
-                  ProfessionalTheme.surfaceCard.withValues(alpha: 0.9),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
-                  blurRadius: 15,
-                  offset: const Offset(0, 5),
+                border: Border.all(
+                  color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
+                  width: 1,
                 ),
-              ],
-              border: Border.all(
-                color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
-                width: 1,
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.stream.getTitle(context.locale.languageCode),
-                            style: ProfessionalTheme.headlineSmall(
-                              color: ProfessionalTheme.textPrimary,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            widget.stream.getDescription(context.locale.languageCode),
-                            style: ProfessionalTheme.bodySmall(
-                              color: ProfessionalTheme.textSecondary,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (widget.stream.viewersCount != null)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              ProfessionalTheme.primaryBrand.withValues(alpha: 0.15),
-                              ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
-                          ),
-                        ),
-                        child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.remove_red_eye,
-                                size: 14,
-                                color: ProfessionalTheme.primaryBrand,
+                            Text(
+                              widget.stream
+                                  .getTitle(context.locale.languageCode),
+                              style: ProfessionalTheme.headlineSmall(
+                                color: ProfessionalTheme.textPrimary,
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(height: 4),
                             Text(
-                              '${widget.stream.viewersCount}',
-                              style: ProfessionalTheme.labelMedium(
-                                color: ProfessionalTheme.primaryBrand,
-                                weight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              'مشاهد',
-                              style: ProfessionalTheme.labelSmall(
+                              widget.stream
+                                  .getDescription(context.locale.languageCode),
+                              style: ProfessionalTheme.bodySmall(
                                 color: ProfessionalTheme.textSecondary,
                               ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
                       ),
-                  ],
-                ),
-              ],
+                      if (widget.stream.viewersCount != null)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                ProfessionalTheme.primaryBrand
+                                    .withValues(alpha: 0.15),
+                                ProfessionalTheme.primaryBrand
+                                    .withValues(alpha: 0.1),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: ProfessionalTheme.primaryBrand
+                                  .withValues(alpha: 0.3),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  color: ProfessionalTheme.primaryBrand
+                                      .withValues(alpha: 0.2),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.remove_red_eye,
+                                  size: 14,
+                                  color: ProfessionalTheme.primaryBrand,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                '${widget.stream.viewersCount}',
+                                style: ProfessionalTheme.labelMedium(
+                                  color: ProfessionalTheme.primaryBrand,
+                                  weight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                'مشاهد',
+                                style: ProfessionalTheme.labelSmall(
+                                  color: ProfessionalTheme.textSecondary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
 
-          // Comments Section with enhanced design
-          Container(
-            height: 400, // Fixed height to replace Expanded
-            margin: const EdgeInsets.all(12),
+            // Comments Section with enhanced design
+            Container(
+              height: 400, // Fixed height to replace Expanded
+              margin: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(16),
@@ -665,7 +638,8 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                       ),
                       border: Border(
                         bottom: BorderSide(
-                          color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
+                          color: ProfessionalTheme.primaryBrand
+                              .withValues(alpha: 0.2),
                         ),
                       ),
                     ),
@@ -674,10 +648,11 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
+                            color: ProfessionalTheme.primaryBrand
+                                .withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
-                          child: Icon(
+                          child: const Icon(
                             Icons.chat_bubble_outline,
                             color: ProfessionalTheme.primaryBrand,
                             size: 20,
@@ -692,120 +667,133 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                         ),
                         const Spacer(),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 4),
                           decoration: BoxDecoration(
-                            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
+                            color: ProfessionalTheme.primaryBrand
+                                .withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: Text(
-                            '${comments.length}',
-                            style: ProfessionalTheme.labelMedium(
-                              color: ProfessionalTheme.primaryBrand,
-                              weight: FontWeight.bold,
-                            ),
+                          child: Consumer<LiveController>(
+                            builder: (context, controller, _) {
+                              return Text(
+                                '${controller.comments.length}',
+                                style: ProfessionalTheme.labelMedium(
+                                  color: ProfessionalTheme.primaryBrand,
+                                  weight: FontWeight.bold,
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ],
                     ),
                   ),
                   Expanded(
-                    child: comments.isEmpty
-                      ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.chat_bubble_outline,
-                                size: 48,
-                                color: ProfessionalTheme.textTertiary,
-                              ),
-                              const SizedBox(height: 12),
-                              Text(
-                                'كن أول من يعلق',
-                                style: ProfessionalTheme.bodyLarge(
-                                  color: ProfessionalTheme.textSecondary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : ListView.builder(
-                          controller: _scrollController,
-                          padding: const EdgeInsets.all(12),
-                          itemCount: comments.length,
-                          itemBuilder: (context, index) {
-                            final comment = comments[index];
-                            return Container(
-                              margin: const EdgeInsets.only(bottom: 10),
-                              padding: const EdgeInsets.all(14),
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    ProfessionalTheme.backgroundColor,
-                                    ProfessionalTheme.backgroundColor.withValues(alpha: 0.7),
+                    child: Consumer<LiveController>(
+                      builder: (context, controller, _) {
+                        final comments = controller.comments;
+                        return comments.isEmpty
+                            ? Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.chat_bubble_outline,
+                                      size: 48,
+                                      color: ProfessionalTheme.textTertiary,
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Text(
+                                      'كن أول من يعلق',
+                                      style: ProfessionalTheme.bodyLarge(
+                                        color: ProfessionalTheme.textSecondary,
+                                      ),
+                                    ),
                                   ],
                                 ),
-                                borderRadius: BorderRadius.circular(14),
-                                border: Border.all(
-                                  color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 36,
-                                        height: 36,
-                                        decoration: BoxDecoration(
-                                          gradient: ProfessionalTheme.premiumGradient,
-                                          shape: BoxShape.circle,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
-                                              blurRadius: 8,
-                                              offset: const Offset(0, 2),
+                              )
+                            : ListView.builder(
+                                controller: _scrollController,
+                                padding: const EdgeInsets.all(12),
+                                itemCount: comments.length,
+                                itemBuilder: (context, index) {
+                                  final comment = comments[index];
+                                  return Container(
+                                    margin: const EdgeInsets.only(bottom: 10),
+                                    padding: const EdgeInsets.all(14),
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          ProfessionalTheme.backgroundColor,
+                                          ProfessionalTheme.backgroundColor
+                                              .withValues(alpha: 0.7),
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.circular(14),
+                                      border: Border.all(
+                                        color: ProfessionalTheme.primaryBrand
+                                            .withValues(alpha: 0.1),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            CircleAvatar(
+                                              radius: 16,
+                                              backgroundColor: ProfessionalTheme
+                                                  .primaryBrand
+                                                  .withValues(alpha: 0.2),
+                                              child: Text(
+                                                comment.userName.isNotEmpty
+                                                    ? comment.userName[0]
+                                                        .toUpperCase()
+                                                    : '?',
+                                                style: ProfessionalTheme
+                                                    .labelMedium(
+                                                  color: ProfessionalTheme
+                                                      .primaryBrand,
+                                                  weight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Expanded(
+                                              child: Text(
+                                                comment.userName,
+                                                style: ProfessionalTheme
+                                                    .titleSmall(
+                                                  color: ProfessionalTheme
+                                                      .textPrimary,
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              _formatTime(comment.createdAt),
+                                              style:
+                                                  ProfessionalTheme.labelSmall(
+                                                color: ProfessionalTheme
+                                                    .textTertiary,
+                                              ),
                                             ),
                                           ],
                                         ),
-                                        child: Center(
-                                          child: Text(
-                                            comment.userName[0].toUpperCase(),
-                                            style: ProfessionalTheme.labelMedium(
-                                              color: Colors.white,
-                                              weight: FontWeight.bold,
-                                            ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          comment.text,
+                                          style: ProfessionalTheme.bodyMedium(
+                                            color:
+                                                ProfessionalTheme.textSecondary,
                                           ),
                                         ),
-                                      ),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: Text(
-                                      comment.userName,
-                                      style: ProfessionalTheme.titleSmall(
-                                        color: ProfessionalTheme.textPrimary,
-                                      ),
+                                      ],
                                     ),
-                                  ),
-                                  Text(
-                                    _formatTime(comment.createdAt),
-                                    style: ProfessionalTheme.labelSmall(
-                                      color: ProfessionalTheme.textTertiary,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                comment.text,
-                                style: ProfessionalTheme.bodyMedium(
-                                  color: ProfessionalTheme.textSecondary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
+                                  );
+                                },
+                              );
                       },
                     ),
                   ),
@@ -823,7 +811,8 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                       ),
                       border: Border(
                         top: BorderSide(
-                          color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
+                          color: ProfessionalTheme.primaryBrand
+                              .withValues(alpha: 0.2),
                         ),
                       ),
                     ),
@@ -835,7 +824,8 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                               color: ProfessionalTheme.backgroundColor,
                               borderRadius: BorderRadius.circular(24),
                               border: Border.all(
-                                color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
+                                color: ProfessionalTheme.primaryBrand
+                                    .withValues(alpha: 0.2),
                               ),
                             ),
                             child: TextField(
@@ -853,7 +843,7 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                                   horizontal: 20,
                                   vertical: 14,
                                 ),
-                                prefixIcon: Icon(
+                                prefixIcon: const Icon(
                                   Icons.emoji_emotions_outlined,
                                   color: ProfessionalTheme.textTertiary,
                                   size: 20,
@@ -871,7 +861,8 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.4),
+                                color: ProfessionalTheme.primaryBrand
+                                    .withValues(alpha: 0.4),
                                 blurRadius: 12,
                                 offset: const Offset(0, 4),
                               ),
@@ -891,8 +882,8 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                   ),
                 ],
               ),
-          ),
-        ],
+            ),
+          ],
         ),
       ),
     );

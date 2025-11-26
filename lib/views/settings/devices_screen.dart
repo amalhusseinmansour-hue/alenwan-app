@@ -93,8 +93,8 @@ class _DevicesScreenState extends State<DevicesScreen>
           ),
         ),
         backgroundColor: isError
-            ? ProfessionalTheme.errorColor.withOpacity(0.9)
-            : ProfessionalTheme.successColor.withOpacity(0.9),
+            ? ProfessionalTheme.errorColor.withValues(alpha: 0.9)
+            : ProfessionalTheme.successColor.withValues(alpha: 0.9),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
@@ -162,7 +162,7 @@ class _DevicesScreenState extends State<DevicesScreen>
                       color: ProfessionalTheme.textTertiary,
                     ),
                     filled: true,
-                    fillColor: ProfessionalTheme.surfaceCard.withOpacity(0.6),
+                    fillColor: ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: ProfessionalTheme.space16,
                       vertical: ProfessionalTheme.space16,
@@ -173,7 +173,7 @@ class _DevicesScreenState extends State<DevicesScreen>
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: ProfessionalTheme.primaryBrand,
                         width: 2,
                       ),
@@ -274,10 +274,10 @@ class _DevicesScreenState extends State<DevicesScreen>
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: ProfessionalTheme.errorColor.withOpacity(0.2),
+                    color: ProfessionalTheme.errorColor.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.delete_forever,
                     color: ProfessionalTheme.errorColor,
                     size: 30,
@@ -332,7 +332,7 @@ class _DevicesScreenState extends State<DevicesScreen>
                           gradient: LinearGradient(
                             colors: [
                               ProfessionalTheme.errorColor,
-                              ProfessionalTheme.errorColor.withOpacity(0.8),
+                              ProfessionalTheme.errorColor.withValues(alpha: 0.8),
                             ],
                           ),
                           borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
@@ -402,7 +402,7 @@ class _DevicesScreenState extends State<DevicesScreen>
               statusBarIconBrightness: Brightness.light,
             ),
             leading: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back,
                 color: ProfessionalTheme.textPrimary,
               ),
@@ -459,8 +459,8 @@ class _DevicesScreenState extends State<DevicesScreen>
                                             _sectionTitle('الأجهزة المرتبطة حالياً بحسابك'),
                                             const SizedBox(height: ProfessionalTheme.space16),
                                             if (c.isLoading)
-                                              Padding(
-                                                padding: const EdgeInsets.symmetric(
+                                              const Padding(
+                                                padding: EdgeInsets.symmetric(
                                                   vertical: ProfessionalTheme.space40,
                                                 ),
                                                 child: Center(
@@ -512,7 +512,7 @@ class _DevicesScreenState extends State<DevicesScreen>
             shape: BoxShape.circle,
             boxShadow: ProfessionalTheme.glowShadow,
           ),
-          child: Icon(
+          child: const Icon(
             Icons.devices,
             color: ProfessionalTheme.textPrimary,
             size: 40,
@@ -550,7 +550,7 @@ class _DevicesScreenState extends State<DevicesScreen>
               gradient: LinearGradient(
                 colors: [
                   Colors.transparent,
-                  ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                  ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                 ],
               ),
             ),
@@ -563,10 +563,10 @@ class _DevicesScreenState extends State<DevicesScreen>
             vertical: ProfessionalTheme.space8,
           ),
           decoration: BoxDecoration(
-            color: ProfessionalTheme.surfaceCard.withOpacity(0.5),
+            color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(ProfessionalTheme.radiusRound),
             border: Border.all(
-              color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+              color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
               width: 1,
             ),
           ),
@@ -585,7 +585,7 @@ class _DevicesScreenState extends State<DevicesScreen>
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                  ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                   Colors.transparent,
                 ],
               ),
@@ -604,10 +604,10 @@ class _DevicesScreenState extends State<DevicesScreen>
           Container(
             padding: const EdgeInsets.all(ProfessionalTheme.space8),
             decoration: BoxDecoration(
-              color: ProfessionalTheme.infoColor.withOpacity(0.2),
+              color: ProfessionalTheme.infoColor.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
-            child: Icon(
+            child: const Icon(
               Icons.info_outline,
               color: ProfessionalTheme.infoColor,
               size: 20,
@@ -674,8 +674,8 @@ class _DevicesScreenState extends State<DevicesScreen>
                         ),
                         filled: true,
                         fillColor: _pairingFocus.hasFocus
-                            ? ProfessionalTheme.surfaceActive.withOpacity(0.8)
-                            : ProfessionalTheme.surfaceCard.withOpacity(0.6),
+                            ? ProfessionalTheme.surfaceActive.withValues(alpha: 0.8)
+                            : ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: ProfessionalTheme.space16,
                           vertical: ProfessionalTheme.space16,
@@ -687,13 +687,13 @@ class _DevicesScreenState extends State<DevicesScreen>
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
                           borderSide: BorderSide(
-                            color: Colors.white.withOpacity(0.1),
+                            color: Colors.white.withValues(alpha: 0.1),
                             width: 1,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: ProfessionalTheme.primaryBrand,
                             width: 2,
                           ),
@@ -726,8 +726,8 @@ class _DevicesScreenState extends State<DevicesScreen>
                   gradient: (_submitting || _pairingCtrl.text.isEmpty)
                       ? LinearGradient(
                           colors: [
-                            ProfessionalTheme.primaryBrand.withOpacity(0.5),
-                            ProfessionalTheme.accentBrand.withOpacity(0.5),
+                            ProfessionalTheme.primaryBrand.withValues(alpha: 0.5),
+                            ProfessionalTheme.accentBrand.withValues(alpha: 0.5),
                           ],
                         )
                       : ProfessionalTheme.premiumGradient,
@@ -749,7 +749,7 @@ class _DevicesScreenState extends State<DevicesScreen>
                     ),
                   ),
                   child: _submitting
-                      ? SizedBox(
+                      ? const SizedBox(
                           width: 24,
                           height: 24,
                           child: CircularProgressIndicator(
@@ -777,10 +777,10 @@ class _DevicesScreenState extends State<DevicesScreen>
           Container(
             padding: const EdgeInsets.all(ProfessionalTheme.space12),
             decoration: BoxDecoration(
-              color: ProfessionalTheme.surfaceCard.withOpacity(0.3),
+              color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(ProfessionalTheme.radiusS),
               border: Border.all(
-                color: Colors.white.withOpacity(0.05),
+                color: Colors.white.withValues(alpha: 0.05),
                 width: 1,
               ),
             ),
@@ -813,11 +813,11 @@ class _DevicesScreenState extends State<DevicesScreen>
               gradient: ProfessionalTheme.cardGradient,
               borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
               border: Border.all(
-                color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                 width: 1,
               ),
             ),
-            child: Icon(
+            child: const Icon(
               Icons.devices_other,
               color: ProfessionalTheme.primaryBrand,
               size: 24,
@@ -841,7 +841,7 @@ class _DevicesScreenState extends State<DevicesScreen>
                 const SizedBox(height: ProfessionalTheme.space4),
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.access_time,
                       size: 16,
                       color: ProfessionalTheme.textTertiary,
@@ -866,13 +866,13 @@ class _DevicesScreenState extends State<DevicesScreen>
               // Edit Button
               Container(
                 decoration: BoxDecoration(
-                  color: ProfessionalTheme.surfaceCard.withOpacity(0.5),
+                  color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(ProfessionalTheme.radiusS),
                 ),
                 child: IconButton(
                   tooltip: 'إعادة تسمية',
                   onPressed: () => _promptRename(context, d),
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.edit,
                     color: ProfessionalTheme.textSecondary,
                     size: 20,
@@ -884,13 +884,13 @@ class _DevicesScreenState extends State<DevicesScreen>
               // Delete Button
               Container(
                 decoration: BoxDecoration(
-                  color: ProfessionalTheme.errorColor.withOpacity(0.1),
+                  color: ProfessionalTheme.errorColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(ProfessionalTheme.radiusS),
                 ),
                 child: IconButton(
                   tooltip: 'حذف',
                   onPressed: () => _confirmDelete(context, d),
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.delete_outline,
                     color: ProfessionalTheme.errorColor,
                     size: 20,
@@ -906,18 +906,18 @@ class _DevicesScreenState extends State<DevicesScreen>
 
   Widget _errorBox(String msg, {required Future<void> Function() onRetry}) {
     return _SectionCard(
-      color: ProfessionalTheme.errorColor.withOpacity(0.1),
-      borderColor: ProfessionalTheme.errorColor.withOpacity(0.3),
+      color: ProfessionalTheme.errorColor.withValues(alpha: 0.1),
+      borderColor: ProfessionalTheme.errorColor.withValues(alpha: 0.3),
       child: Column(
         children: [
           Container(
             width: 60,
             height: 60,
             decoration: BoxDecoration(
-              color: ProfessionalTheme.errorColor.withOpacity(0.2),
+              color: ProfessionalTheme.errorColor.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
-            child: Icon(
+            child: const Icon(
               Icons.error_outline,
               color: ProfessionalTheme.errorColor,
               size: 30,
@@ -945,7 +945,7 @@ class _DevicesScreenState extends State<DevicesScreen>
               gradient: LinearGradient(
                 colors: [
                   ProfessionalTheme.errorColor,
-                  ProfessionalTheme.errorColor.withOpacity(0.8),
+                  ProfessionalTheme.errorColor.withValues(alpha: 0.8),
                 ],
               ),
               borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
@@ -981,15 +981,15 @@ class _DevicesScreenState extends State<DevicesScreen>
             width: 80,
             height: 80,
             decoration: BoxDecoration(
-              color: ProfessionalTheme.surfaceCard.withOpacity(0.5),
+              color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.5),
               shape: BoxShape.circle,
               border: Border.all(
-                color: ProfessionalTheme.textTertiary.withOpacity(0.3),
+                color: ProfessionalTheme.textTertiary.withValues(alpha: 0.3),
                 width: 2,
                 strokeAlign: BorderSide.strokeAlignInside,
               ),
             ),
-            child: Icon(
+            child: const Icon(
               Icons.devices_outlined,
               color: ProfessionalTheme.textTertiary,
               size: 40,
@@ -1042,7 +1042,7 @@ class _SectionCard extends StatelessWidget {
         color: color,
         borderRadius: BorderRadius.circular(ProfessionalTheme.radiusL),
         border: Border.all(
-          color: borderColor ?? Colors.white.withOpacity(0.1),
+          color: borderColor ?? Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
         boxShadow: ProfessionalTheme.cardShadow,

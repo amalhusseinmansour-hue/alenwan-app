@@ -6,7 +6,6 @@ import 'dart:ui';
 import 'dart:math' as math;
 import '../../core/theme/modern_theme.dart';
 import '../../widgets/app_navigation_wrapper.dart';
-import '../../core/services/vimeo_service.dart';
 
 class ModernHomeScreen extends StatefulWidget {
   const ModernHomeScreen({super.key});
@@ -19,7 +18,6 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
     with TickerProviderStateMixin {
   // Controllers
   final ScrollController _scrollController = ScrollController();
-  final VimeoService _vimeoService = VimeoService();
   final CarouselSliderController _carouselController =
       CarouselSliderController();
 
@@ -32,17 +30,23 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
   late AnimationController _backgroundController;
 
   // Animations
+  // ignore: unused_field
   late Animation<double> _fadeAnimation;
+  // ignore: unused_field
   late Animation<double> _slideAnimation;
+  // ignore: unused_field
   late Animation<double> _scaleAnimation;
+  // ignore: unused_field
   late Animation<double> _logoRotation;
+  // ignore: unused_field
   late Animation<double> _logoPulse;
 
   // State
-  bool _showAppBarBackground = false;
   double _scrollOffset = 0.0;
   int _currentBannerIndex = 0;
   bool _isLoading = true;
+  // ignore: unused_field
+  bool _showAppBarBackground = false;
 
   // Content Lists
   List<dynamic> _featuredContent = [];
@@ -265,7 +269,7 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
               ),
               radius: 2,
               colors: [
-                primaryColor.withOpacity(0.05),
+                primaryColor.withValues(alpha: 0.05),
                 backgroundColor,
                 Colors.black,
               ],
@@ -284,7 +288,7 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
           size: MediaQuery.of(context).size,
           painter: ParticlePainter(
             animation: _particleController.value,
-            color: primaryColor.withOpacity(0.1),
+            color: primaryColor.withValues(alpha: 0.1),
           ),
         );
       },
@@ -396,7 +400,7 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    backgroundColor.withOpacity(0.9),
+                    backgroundColor.withValues(alpha: 0.9),
                     backgroundColor,
                   ],
                 ),
@@ -449,21 +453,21 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
                       ),
                     ),
                     const SizedBox(width: 10),
-                    Icon(Icons.star, color: Colors.amber, size: 16),
+                    const Icon(Icons.star, color: Colors.amber, size: 16),
                     const SizedBox(width: 4),
                     Text(
                       _featuredContent.isNotEmpty
                           ? _featuredContent[_currentBannerIndex]['rating'] ??
                               ''
                           : '',
-                      style: TextStyle(color: Colors.white70),
+                      style: const TextStyle(color: Colors.white70),
                     ),
                     const SizedBox(width: 10),
                     Text(
                       _featuredContent.isNotEmpty
                           ? _featuredContent[_currentBannerIndex]['year'] ?? ''
                           : '',
-                      style: TextStyle(color: Colors.white70),
+                      style: const TextStyle(color: Colors.white70),
                     ),
                   ],
                 ),
@@ -511,7 +515,7 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
                     borderRadius: BorderRadius.circular(4),
                     color: index == _currentBannerIndex
                         ? primaryColor
-                        : Colors.white.withOpacity(0.3),
+                        : Colors.white.withValues(alpha: 0.3),
                   ),
                 );
               }),
@@ -530,7 +534,7 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
         Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [primaryColor.withOpacity(0.3), backgroundColor],
+              colors: [primaryColor.withValues(alpha: 0.3), backgroundColor],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -546,7 +550,7 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
         BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
           child: Container(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
           ),
         ),
       ],
@@ -570,11 +574,12 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
             gradient: primary
                 ? LinearGradient(colors: [primaryColor, secondaryColor])
                 : null,
-            color: primary ? null : Colors.white.withOpacity(0.1),
+            color: primary ? null : Colors.white.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(25),
             border: Border.all(
-              color:
-                  primary ? Colors.transparent : Colors.white.withOpacity(0.3),
+              color: primary
+                  ? Colors.transparent
+                  : Colors.white.withValues(alpha: 0.3),
               width: 1,
             ),
           ),
@@ -682,7 +687,7 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: primaryColor.withOpacity(0.2),
+                      color: primaryColor.withValues(alpha: 0.2),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -704,7 +709,7 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
                             end: Alignment.bottomCenter,
                             colors: [
                               Colors.transparent,
-                              Colors.black.withOpacity(0.5),
+                              Colors.black.withValues(alpha: 0.5),
                             ],
                           ),
                         ),
@@ -786,7 +791,7 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
                             end: Alignment.bottomCenter,
                             colors: [
                               Colors.transparent,
-                              Colors.black.withOpacity(0.7),
+                              Colors.black.withValues(alpha: 0.7),
                             ],
                           ),
                         ),
@@ -803,11 +808,11 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
                     width: 50,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: primaryColor.withOpacity(0.9),
+                      color: primaryColor.withValues(alpha: 0.9),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: primaryColor.withOpacity(0.5),
+                          color: primaryColor.withValues(alpha: 0.5),
                           blurRadius: 20,
                           spreadRadius: 2,
                         ),
@@ -830,7 +835,7 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
                 child: Container(
                   height: 4,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(12),
                       bottomRight: Radius.circular(12),
@@ -871,7 +876,7 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
           Text(
             item['duration'] ?? '',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.6),
+              color: Colors.white.withValues(alpha: 0.6),
               fontSize: 12,
             ),
           ),
@@ -902,7 +907,7 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: primaryColor.withOpacity(0.5),
+                        color: primaryColor.withValues(alpha: 0.5),
                         blurRadius: 30,
                         spreadRadius: 10,
                       ),
@@ -927,7 +932,7 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
           SizedBox(
             width: 200,
             child: LinearProgressIndicator(
-              backgroundColor: Colors.white.withOpacity(0.1),
+              backgroundColor: Colors.white.withValues(alpha: 0.1),
               valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
             ),
           ),
@@ -938,7 +943,7 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
             style: ModernTheme.getTextStyle(
               context: context,
               fontSize: 16,
-              color: Colors.white.withOpacity(0.6),
+              color: Colors.white.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -989,7 +994,7 @@ class _ModernHomeScreenState extends State<ModernHomeScreen>
         ),
         boxShadow: [
           BoxShadow(
-            color: primaryColor.withOpacity(0.4),
+            color: primaryColor.withValues(alpha: 0.4),
             blurRadius: 15,
             spreadRadius: 2,
           ),
@@ -1026,7 +1031,7 @@ class ParticlePainter extends CustomPainter {
       final progress = (animation + i * 0.033) % 1.0;
       final opacity = math.sin(progress * math.pi) * 0.5;
 
-      paint.color = color.withOpacity(opacity);
+      paint.color = color.withValues(alpha: opacity);
 
       final x = size.width * (0.1 + (i * 0.27) % 0.8);
       final y = size.height * progress;

@@ -144,7 +144,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> with TickerProvider
                                   child: Container(
                                     padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
-                                      gradient: LinearGradient(
+                                      gradient: const LinearGradient(
                                         colors: [primaryColor, secondaryColor],
                                       ),
                                       borderRadius: BorderRadius.circular(10),
@@ -195,7 +195,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> with TickerProvider
                                             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                                             child: Column(
                                               children: [
-                                                Icon(
+                                                const Icon(
                                                   Icons.support_agent,
                                                   size: 48,
                                                   color: primaryColor,
@@ -344,7 +344,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> with TickerProvider
                             Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
+                                gradient: const LinearGradient(
                                   colors: [primaryColor, secondaryColor],
                                 ),
                                 borderRadius: BorderRadius.circular(12),

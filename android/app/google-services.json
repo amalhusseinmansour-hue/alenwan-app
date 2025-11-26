@@ -51,6 +51,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "73476107727-ou8jmm9jhtt918942aea9h4hbt6p91oq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alenwan.play2",
+            "certificate_hash": "e60f7bbc68c531f6c2e86563d7a0e716d07ac57e"
+          }
+        },
+        {
           "client_id": "73476107727-tqvvpfn4hnkr6goe99sh3db1drnpp2nh.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -292,7 +292,7 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen>
                               ),
                             ),
                             const SizedBox(height: 8),
-                            Text(
+                            const Text(
                               'Premium Streaming Experience',
                               style: TextStyle(
                                 fontSize: 16,
@@ -358,7 +358,7 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen>
               builder: (context, child) {
                 return Opacity(
                   opacity: _textOpacity.value,
-                  child: Text(
+                  child: const Text(
                     'Version 2.0.0',
                     textAlign: TextAlign.center,
                     style: TextStyle(

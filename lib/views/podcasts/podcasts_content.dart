@@ -52,7 +52,7 @@ class _HoverMediaCardPodcastState extends State<HoverMediaCardPodcast> {
         curve: Curves.easeOut,
         margin: EdgeInsets.symmetric(horizontal: widget.gap / 2),
         transform: _hover
-            ? (Matrix4.identity()..scale(1.06, 1.06))
+            ? Matrix4.diagonal3Values(1.06, 1.06, 1.0)
             : Matrix4.identity(),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
@@ -105,7 +105,7 @@ class _HoverMediaCardPodcastState extends State<HoverMediaCardPodcast> {
                           errorWidget: (_, __, ___) => Container(
                             color: ProfessionalTheme.surfaceCard,
                             alignment: Alignment.center,
-                            child: Icon(
+                            child: const Icon(
                               Icons.podcasts,
                               size: 40,
                               color: ProfessionalTheme.textSecondary,
@@ -124,7 +124,7 @@ class _HoverMediaCardPodcastState extends State<HoverMediaCardPodcast> {
                             ),
                             decoration: BoxDecoration(
                               color: ProfessionalTheme.primaryColor
-                                  .withOpacity(widget.badgeOpacity),
+                                  .withValues(alpha: widget.badgeOpacity),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
@@ -140,7 +140,7 @@ class _HoverMediaCardPodcastState extends State<HoverMediaCardPodcast> {
                     ],
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: widget.gap / 2),
                   child: Text(
@@ -155,7 +155,7 @@ class _HoverMediaCardPodcastState extends State<HoverMediaCardPodcast> {
                     ),
                   ),
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
               ],
             ),
           ),
@@ -191,27 +191,27 @@ class PodcastsContent extends StatelessWidget {
                   size: 64,
                   color: Colors.red.shade300,
                 ),
-                SizedBox(height: 16),
-                Text(
+                const SizedBox(height: 16),
+                const Text(
                   'حدث خطأ أثناء تحميل البودكاست',
                   style: TextStyle(
                     color: ProfessionalTheme.textSecondary,
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   controller.error!,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: ProfessionalTheme.textSecondary,
                     fontSize: 12,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 ElevatedButton.icon(
                   onPressed: controller.refresh,
-                  icon: Icon(Icons.refresh),
+                  icon: const Icon(Icons.refresh),
                   label: const Text('إعادة المحاولة'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: ProfessionalTheme.primaryColor,
@@ -228,7 +228,7 @@ class PodcastsContent extends StatelessWidget {
         }
 
         if (controller.podcasts.isEmpty) {
-          return Center(
+          return const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -264,8 +264,8 @@ class PodcastsContent extends StatelessWidget {
                       color: ProfessionalTheme.primaryColor,
                       size: 32,
                     ),
-                    SizedBox(width: 12),
-                    Text(
+                    const SizedBox(width: 12),
+                    const Text(
                       'البودكاست',
                       style: TextStyle(
                         color: ProfessionalTheme.textPrimary,
@@ -275,15 +275,15 @@ class PodcastsContent extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 8),
-                Text(
+                const SizedBox(height: 8),
+                const Text(
                   'استمع إلى أفضل البودكاست',
                   style: TextStyle(
                     color: ProfessionalTheme.textSecondary,
                     fontSize: 15,
                   ),
                 ),
-                SizedBox(height: 32),
+                const SizedBox(height: 32),
 
                 // Featured Podcasts
                 if (controller.featuredPodcasts.isNotEmpty) ...[
@@ -293,7 +293,7 @@ class PodcastsContent extends StatelessWidget {
                     icon: Icons.star,
                     podcasts: controller.featuredPodcasts,
                   ),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                 ],
 
                 // All Podcasts
@@ -323,7 +323,7 @@ class PodcastsContent extends StatelessWidget {
         Row(
           children: [
             Icon(icon, color: ProfessionalTheme.primaryColor, size: 22),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Text(
               title,
               style: const TextStyle(
@@ -335,14 +335,14 @@ class PodcastsContent extends StatelessWidget {
             const Spacer(),
             Text(
               '${podcasts.length} بودكاست',
-              style: TextStyle(
+              style: const TextStyle(
                 color: ProfessionalTheme.textSecondary,
                 fontSize: 14,
               ),
             ),
           ],
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         LayoutBuilder(
           builder: (context, constraints) {
             final cardWidth = (constraints.maxWidth / 5).clamp(150.0, 200.0);

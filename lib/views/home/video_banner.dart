@@ -69,6 +69,8 @@ class _VideoBannerState extends State<VideoBanner> with WidgetsBindingObserver {
       }
     } catch (e, s) {
       log('❌ load banner error: $e', stackTrace: s);
+      // عند فشل التحميل، اجعل _banner = null لعرض البانر الافتراضي
+      _banner = null;
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -265,7 +267,7 @@ class _VideoBannerState extends State<VideoBanner> with WidgetsBindingObserver {
                 _handleWatchAction();
               },
               icon: const Icon(Icons.play_arrow, color: Colors.white),
-              label: const Text("شاهد الآن",
+              label: const Text('شاهد الآن',
                   style: TextStyle(color: Colors.white, fontSize: 14)),
             ),
           ],

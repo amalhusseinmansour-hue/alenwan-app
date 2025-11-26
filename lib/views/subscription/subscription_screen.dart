@@ -141,7 +141,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> with TickerProv
                                     child: Container(
                                       padding: const EdgeInsets.all(8),
                                       decoration: BoxDecoration(
-                                        gradient: LinearGradient(
+                                        gradient: const LinearGradient(
                                           colors: [primaryColor, secondaryColor],
                                         ),
                                         borderRadius: BorderRadius.circular(10),
@@ -282,7 +282,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> with TickerProv
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
-                                                    Icon(
+                                                    const Icon(
                                                       Icons.workspace_premium,
                                                       color: primaryColor,
                                                       size: 28,
@@ -492,7 +492,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> with TickerProv
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [primaryColor, secondaryColor],
         ),
         boxShadow: [

@@ -153,7 +153,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
           HapticFeedback.lightImpact();
           Navigator.of(context).pop();
         },
-        icon: Icon(
+        icon: const Icon(
           Icons.arrow_back,
           color: ProfessionalTheme.textPrimary,
         ),
@@ -222,13 +222,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
               gradient: ProfessionalTheme.premiumGradient,
               boxShadow: [
                 BoxShadow(
-                  color: ProfessionalTheme.primaryBrand.withOpacity(0.3 * value),
+                  color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3 * value),
                   blurRadius: 30,
                   spreadRadius: 5,
                 ),
               ],
             ),
-            child: Icon(
+            child: const Icon(
               Icons.lock_reset_outlined,
               size: 60,
               color: ProfessionalTheme.textPrimary,
@@ -296,7 +296,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
             border: Border.all(
               color: isFocused
                   ? ProfessionalTheme.primaryBrand
-                  : ProfessionalTheme.textTertiary.withOpacity(0.2),
+                  : ProfessionalTheme.textTertiary.withValues(alpha: 0.2),
               width: isFocused ? 2 : 1,
             ),
             color: isFocused
@@ -374,7 +374,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                       },
                 child: Center(
                   child: _loading
-                      ? SizedBox(
+                      ? const SizedBox(
                           width: 24,
                           height: 24,
                           child: CircularProgressIndicator(

@@ -208,7 +208,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: ProfessionalTheme.primaryBrand.withOpacity(0.3 * value),
+                  color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3 * value),
                   blurRadius: 30,
                   spreadRadius: 5,
                 ),
@@ -222,12 +222,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      ProfessionalTheme.primaryBrand.withOpacity(0.2),
-                      ProfessionalTheme.secondaryBrand.withOpacity(0.2),
+                      ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
+                      ProfessionalTheme.secondaryBrand.withValues(alpha: 0.2),
                     ],
                   ),
                   border: Border.all(
-                    color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                    color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                     width: 2,
                   ),
                 ),
@@ -328,7 +328,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
             border: Border.all(
               color: isFocused
                   ? ProfessionalTheme.primaryBrand
-                  : ProfessionalTheme.textTertiary.withOpacity(0.2),
+                  : ProfessionalTheme.textTertiary.withValues(alpha: 0.2),
               width: isFocused ? 2 : 1,
             ),
             color: isFocused
@@ -410,7 +410,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                       },
                 child: Center(
                   child: _isLoading
-                      ? SizedBox(
+                      ? const SizedBox(
                           width: 24,
                           height: 24,
                           child: CircularProgressIndicator(

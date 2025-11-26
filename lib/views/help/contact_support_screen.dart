@@ -77,10 +77,10 @@ class _ContactSupportScreenState extends State<ContactSupportScreen>
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: ProfessionalTheme.surfaceCard.withOpacity(0.6),
+              color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
               borderRadius: BorderRadius.circular(ProfessionalTheme.radiusL),
               border: Border.all(
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withValues(alpha: 0.1),
                 width: 1,
               ),
             ),
@@ -170,15 +170,15 @@ class _ContactSupportScreenState extends State<ContactSupportScreen>
     return Container(
       padding: const EdgeInsets.all(ProfessionalTheme.space20),
       decoration: ProfessionalTheme.glassMorphism.copyWith(
-        color: ProfessionalTheme.primaryBrand.withOpacity(0.1),
+        color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
         border: Border.all(
-          color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+          color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
       child: Column(
         children: [
-          Icon(
+          const Icon(
             Icons.support_agent,
             color: ProfessionalTheme.primaryBrand,
             size: 48,
@@ -222,7 +222,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen>
             decoration: ProfessionalTheme.glassMorphism.copyWith(
               boxShadow: [
                 BoxShadow(
-                  color: ProfessionalTheme.primaryBrand.withOpacity(0.1),
+                  color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
                   blurRadius: 20,
                   offset: const Offset(0, 8),
                 ),
@@ -233,11 +233,11 @@ class _ContactSupportScreenState extends State<ContactSupportScreen>
                 Container(
                   padding: const EdgeInsets.all(ProfessionalTheme.space12),
                   decoration: BoxDecoration(
-                    color: ProfessionalTheme.primaryBrand.withOpacity(0.2),
+                    color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                        color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                         blurRadius: 10,
                         spreadRadius: 2,
                       ),
@@ -271,7 +271,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen>
                     ],
                   ),
                 ),
-                Icon(
+                const Icon(
                   Icons.arrow_forward_ios,
                   color: ProfessionalTheme.textTertiary,
                   size: 16,
@@ -288,16 +288,16 @@ class _ContactSupportScreenState extends State<ContactSupportScreen>
     return Container(
       padding: const EdgeInsets.all(ProfessionalTheme.space16),
       decoration: BoxDecoration(
-        color: ProfessionalTheme.surfaceCard.withOpacity(0.3),
+        color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
       child: Column(
         children: [
-          Icon(
+          const Icon(
             Icons.info_outline,
             color: ProfessionalTheme.textSecondary,
             size: 20,

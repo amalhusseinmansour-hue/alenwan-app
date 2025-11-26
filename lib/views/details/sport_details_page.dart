@@ -344,9 +344,9 @@ class _SportDetailsPageState extends State<SportDetailsPage> with SingleTickerPr
                     color: const Color(0xFFE50914),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Row(
+                  child: const Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Icon(Icons.circle, color: Colors.white, size: 8),
                       SizedBox(width: 6),
                       Text(

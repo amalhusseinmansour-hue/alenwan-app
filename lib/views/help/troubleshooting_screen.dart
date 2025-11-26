@@ -47,7 +47,7 @@ class _TroubleshootingScreenState extends State<TroubleshootingScreen>
       decoration: ProfessionalTheme.glassMorphism.copyWith(
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -78,11 +78,11 @@ class _TroubleshootingScreenState extends State<TroubleshootingScreen>
           leading: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
+              color: color.withValues(alpha: 0.2),
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: color.withOpacity(0.3),
+                  color: color.withValues(alpha: 0.3),
                   blurRadius: 8,
                   spreadRadius: 1,
                 ),
@@ -106,10 +106,10 @@ class _TroubleshootingScreenState extends State<TroubleshootingScreen>
               width: double.infinity,
               padding: const EdgeInsets.all(ProfessionalTheme.space16),
               decoration: BoxDecoration(
-                color: ProfessionalTheme.surfaceCard.withOpacity(0.3),
+                color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(ProfessionalTheme.radiusM),
                 border: Border.all(
-                  color: color.withOpacity(0.2),
+                  color: color.withValues(alpha: 0.2),
                   width: 1,
                 ),
               ),
@@ -185,10 +185,10 @@ class _TroubleshootingScreenState extends State<TroubleshootingScreen>
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: ProfessionalTheme.surfaceCard.withOpacity(0.6),
+              color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.6),
               borderRadius: BorderRadius.circular(ProfessionalTheme.radiusL),
               border: Border.all(
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withValues(alpha: 0.1),
                 width: 1,
               ),
             ),
@@ -278,15 +278,15 @@ class _TroubleshootingScreenState extends State<TroubleshootingScreen>
     return Container(
       padding: const EdgeInsets.all(ProfessionalTheme.space20),
       decoration: ProfessionalTheme.glassMorphism.copyWith(
-        color: ProfessionalTheme.primaryBrand.withOpacity(0.1),
+        color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
         border: Border.all(
-          color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+          color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
       child: Column(
         children: [
-          Icon(
+          const Icon(
             Icons.build_outlined,
             color: ProfessionalTheme.primaryBrand,
             size: 48,

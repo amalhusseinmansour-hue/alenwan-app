@@ -1,5 +1,5 @@
 import 'dart:ui' as ui;
-import 'dart:math' as Math;
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
@@ -54,7 +54,7 @@ class ModernContentNavigation extends StatelessWidget {
 
     return Container(
       height: 60,
-      padding: EdgeInsets.symmetric(horizontal: ModernTheme.spacingL),
+      padding: const EdgeInsets.symmetric(horizontal: ModernTheme.spacingL),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: navItems.entries.map((entry) {
@@ -73,12 +73,13 @@ class ModernContentNavigation extends StatelessWidget {
 
   bool _isCurrentRoute(String route) {
     return currentRoute == route ||
-           (currentRoute.contains('movie') && route == AppRoutes.allMovies) ||
-           (currentRoute.contains('series') && route == AppRoutes.allSeries) ||
-           (currentRoute.contains('sport') && route == AppRoutes.allSports) ||
-           (currentRoute.contains('documentar') && route == AppRoutes.allDocumentaries) ||
-           (currentRoute.contains('cartoon') && route == AppRoutes.allCartoons) ||
-           (currentRoute.contains('live') && route == AppRoutes.liveStream);
+        (currentRoute.contains('movie') && route == AppRoutes.allMovies) ||
+        (currentRoute.contains('series') && route == AppRoutes.allSeries) ||
+        (currentRoute.contains('sport') && route == AppRoutes.allSports) ||
+        (currentRoute.contains('documentar') &&
+            route == AppRoutes.allDocumentaries) ||
+        (currentRoute.contains('cartoon') && route == AppRoutes.allCartoons) ||
+        (currentRoute.contains('live') && route == AppRoutes.liveStream);
   }
 
   Widget _buildNavItem(
@@ -97,19 +98,19 @@ class ModernContentNavigation extends StatelessWidget {
       borderRadius: BorderRadius.circular(ModernTheme.radiusXLarge),
       child: AnimatedContainer(
         duration: ModernTheme.animationFast,
-        margin: EdgeInsets.symmetric(horizontal: ModernTheme.spacingXS),
-        padding: EdgeInsets.symmetric(
+        margin: const EdgeInsets.symmetric(horizontal: ModernTheme.spacingXS),
+        padding: const EdgeInsets.symmetric(
           horizontal: ModernTheme.spacingM,
           vertical: ModernTheme.spacingS,
         ),
         decoration: BoxDecoration(
           gradient: isSelected ? ModernTheme.primaryGradient : null,
-          color: !isSelected ? Colors.white.withOpacity(0.05) : null,
+          color: !isSelected ? Colors.white.withValues(alpha: 0.05) : null,
           borderRadius: BorderRadius.circular(ModernTheme.radiusXLarge),
           border: Border.all(
             color: isSelected
                 ? Colors.transparent
-                : Colors.white.withOpacity(0.1),
+                : Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
           boxShadow: isSelected ? ModernTheme.glowShadow : [],
@@ -122,7 +123,7 @@ class ModernContentNavigation extends StatelessWidget {
               color: isSelected ? Colors.white : Colors.white70,
               size: 18,
             ),
-            SizedBox(width: ModernTheme.spacingS),
+            const SizedBox(width: ModernTheme.spacingS),
             Text(
               title,
               style: ModernTheme.body1(
@@ -157,8 +158,8 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(
-    isWide ? kToolbarHeight + 80 : kToolbarHeight + 20,
-  );
+        isWide ? kToolbarHeight + 80 : kToolbarHeight + 20,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -169,8 +170,8 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            ModernTheme.backgroundColor.withOpacity(0.98),
-            ModernTheme.backgroundColor.withOpacity(0.8),
+            ModernTheme.backgroundColor.withValues(alpha: 0.98),
+            ModernTheme.backgroundColor.withValues(alpha: 0.8),
             Colors.transparent,
           ],
           stops: const [0.0, 0.7, 1.0],
@@ -186,7 +187,9 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
                 elevation: 0,
                 leading: showBackButton || !isWide
                     ? _buildGlassButton(
-                        icon: showBackButton ? Icons.arrow_back : Icons.menu_rounded,
+                        icon: showBackButton
+                            ? Icons.arrow_back
+                            : Icons.menu_rounded,
                         onPressed: () {
                           if (showBackButton) {
                             Navigator.of(context).pop();
@@ -205,13 +208,14 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
                         shape: BoxShape.circle,
                         gradient: RadialGradient(
                           colors: [
-                            ModernTheme.primaryColor.withOpacity(0.4),
+                            ModernTheme.primaryColor.withValues(alpha: 0.4),
                             Colors.transparent,
                           ],
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: ModernTheme.primaryColor.withOpacity(0.3),
+                            color:
+                                ModernTheme.primaryColor.withValues(alpha: 0.3),
                             blurRadius: 20,
                             spreadRadius: 2,
                           ),
@@ -225,11 +229,11 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
                         ),
                       ),
                     ),
-                    SizedBox(width: ModernTheme.spacingM),
+                    const SizedBox(width: ModernTheme.spacingM),
 
                     // Title with Gradient
                     ShaderMask(
-                      shaderCallback: (bounds) => LinearGradient(
+                      shaderCallback: (bounds) => const LinearGradient(
                         colors: [
                           Colors.white,
                           ModernTheme.primaryColor,
@@ -248,20 +252,23 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
 
                     // Action buttons
                     Row(
-                      children: actions ?? [
-                        _buildGlassButton(
-                          icon: Icons.search_rounded,
-                          onPressed: () => Navigator.pushNamed(context, AppRoutes.search),
-                        ),
-                        SizedBox(width: ModernTheme.spacingS),
-                        _buildGlassButton(
-                          icon: Icons.person_rounded,
-                          onPressed: () => Navigator.pushNamed(context, AppRoutes.profile),
-                          showBadge: true,
-                        ),
-                      ],
+                      children: actions ??
+                          [
+                            _buildGlassButton(
+                              icon: Icons.search_rounded,
+                              onPressed: () => Navigator.pushNamed(
+                                  context, AppRoutes.search),
+                            ),
+                            const SizedBox(width: ModernTheme.spacingS),
+                            _buildGlassButton(
+                              icon: Icons.person_rounded,
+                              onPressed: () => Navigator.pushNamed(
+                                  context, AppRoutes.profile),
+                              showBadge: true,
+                            ),
+                          ],
                     ),
-                    SizedBox(width: ModernTheme.spacingM),
+                    const SizedBox(width: ModernTheme.spacingM),
                   ],
                 ),
               ),
@@ -285,19 +292,19 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
     bool showBadge = false,
   }) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: ModernTheme.spacingXS),
+      margin: const EdgeInsets.symmetric(horizontal: ModernTheme.spacingXS),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(ModernTheme.radiusMedium),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Colors.white.withOpacity(0.1),
-            Colors.white.withOpacity(0.05),
+            Colors.white.withValues(alpha: 0.1),
+            Colors.white.withValues(alpha: 0.05),
           ],
         ),
         border: Border.all(
-          color: Colors.white.withOpacity(0.2),
+          color: Colors.white.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -307,7 +314,7 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
           onTap: onPressed,
           borderRadius: BorderRadius.circular(ModernTheme.radiusMedium),
           child: Container(
-            padding: EdgeInsets.all(ModernTheme.spacingS + 2),
+            padding: const EdgeInsets.all(ModernTheme.spacingS + 2),
             child: Stack(
               children: [
                 Icon(
@@ -327,7 +334,8 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: ModernTheme.primaryColor.withOpacity(0.6),
+                            color:
+                                ModernTheme.primaryColor.withValues(alpha: 0.6),
                             blurRadius: 4,
                           ),
                         ],
@@ -362,14 +370,14 @@ class CinemaBackgroundPainter extends CustomPainter {
     for (int i = 0; i < 3; i++) {
       final progress = (animation.value + i * 0.3) % 1.0;
       final center = Offset(
-        size.width * (0.2 + i * 0.3 + Math.sin(progress * Math.pi * 2) * 0.1),
-        size.height * (0.3 + Math.cos(progress * Math.pi * 2) * 0.1),
+        size.width * (0.2 + i * 0.3 + math.sin(progress * math.pi * 2) * 0.1),
+        size.height * (0.3 + math.cos(progress * math.pi * 2) * 0.1),
       );
 
       paint.shader = RadialGradient(
         colors: [
-          ModernTheme.primaryColor.withOpacity(0.06),
-          ModernTheme.secondaryColor.withOpacity(0.03),
+          ModernTheme.primaryColor.withValues(alpha: 0.06),
+          ModernTheme.secondaryColor.withValues(alpha: 0.03),
           Colors.transparent,
         ],
         stops: const [0.0, 0.5, 1.0],
@@ -392,7 +400,7 @@ class CinemaBackgroundPainter extends CustomPainter {
     final holeSpacing = 18.0;
 
     // Film strip sides with opacity
-    paint.color = ModernTheme.surfaceColor.withOpacity(0.2);
+    paint.color = ModernTheme.surfaceColor.withValues(alpha: 0.2);
 
     // Left strip
     canvas.drawRect(Rect.fromLTWH(0, 0, stripWidth, size.height), paint);
@@ -404,7 +412,7 @@ class CinemaBackgroundPainter extends CustomPainter {
     );
 
     // Film holes
-    paint.color = ModernTheme.backgroundColor.withOpacity(0.4);
+    paint.color = ModernTheme.backgroundColor.withValues(alpha: 0.4);
     for (double y = 10; y < size.height; y += holeSpacing) {
       // Left holes
       canvas.drawRRect(
@@ -414,7 +422,7 @@ class CinemaBackgroundPainter extends CustomPainter {
             width: holeSize,
             height: holeSize,
           ),
-          Radius.circular(2),
+          const Radius.circular(2),
         ),
         paint,
       );
@@ -426,24 +434,25 @@ class CinemaBackgroundPainter extends CustomPainter {
             width: holeSize,
             height: holeSize,
           ),
-          Radius.circular(2),
+          const Radius.circular(2),
         ),
         paint,
       );
     }
   }
 
-  void _drawSparkles(Canvas canvas, Size size, Paint paint, Animation<double> sparkle) {
+  void _drawSparkles(
+      Canvas canvas, Size size, Paint paint, Animation<double> sparkle) {
     paint.style = PaintingStyle.fill;
 
     for (int i = 0; i < 30; i++) {
       final progress = (sparkle.value * 2 + i * 0.03) % 1.0;
-      final opacity = Math.sin(progress * Math.pi);
+      final opacity = math.sin(progress * math.pi);
 
       final x = size.width * ((i * 0.43) % 1.0);
       final y = size.height * ((i * 0.31) % 1.0);
 
-      paint.color = Colors.amber.withOpacity(opacity * 0.02);
+      paint.color = Colors.amber.withValues(alpha: opacity * 0.02);
 
       canvas.drawCircle(Offset(x, y), 2 + opacity * 2, paint);
     }

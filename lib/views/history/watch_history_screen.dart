@@ -13,7 +13,6 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen>
     with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
-  final bool _isLoading = false;
 
   @override
   void initState() {
@@ -55,10 +54,10 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen>
           leading: Container(
             margin: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: ProfessionalTheme.surfaceCard.withOpacity(0.8),
+              color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.8),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                 width: 1,
               ),
             ),
@@ -90,7 +89,7 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen>
               borderRadius: BorderRadius.circular(60),
               boxShadow: [
                 BoxShadow(
-                  color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                  color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                   blurRadius: 20,
                   spreadRadius: 5,
                 ),
@@ -103,7 +102,7 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen>
             ),
           ),
           const SizedBox(height: 24),
-          Text(
+          const Text(
             'لا يوجد سجل مشاهدة',
             style: TextStyle(
               color: ProfessionalTheme.textSecondary,
@@ -112,7 +111,7 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen>
             ),
           ),
           const SizedBox(height: 8),
-          Text(
+          const Text(
             'ابدأ بمشاهدة المحتوى لرؤية سجل المشاهدة هنا',
             style: TextStyle(
               color: ProfessionalTheme.textTertiary,

@@ -130,9 +130,9 @@ class _AppNavigationWrapperState extends State<AppNavigationWrapper>
                             begin: Alignment.bottomCenter,
                             end: Alignment.topCenter,
                             colors: [
-                              AppTheme.backgroundColor.withOpacity(0.98),
-                              AppTheme.backgroundColor.withOpacity(0.9),
-                              AppTheme.backgroundColor.withOpacity(0.0),
+                              AppTheme.backgroundColor.withValues(alpha: 0.98),
+                              AppTheme.backgroundColor.withValues(alpha: 0.9),
+                              AppTheme.backgroundColor.withValues(alpha: 0.0),
                             ],
                             stops: const [0.0, 0.4, 1.0],
                           ),
@@ -151,8 +151,8 @@ class _AppNavigationWrapperState extends State<AppNavigationWrapper>
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                   colors: [
-                                    AppTheme.surfaceColor.withOpacity(0.9),
-                                    AppTheme.backgroundColor.withOpacity(0.85),
+                                    AppTheme.surfaceColor.withValues(alpha: 0.9),
+                                    AppTheme.backgroundColor.withValues(alpha: 0.85),
                                   ],
                                 ),
                                 borderRadius: const BorderRadius.only(
@@ -161,13 +161,13 @@ class _AppNavigationWrapperState extends State<AppNavigationWrapper>
                                 ),
                                 border: Border(
                                   top: BorderSide(
-                                    color: AppTheme.primaryColor.withOpacity(0.4),
+                                    color: AppTheme.primaryColor.withValues(alpha: 0.4),
                                     width: 2,
                                   ),
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppTheme.primaryColor.withOpacity(0.2),
+                                    color: AppTheme.primaryColor.withValues(alpha: 0.2),
                                     blurRadius: 20,
                                     offset: const Offset(0, -5),
                                   ),
@@ -222,56 +222,6 @@ class _AppNavigationWrapperState extends State<AppNavigationWrapper>
     );
   }
 
-  Widget _buildGlassButton({
-    required IconData icon,
-    required VoidCallback onPressed,
-    bool showBadge = false,
-  }) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 4),
-      decoration: AppTheme.glassDecoration(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPressed,
-          borderRadius: BorderRadius.circular(12),
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            child: Stack(
-              children: [
-                Icon(
-                  icon,
-                  color: Colors.white,
-                  size: 22,
-                ),
-                if (showBadge)
-                  Positioned(
-                    right: 0,
-                    top: 0,
-                    child: Container(
-                      width: 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        color: AppTheme.primaryColor,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.primaryColor.withOpacity(0.6),
-                            blurRadius: 4,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildNavItem(IconData icon, String label, int index, bool isActive) {
     return GestureDetector(
@@ -288,7 +238,7 @@ class _AppNavigationWrapperState extends State<AppNavigationWrapper>
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: isActive
-                    ? LinearGradient(
+                    ? const LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
@@ -297,11 +247,11 @@ class _AppNavigationWrapperState extends State<AppNavigationWrapper>
                         ],
                       )
                     : null,
-                color: isActive ? null : Colors.white.withOpacity(0.05),
+                color: isActive ? null : Colors.white.withValues(alpha: 0.05),
                 boxShadow: isActive
                     ? [
                         BoxShadow(
-                          color: AppTheme.primaryColor.withOpacity(0.4),
+                          color: AppTheme.primaryColor.withValues(alpha: 0.4),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -309,19 +259,19 @@ class _AppNavigationWrapperState extends State<AppNavigationWrapper>
                     : null,
                 border: !isActive
                     ? Border.all(
-                        color: AppTheme.primaryColor.withOpacity(0.2),
+                        color: AppTheme.primaryColor.withValues(alpha: 0.2),
                         width: 1,
                       )
                     : null,
               ),
               child: Icon(
                 icon,
-                color: isActive ? Colors.white : AppTheme.primaryColor.withOpacity(0.7),
+                color: isActive ? Colors.white : AppTheme.primaryColor.withValues(alpha: 0.7),
                 size: isActive ? 24 : 22,
                 shadows: isActive
                     ? [
                         Shadow(
-                          color: Colors.black.withOpacity(0.3),
+                          color: Colors.black.withValues(alpha: 0.3),
                           blurRadius: 4,
                         ),
                       ]
@@ -336,7 +286,7 @@ class _AppNavigationWrapperState extends State<AppNavigationWrapper>
                 fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
                 color: isActive
                     ? AppTheme.primaryColor
-                    : AppTheme.primaryColor.withOpacity(0.6),
+                    : AppTheme.primaryColor.withValues(alpha: 0.6),
                 fontFamily: 'Cairo',
                 letterSpacing: isActive ? 0.5 : 0,
               ),
@@ -348,7 +298,7 @@ class _AppNavigationWrapperState extends State<AppNavigationWrapper>
               height: isActive ? 3 : 0,
               width: isActive ? 24 : 0,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: [
                     AppTheme.accentColor,
                     AppTheme.primaryColor,
@@ -358,7 +308,7 @@ class _AppNavigationWrapperState extends State<AppNavigationWrapper>
                 boxShadow: isActive
                     ? [
                         BoxShadow(
-                          color: AppTheme.primaryColor.withOpacity(0.6),
+                          color: AppTheme.primaryColor.withValues(alpha: 0.6),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),

@@ -92,7 +92,7 @@ class _ContentCardState extends State<ContentCard>
                             boxShadow: _isHovered
                                 ? [
                                     BoxShadow(
-                                      color: Colors.red.withOpacity(0.3),
+                                      color: Colors.red.withValues(alpha: 0.3),
                                       blurRadius: 20,
                                       spreadRadius: 2,
                                     ),
@@ -122,7 +122,7 @@ class _ContentCardState extends State<ContentCard>
                                 end: Alignment.bottomCenter,
                                 colors: [
                                   Colors.transparent,
-                                  Colors.black.withOpacity(0.7),
+                                  Colors.black.withValues(alpha: 0.7),
                                 ],
                                 stops: const [0.6, 1.0],
                               ),
@@ -166,7 +166,7 @@ class _ContentCardState extends State<ContentCard>
                                 vertical: 2,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.7),
+                                color: Colors.black.withValues(alpha: 0.7),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: Row(
@@ -196,7 +196,7 @@ class _ContentCardState extends State<ContentCard>
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
-                                color: Colors.black.withOpacity(0.4),
+                                color: Colors.black.withValues(alpha: 0.4),
                               ),
                               child: const Center(
                                 child: Icon(
@@ -226,7 +226,7 @@ class _ContentCardState extends State<ContentCard>
                       Text(
                         widget.year!,
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.6),
+                          color: Colors.white.withValues(alpha: 0.6),
                           fontSize: 11,
                         ),
                       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:provider/provider.dart';
 import '../../config/app_colors.dart';
+import '../../controllers/auth_controller.dart';
 import '../../controllers/movie_controller.dart';
 import '../../controllers/series_controller.dart';
 import '../../controllers/sport_controller.dart';
@@ -27,11 +28,12 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
     super.initState();
     // Load data on init
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      final auth = context.read<AuthController>();
       context.read<MovieController>().loadMovies(reset: true);
       context.read<SeriesController>().loadSeries();
       context.read<SportController>().loadSports();
       context.read<CartoonController>().loadCartoons();
-      context.read<HomeController>().loadData();
+      context.read<HomeController>().loadData(isGuest: auth.isGuestMode);
     });
   }
 
@@ -151,7 +153,7 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.transparent,
-                        AppColors.backgroundDark.withOpacity(0.7),
+                        AppColors.backgroundDark.withValues(alpha: 0.7),
                         AppColors.backgroundDark,
                       ],
                       stops: const [0.0, 0.7, 1.0],
@@ -176,7 +178,7 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
                         borderRadius: BorderRadius.circular(4),
                         color: _currentHeroIndex == entry.key
                             ? AppColors.primary
-                            : Colors.white.withOpacity(0.3),
+                            : Colors.white.withValues(alpha: 0.3),
                       ),
                     );
                   }).toList(),
@@ -199,7 +201,7 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
               'https://via.placeholder.com/1920x1080'),
           fit: BoxFit.cover,
           colorFilter: ColorFilter.mode(
-            Colors.black.withOpacity(0.4),
+            Colors.black.withValues(alpha: 0.4),
             BlendMode.darken,
           ),
         ),
@@ -256,7 +258,7 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
             Text(
               '${movie.releaseYear ?? 'N/A'} • ${movie.categoryName ?? 'عام'}',
               style: TextStyle(
-                color: Colors.white.withOpacity(0.8),
+                color: Colors.white.withValues(alpha: 0.8),
                 fontSize: isDesktop ? 20 : (isTablet ? 18 : 16),
               ),
             ),
@@ -271,7 +273,7 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
               child: Text(
                 movie.description ?? 'لا يوجد وصف',
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withValues(alpha: 0.9),
                   fontSize: isDesktop ? 18 : 16,
                   height: 1.5,
                 ),
@@ -370,7 +372,7 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
           Text(
             subtitle,
             style: TextStyle(
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withValues(alpha: 0.7),
               fontSize: 16,
             ),
           ),
@@ -631,7 +633,7 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.transparent,
-                            Colors.black.withOpacity(0.7),
+                            Colors.black.withValues(alpha: 0.7),
                           ],
                         ),
                       ),
@@ -732,7 +734,7 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.transparent,
-                            Colors.black.withOpacity(0.7),
+                            Colors.black.withValues(alpha: 0.7),
                           ],
                         ),
                       ),
@@ -804,7 +806,7 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
           Text(
             'منصة البث المباشر الأولى لأفضل الأفلام والمسلسلات',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withValues(alpha: 0.7),
               fontSize: 16,
             ),
           ),
@@ -842,7 +844,7 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
           Text(
             '© 2025 Alenwan Play Plus. جميع الحقوق محفوظة.',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.5),
+              color: Colors.white.withValues(alpha: 0.5),
               fontSize: 14,
             ),
           ),
@@ -857,7 +859,7 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
       child: Text(
         text,
         style: TextStyle(
-          color: Colors.white.withOpacity(0.8),
+          color: Colors.white.withValues(alpha: 0.8),
           fontSize: 16,
         ),
       ),

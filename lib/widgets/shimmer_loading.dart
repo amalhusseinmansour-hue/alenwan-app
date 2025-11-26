@@ -89,9 +89,9 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
                           : Alignment.topCenter,
               colors: [
                 Colors.transparent,
-                AppColors.primary.withOpacity(0.1),
-                AppColors.accent.withOpacity(0.3),
-                AppColors.primary.withOpacity(0.1),
+                AppColors.primary.withValues(alpha: 0.1),
+                AppColors.accent.withValues(alpha: 0.3),
+                AppColors.primary.withValues(alpha: 0.1),
                 Colors.transparent,
               ],
               stops: [

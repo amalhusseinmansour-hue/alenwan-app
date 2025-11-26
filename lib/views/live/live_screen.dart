@@ -86,10 +86,10 @@ class _LiveScreenState extends State<LiveScreen> with TickerProviderStateMixin {
                 child: CustomScrollView(
                   slivers: [
                     // Header
-                    SliverAppBar(
+                    const SliverAppBar(
                       floating: true,
                       backgroundColor: Colors.black,
-                      title: const Text(
+                      title: Text(
                         'البث المباشر',
                         style: TextStyle(
                           fontSize: 24,
@@ -228,7 +228,7 @@ class _LiveScreenState extends State<LiveScreen> with TickerProviderStateMixin {
                       top: Radius.circular(12),
                     ),
                     child: CachedNetworkImage(
-                      imageUrl: stream.thumbnail ?? '',
+                      imageUrl: stream.thumbnail,
                       fit: BoxFit.cover,
                       width: double.infinity,
                       placeholder: (context, url) => Container(
@@ -362,9 +362,9 @@ class _LiveScreenState extends State<LiveScreen> with TickerProviderStateMixin {
         children: [
           const Icon(Icons.error_outline, color: Colors.red, size: 64),
           const SizedBox(height: 16),
-          Text(
+          const Text(
             'حدث خطأ',
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.bold,

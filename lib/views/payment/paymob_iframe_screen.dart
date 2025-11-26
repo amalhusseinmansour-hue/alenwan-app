@@ -105,10 +105,10 @@ class _PaymobIframeScreenState extends State<PaymobIframeScreen> {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: AppColors.success.withOpacity(0.2),
+                color: AppColors.success.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.check_circle,
                 color: AppColors.success,
                 size: 64,
@@ -185,10 +185,10 @@ class _PaymobIframeScreenState extends State<PaymobIframeScreen> {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: AppColors.error.withOpacity(0.2),
+                color: AppColors.error.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.error,
                 color: AppColors.error,
                 size: 64,
@@ -297,7 +297,7 @@ class _PaymobIframeScreenState extends State<PaymobIframeScreen> {
           // Loading overlay
           if (_isLoading)
             Container(
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withValues(alpha: 0.7),
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -330,7 +330,7 @@ class _PaymobIframeScreenState extends State<PaymobIframeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.error_outline,
               color: AppColors.error,
               size: 64,

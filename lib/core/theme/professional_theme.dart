@@ -50,7 +50,7 @@ class ProfessionalTheme {
   static LinearGradient get darkGradient => LinearGradient(
         colors: [
           backgroundPrimary,
-          backgroundSecondary.withOpacity(0.9),
+          backgroundSecondary.withValues(alpha: 0.9),
           backgroundPrimary,
         ],
         begin: Alignment.topCenter,
@@ -59,8 +59,8 @@ class ProfessionalTheme {
 
   static LinearGradient get cardGradient => LinearGradient(
         colors: [
-          surfaceCard.withOpacity(0.9),
-          surfaceCard.withOpacity(0.6),
+          surfaceCard.withValues(alpha: 0.9),
+          surfaceCard.withValues(alpha: 0.6),
         ],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
@@ -68,9 +68,9 @@ class ProfessionalTheme {
 
   static LinearGradient get shimmerGradient => LinearGradient(
         colors: [
-          Colors.white.withOpacity(0.0),
-          Colors.white.withOpacity(0.05),
-          Colors.white.withOpacity(0.0),
+          Colors.white.withValues(alpha: 0.0),
+          Colors.white.withValues(alpha: 0.05),
+          Colors.white.withValues(alpha: 0.0),
         ],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
@@ -79,12 +79,12 @@ class ProfessionalTheme {
   // Premium Shadows
   static List<BoxShadow> get cardShadow => [
         BoxShadow(
-          color: Colors.black.withOpacity(0.4),
+          color: Colors.black.withValues(alpha: 0.4),
           blurRadius: 20,
           offset: const Offset(0, 10),
         ),
         BoxShadow(
-          color: primaryBrand.withOpacity(0.1),
+          color: primaryBrand.withValues(alpha: 0.1),
           blurRadius: 30,
           offset: const Offset(0, 15),
         ),
@@ -92,7 +92,7 @@ class ProfessionalTheme {
 
   static List<BoxShadow> get buttonShadow => [
         BoxShadow(
-          color: primaryBrand.withOpacity(0.4),
+          color: primaryBrand.withValues(alpha: 0.4),
           blurRadius: 25,
           offset: const Offset(0, 10),
           spreadRadius: -5,
@@ -101,7 +101,7 @@ class ProfessionalTheme {
 
   static List<BoxShadow> get glowShadow => [
         BoxShadow(
-          color: accentBrand.withOpacity(0.6),
+          color: accentBrand.withValues(alpha: 0.6),
           blurRadius: 40,
           spreadRadius: 10,
         ),
@@ -363,10 +363,10 @@ class ProfessionalTheme {
 
   // Component Decorations
   static BoxDecoration get glassMorphism => BoxDecoration(
-        color: surfaceCard.withOpacity(0.4),
+        color: surfaceCard.withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(radiusL),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
         boxShadow: cardShadow,
@@ -375,15 +375,15 @@ class ProfessionalTheme {
   static BoxDecoration get premiumCard => BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            surfaceCard.withOpacity(0.9),
-            surfaceCard.withOpacity(0.5),
+            surfaceCard.withValues(alpha: 0.9),
+            surfaceCard.withValues(alpha: 0.5),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(radiusL),
         border: Border.all(
-          color: primaryBrand.withOpacity(0.3),
+          color: primaryBrand.withValues(alpha: 0.3),
           width: 1,
         ),
         boxShadow: cardShadow,
@@ -487,7 +487,7 @@ class ProfessionalTheme {
           borderRadius: BorderRadius.circular(radiusRound),
           border: Border.all(
             color:
-                isSelected ? Colors.transparent : Colors.white.withOpacity(0.1),
+                isSelected ? Colors.transparent : Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -512,7 +512,7 @@ class ProfessionalTheme {
         borderRadius: borderRadius ?? mediumRadius,
         boxShadow: boxShadow ?? cardShadow,
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
       );
@@ -568,8 +568,8 @@ class AnimatedBackgroundPainter extends CustomPainter {
         ),
         radius: 1.5,
         colors: [
-          color1.withOpacity(0.3),
-          color2.withOpacity(0.1),
+          color1.withValues(alpha: 0.3),
+          color2.withValues(alpha: 0.1),
           Colors.transparent,
         ],
       ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));

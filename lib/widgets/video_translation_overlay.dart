@@ -98,19 +98,19 @@ class _VideoTranslationOverlayState extends State<VideoTranslationOverlay>
         opacity: _fadeAnimation,
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.7),
+            color: Colors.black.withValues(alpha: 0.7),
             borderRadius: BorderRadius.circular(25),
             border: Border.all(
               color: controller.isTranslationEnabled
                   ? ProfessionalTheme.primaryBrand
-                  : Colors.white.withOpacity(0.3),
+                  : Colors.white.withValues(alpha: 0.3),
               width: 2,
             ),
             boxShadow: [
               BoxShadow(
                 color: controller.isTranslationEnabled
-                    ? ProfessionalTheme.primaryBrand.withOpacity(0.3)
-                    : Colors.black.withOpacity(0.3),
+                    ? ProfessionalTheme.primaryBrand.withValues(alpha: 0.3)
+                    : Colors.black.withValues(alpha: 0.3),
                 blurRadius: 10,
                 spreadRadius: 1,
               ),
@@ -181,7 +181,7 @@ class _VideoTranslationOverlayState extends State<VideoTranslationOverlay>
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: color.withValues(alpha: 0.2),
         shape: BoxShape.circle,
         border: Border.all(color: color, width: 1),
       ),
@@ -204,15 +204,15 @@ class _VideoTranslationOverlayState extends State<VideoTranslationOverlay>
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.8),
+                color: Colors.black.withValues(alpha: 0.8),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+                  color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
                   width: 1,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
+                    color: Colors.black.withValues(alpha: 0.5),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -244,15 +244,15 @@ class _VideoTranslationOverlayState extends State<VideoTranslationOverlay>
         width: 320,
         height: 400,
         decoration: BoxDecoration(
-          color: ProfessionalTheme.surfaceCard.withOpacity(0.95),
+          color: ProfessionalTheme.surfaceCard.withValues(alpha: 0.95),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withValues(alpha: 0.3),
               blurRadius: 20,
               offset: const Offset(0, 10),
             ),
@@ -280,17 +280,17 @@ class _VideoTranslationOverlayState extends State<VideoTranslationOverlay>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: ProfessionalTheme.primaryBrand.withOpacity(0.1),
+        color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.1),
         border: Border(
           bottom: BorderSide(
-            color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
       ),
       child: Row(
         children: [
-          Icon(
+          const Icon(
             Icons.translate,
             color: ProfessionalTheme.primaryBrand,
             size: 24,
@@ -330,8 +330,8 @@ class _VideoTranslationOverlayState extends State<VideoTranslationOverlay>
               languages: controller.availableLanguages,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
             child: Icon(
               Icons.arrow_forward,
               color: ProfessionalTheme.primaryBrand,
@@ -360,10 +360,10 @@ class _VideoTranslationOverlayState extends State<VideoTranslationOverlay>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.3),
+        color: Colors.black.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+          color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -397,14 +397,14 @@ class _VideoTranslationOverlayState extends State<VideoTranslationOverlay>
           children: [
             Icon(
               Icons.history,
-              color: Colors.white.withOpacity(0.3),
+              color: Colors.white.withValues(alpha: 0.3),
               size: 48,
             ),
             const SizedBox(height: 16),
             Text(
               'Translation history will appear here',
               style: TextStyle(
-                color: Colors.white.withOpacity(0.5),
+                color: Colors.white.withValues(alpha: 0.5),
                 fontSize: 14,
               ),
             ),
@@ -422,10 +422,10 @@ class _VideoTranslationOverlayState extends State<VideoTranslationOverlay>
           margin: const EdgeInsets.only(bottom: 8),
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: Colors.white.withOpacity(0.1),
+              color: Colors.white.withValues(alpha: 0.1),
               width: 1,
             ),
           ),
@@ -444,7 +444,7 @@ class _VideoTranslationOverlayState extends State<VideoTranslationOverlay>
               Text(
                 _formatTimestamp(segment.timestamp),
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.5),
+                  color: Colors.white.withValues(alpha: 0.5),
                   fontSize: 11,
                 ),
               ),
@@ -459,10 +459,10 @@ class _VideoTranslationOverlayState extends State<VideoTranslationOverlay>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.3),
+        color: Colors.black.withValues(alpha: 0.3),
         border: Border(
           top: BorderSide(
-            color: ProfessionalTheme.primaryBrand.withOpacity(0.3),
+            color: ProfessionalTheme.primaryBrand.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -508,13 +508,13 @@ class _VideoTranslationOverlayState extends State<VideoTranslationOverlay>
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             color: isActive
-                ? ProfessionalTheme.primaryBrand.withOpacity(0.2)
+                ? ProfessionalTheme.primaryBrand.withValues(alpha: 0.2)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: isActive
-                  ? ProfessionalTheme.primaryBrand.withOpacity(0.5)
-                  : Colors.white.withOpacity(0.2),
+                  ? ProfessionalTheme.primaryBrand.withValues(alpha: 0.5)
+                  : Colors.white.withValues(alpha: 0.2),
               width: 1,
             ),
           ),
@@ -549,11 +549,11 @@ class _VideoTranslationOverlayState extends State<VideoTranslationOverlay>
   }
 
   void _exportTranslations(VideoTranslationController controller) {
-    final text = controller.exportTranslationHistory();
     // TODO: Implement actual export functionality
+    // final text = controller.exportTranslationHistory();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Translation history exported'),
+      const SnackBar(
+        content: Text('Translation history exported'),
         backgroundColor: ProfessionalTheme.primaryBrand,
       ),
     );
